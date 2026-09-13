@@ -107,12 +107,17 @@ document.addEventListener("DOMContentLoaded", () => {
   function animateHero() {
     if (typeof gsap === "undefined") return;
     const tl = gsap.timeline();
-    tl.from("#heroSlider .hero-badge", {
+    tl.from(".hud-top-bar", {
       opacity: 0,
-      y: 20,
+      y: -15,
       duration: 0.5,
       ease: "power3.out",
     })
+      .from(
+        "#heroSlider .hero-badge",
+        { opacity: 0, y: 20, duration: 0.5, ease: "power3.out" },
+        "-=0.3"
+      )
       .from(
         "#heroSlider h1",
         { opacity: 0, y: 30, duration: 0.8, ease: "power3.out" },
@@ -129,6 +134,11 @@ document.addEventListener("DOMContentLoaded", () => {
         "-=0.3"
       )
       .from(
+        "#heroSpecCardContainer",
+        { opacity: 0, x: 20, duration: 0.7, ease: "power3.out" },
+        "-=0.4"
+      )
+      .from(
         ".interactive-hotspot",
         {
           opacity: 0,
@@ -137,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
           duration: 0.8,
           ease: "back.out(1.7)",
         },
-        "-=0.4"
+        "-=0.5"
       )
       .from(
         "#heroDock",
@@ -147,11 +157,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================
-  // HERO SLIDER & HOTSPOTS CONTROLLER (Opción 3)
+  // HERO SLIDER & TELEMETRY CONTROLLER (Híbrido 2 + 3)
   // ==========================================
-  const heroSlides = document.querySelectorAll(".hero-hotspot-background .hero-slide");
+  const heroSlides = document.querySelectorAll(
+    ".hero-hybrid-background .hero-slide, .hero-hotspot-background .hero-slide"
+  );
   const hudTabs = document.querySelectorAll(".hud-dock-tab");
   const hotspotCounter = document.getElementById("hotspotCounter");
+  const hudCoords = document.getElementById("hudCoords");
+  const hudService = document.getElementById("hudService");
+  const hudRig = document.getElementById("hudRig");
+  const hudDepth = document.getElementById("hudDepth");
   const hs1Title = document.getElementById("hs1Title");
   const hs1Desc = document.getElementById("hs1Desc");
   const hs2Title = document.getElementById("hs2Title");
@@ -185,9 +201,42 @@ document.addEventListener("DOMContentLoaded", () => {
       hudTabs[currentSlide].setAttribute("aria-selected", "true");
     }
 
+    // Actualizar badges de los tabs (ACTIVO vs Subtítulo)
+    hudTabs.forEach((tab, i) => {
+      const badge = tab.querySelector(".hud-tab-badge, .hud-tab-sub");
+      if (!tab.dataset.origMeta && badge && !badge.classList.contains("hud-tab-badge")) {
+        tab.dataset.origMeta = badge.textContent.trim();
+      }
+      if (badge) {
+        if (i === currentSlide) {
+          badge.className = "hud-tab-badge";
+          badge.textContent = "ACTIVO";
+        } else {
+          badge.className = "hud-tab-sub";
+          if (tab.dataset.origMeta) {
+            badge.textContent = tab.dataset.origMeta;
+          }
+        }
+      }
+    });
+
     // Actualizar Contador
     if (hotspotCounter) {
       hotspotCounter.textContent = `0${currentSlide + 1} / 0${heroSlides.length}`;
+    }
+
+    // Actualizar Coordenadas GPS y Telemetría SCADA
+    if (hudCoords && activeSlide.dataset.coord) {
+      hudCoords.textContent = `COORD: ${activeSlide.dataset.coord}`;
+    }
+    if (hudService && activeSlide.dataset.service) {
+      hudService.textContent = activeSlide.dataset.service;
+    }
+    if (hudRig && activeSlide.dataset.rig) {
+      hudRig.textContent = activeSlide.dataset.rig;
+    }
+    if (hudDepth && activeSlide.dataset.depth) {
+      hudDepth.textContent = activeSlide.dataset.depth;
     }
 
     // Actualizar Información Dinámica de los 3 Hotspots según el slide activo

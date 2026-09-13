@@ -552,56 +552,68 @@ header#mainNav {
   color: #fff;
 }
 
-/* --- Hero Section: Opción 3 Exploración Interactiva con Hotspots --- */
-.hero-hotspot-section {
+/* --- Hero Section: Híbrido 2 + 3 en Diseño Claro Luminoso (Apple Precision Light + SCADA + Hotspots) --- */
+.hero-hybrid-section {
   position: relative;
   width: 100%;
   min-height: 100dvh;
   display: flex;
   overflow: hidden;
+  background: #f8fafc;
+}
+
+[data-theme="dark"] .hero-hybrid-section {
   background: #070a0f;
 }
 
-.hero-hotspot-background {
+.hero-hybrid-background {
   position: absolute;
   inset: 0;
   z-index: 1;
 }
 
-.hero-hotspot-background .hero-slide {
+.hero-hybrid-background .hero-slide {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: opacity 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.hero-hotspot-background .hero-slide.active {
+.hero-hybrid-background .hero-slide.active {
   opacity: 1;
 }
 
-.hero-hotspot-background .hero-slide img {
+.hero-hybrid-background .hero-slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.04);
+  transform: scale(1.03);
   transition: transform 7s ease-out;
 }
 
-.hero-hotspot-background .hero-slide.active img {
+.hero-hybrid-background .hero-slide.active img {
   transform: scale(1);
 }
 
-/* Viñeta Óptica Suave para Contraste */
-.hotspot-vignette {
+/* Atmósfera de Luz Blanca Lateral:
+   En modo claro aporta un degradado blanco translúcido en el costado izquierdo
+   para que los textos en Slate 900 se lean con 100% nitidez sin tapar la maquinaria de la derecha. */
+.hybrid-light-vignette {
   position: absolute;
   inset: 0;
   background: 
-    radial-gradient(ellipse 95% 85% at 50% 50%, rgba(7, 10, 15, 0.15) 0%, rgba(7, 10, 15, 0.65) 100%),
-    linear-gradient(180deg, rgba(7, 10, 15, 0.5) 0%, transparent 18%, transparent 82%, rgba(7, 10, 15, 0.85) 100%);
+    linear-gradient(90deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.82) 42%, rgba(255, 255, 255, 0.28) 72%, rgba(255, 255, 255, 0.05) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.65) 0%, transparent 20%, transparent 80%, rgba(255, 255, 255, 0.85) 100%);
   pointer-events: none;
 }
 
-.hero-hotspot-content {
+[data-theme="dark"] .hybrid-light-vignette {
+  background: 
+    linear-gradient(90deg, rgba(7, 10, 15, 0.95) 0%, rgba(7, 10, 15, 0.78) 42%, rgba(7, 10, 15, 0.25) 72%, transparent 100%),
+    linear-gradient(180deg, rgba(7, 10, 15, 0.6) 0%, transparent 20%, transparent 80%, rgba(7, 10, 15, 0.9) 100%);
+}
+
+.hero-hybrid-content {
   position: relative;
   z-index: 10;
   width: 100%;
@@ -625,36 +637,38 @@ header#mainNav {
   z-index: 25;
 }
 
-.hotspot-trigger {
+/* Hotspot Trigger en Cristal Blanco Luminoso y Acento Esmeralda */
+.light-hotspot .hotspot-trigger {
   position: relative;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: rgba(16, 185, 129, 0.25);
-  border: 1.5px solid rgba(52, 211, 153, 0.7);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.96);
+  border: 2px solid var(--brand);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.45);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 104, 73, 0.22), 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-.hotspot-trigger:hover,
-.interactive-hotspot.active .hotspot-trigger {
-  transform: scale(1.18);
-  background: rgba(16, 185, 129, 0.5);
-  box-shadow: 0 0 32px rgba(52, 211, 153, 0.8);
+.light-hotspot .hotspot-trigger:hover,
+.light-hotspot.active .hotspot-trigger {
+  transform: scale(1.15);
+  background: #ffffff;
+  border-color: var(--brand);
+  box-shadow: 0 8px 24px rgba(0, 104, 73, 0.35), 0 0 0 4px rgba(0, 104, 73, 0.15);
 }
 
-.hotspot-ping {
+.light-hotspot .hotspot-ping {
   position: absolute;
   inset: -6px;
   border-radius: 50%;
-  border: 1.5px solid #34d399;
-  animation: hotspotPing 2.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+  border: 1.5px solid var(--brand);
+  animation: hotspotPing 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
   pointer-events: none;
 }
 
@@ -663,40 +677,66 @@ header#mainNav {
   75%, 100% { transform: scale(1.85); opacity: 0; }
 }
 
-.hotspot-core {
+.light-hotspot .hotspot-core {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 10px #34d399;
+  background: var(--brand);
 }
 
-.hotspot-crosshair {
+.light-hotspot .hotspot-crosshair {
   position: absolute;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 800;
   color: #ffffff;
   line-height: 1;
   pointer-events: none;
 }
 
-.hotspot-card {
+[data-theme="dark"] .light-hotspot .hotspot-trigger {
+  background: rgba(15, 23, 42, 0.85);
+  border: 2px solid var(--brand-light);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+}
+
+[data-theme="dark"] .light-hotspot .hotspot-trigger:hover,
+[data-theme="dark"] .light-hotspot.active .hotspot-trigger {
+  background: rgba(15, 23, 42, 0.95);
+  box-shadow: 0 0 30px rgba(52, 211, 153, 0.6);
+}
+
+[data-theme="dark"] .light-hotspot .hotspot-ping {
+  border-color: #34d399;
+}
+
+[data-theme="dark"] .light-hotspot .hotspot-core {
+  background: #10b981;
+}
+
+/* Tarjeta de Detalle del Hotspot en Cristal Blanco */
+.light-hotspot .hotspot-card {
   position: absolute;
   top: 50%;
   left: calc(100% + 16px);
   transform: translateY(-50%) translateX(10px);
   width: 280px;
-  background: rgba(7, 10, 15, 0.88);
+  background: rgba(255, 255, 255, 0.97);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(15, 23, 42, 0.12);
   border-radius: 14px;
   padding: 14px 16px;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65), 0 0 25px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 104, 73, 0.08);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="dark"] .light-hotspot .hotspot-card {
+  background: rgba(14, 19, 28, 0.92);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65), 0 0 25px rgba(16, 185, 129, 0.2);
 }
 
 .interactive-hotspot:hover .hotspot-card,
@@ -708,50 +748,108 @@ header#mainNav {
 }
 
 @media (max-width: 768px) {
-  .hotspot-card {
+  .light-hotspot .hotspot-card {
     left: auto;
     right: calc(100% + 12px);
-    width: 220px;
+    width: 230px;
     transform: translateY(-50%) translateX(-10px);
   }
 }
 
-.hotspot-card-badge {
+.light-hotspot .hotspot-card-badge {
   font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: #34d399;
+  color: var(--brand);
   text-transform: uppercase;
   margin-bottom: 4px;
 }
 
-.hotspot-card-title {
+[data-theme="dark"] .light-hotspot .hotspot-card-badge {
+  color: var(--brand-light);
+}
+
+.light-hotspot .hotspot-card-title {
   font-size: 13px;
   font-weight: 700;
-  color: #ffffff;
+  color: #0f172a;
   line-height: 1.3;
   margin-bottom: 6px;
 }
 
-.hotspot-card-desc {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.8);
+[data-theme="dark"] .light-hotspot .hotspot-card-title {
+  color: #ffffff;
+}
+
+.light-hotspot .hotspot-card-desc {
+  font-size: 11.5px;
+  color: #475569;
   line-height: 1.45;
 }
 
-/* Dock de Control de Telemetría Inferior */
+[data-theme="dark"] .light-hotspot .hotspot-card-desc {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Panel SCADA de Telemetría (Opción 2) en Cristal Blanco */
+.hud-scada-box {
+  position: relative;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="dark"] .hud-scada-box {
+  background: rgba(14, 19, 28, 0.85);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.hud-scada-corner-tl {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 14px;
+  height: 14px;
+  border-top: 2px solid var(--brand);
+  border-left: 2px solid var(--brand);
+  border-top-left-radius: 4px;
+}
+
+.hud-scada-corner-br {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 14px;
+  height: 14px;
+  border-bottom: 2px solid var(--brand);
+  border-right: 2px solid var(--brand);
+  border-bottom-right-radius: 4px;
+}
+
+/* Barra Inferior de Control de Telemetría (HUD Dock) en Cristal Blanco */
 .hud-dock-wrapper {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
   width: 100%;
-  background: rgba(7, 10, 15, 0.65);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 16px;
+  padding: 8px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="dark"] .hud-dock-wrapper {
+  background: rgba(14, 19, 28, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 14px;
-  padding: 6px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
 }
 
@@ -765,7 +863,7 @@ header#mainNav {
 .hud-dock-tab {
   background: transparent;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 8px 12px;
   cursor: pointer;
   text-align: left;
@@ -773,15 +871,26 @@ header#mainNav {
   flex-direction: column;
   justify-content: space-between;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  min-height: 52px;
+  min-height: 54px;
 }
 
 .hud-dock-tab:hover {
+  background: rgba(15, 23, 42, 0.04);
+  border-color: rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="dark"] .hud-dock-tab:hover {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
 .hud-dock-tab.active {
+  background: #ffffff;
+  border-color: rgba(0, 104, 73, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 104, 73, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .hud-dock-tab.active {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(52, 211, 153, 0.4);
   box-shadow: 0 0 16px rgba(52, 211, 153, 0.15);
@@ -800,10 +909,18 @@ header#mainNav {
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;
+  color: #64748b;
+}
+
+[data-theme="dark"] .hud-tab-num {
   color: rgba(255, 255, 255, 0.4);
 }
 
 .hud-dock-tab.active .hud-tab-num {
+  color: var(--brand);
+}
+
+[data-theme="dark"] .hud-dock-tab.active .hud-tab-num {
   color: #34d399;
 }
 
@@ -811,43 +928,68 @@ header#mainNav {
   font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 700;
-  color: #34d399;
+  color: var(--brand);
   letter-spacing: 0.05em;
+}
+
+[data-theme="dark"] .hud-tab-badge {
+  color: #34d399;
 }
 
 .hud-tab-sub {
   font-family: var(--font-mono);
   font-size: 9px;
-  color: rgba(255, 255, 255, 0.35);
+  color: #94a3b8;
   letter-spacing: 0.05em;
 }
 
+[data-theme="dark"] .hud-tab-sub {
+  color: rgba(255, 255, 255, 0.35);
+}
+
 .hud-tab-name {
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.75);
+  color: #334155;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   transition: color 0.2s ease;
 }
 
+[data-theme="dark"] .hud-tab-name {
+  color: rgba(255, 255, 255, 0.75);
+}
+
 .hud-dock-tab.active .hud-tab-name {
+  color: #0f172a;
+}
+
+[data-theme="dark"] .hud-dock-tab.active .hud-tab-name {
   color: #ffffff;
 }
 
 .hud-tab-meter {
   width: 100%;
   height: 2px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.08);
   border-radius: 2px;
   overflow: hidden;
   margin-top: 6px;
 }
 
+[data-theme="dark"] .hud-tab-meter {
+  background: rgba(255, 255, 255, 0.1);
+}
+
 .hud-fill {
   height: 100%;
   width: 0%;
+  background: var(--brand);
+  box-shadow: 0 0 8px rgba(0, 104, 73, 0.4);
+}
+
+[data-theme="dark"] .hud-fill {
   background: #34d399;
   box-shadow: 0 0 8px #34d399;
 }
