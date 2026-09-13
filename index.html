@@ -57,126 +57,11 @@
     <!-- Canvas Global de Fluidos y Petróleo (Flow Field Stream - Opción B) -->
     <canvas id="oil-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-55 dark:opacity-70"></canvas>
 
-    <!-- Sarta de Perforación de Avance (Scroll Drill Indicator) -->
-    <div id="scrollDrillContainer" class="hidden xl:flex fixed left-5 top-1/2 -translate-y-1/2 h-[340px] w-12 z-30 pointer-events-none flex-col items-center">
-        <!-- Mesa Rotaria / Corona Superior (Rig Rotary Table) -->
-        <div class="w-5 h-2.5 rounded-sm bg-slate-300 dark:bg-slate-700 border border-slate-400 dark:border-slate-600 shadow-xs flex items-center justify-center mb-1">
-            <div class="w-2 h-1 bg-brand rounded-xs"></div>
+    <!-- Scroll-Tracing Bar (Desktop - Opción 1) -->
+    <div class="hidden xl:block fixed left-6 top-1/3 h-1/3 w-[2px] z-30 pointer-events-none">
+        <div class="w-full h-full bg-slate-300/60 dark:bg-white/10 rounded-full relative">
+            <div id="scrollProgressLine" class="w-full bg-brand rounded-full absolute top-0 left-0 transition-all duration-150" style="height: 0%"></div>
         </div>
-        
-        <!-- Guía de Pozo Vertical y Tubería de Perforación -->
-        <div class="relative w-full flex-1 flex justify-center">
-            <!-- Guía de pozo / Wellbore rail -->
-            <div class="w-[4px] h-full bg-slate-200/90 dark:bg-white/10 rounded-full"></div>
-            
-            <!-- Tubería de Perforación en Descenso (Drill Pipe) -->
-            <div id="scrollProgressLine" class="w-[4px] bg-gradient-to-b from-brand-dark via-brand to-brand-light rounded-full absolute top-0 left-1/2 -translate-x-1/2 transition-all duration-75 shadow-xs" style="height: 0%"></div>
-            
-            <!-- Cabezal y Broca de Perforación Giratoria (Drill Bit Head - Réplica TribOil Tricone) -->
-            <div id="scrollDrillBitHead" class="absolute left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-auto transition-all duration-75 group cursor-pointer" style="top: 0%;">
-                <!-- Broca Tricónica Real TribOil con Giro Rotacional 360° -->
-                <div class="scroll-drill-bit-spinner" title="Broca Tricónica Real TribOil en Operación">
-                    <svg class="w-8 h-10 drop-shadow-md" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Cuello de conexión roscado (Pin Shank) -->
-                        <rect x="14" y="0" width="8" height="4" rx="1" fill="#4B3B24" stroke="#2B2114" stroke-width="0.75"/>
-                        <line x1="14" y1="2" x2="22" y2="2" stroke="#8C6E40" stroke-width="0.5"/>
-
-                        <!-- Cuerpo Forjado de Acero Dorado/Bronce (Domed Shoulder Body) -->
-                        <path d="M12 4H24L33 12L34 23H2L3 12L12 4Z" fill="url(#tribOilGoldBody)" stroke="#3D2B11" stroke-width="0.8"/>
-
-                        <!-- Toberas de Inyección de Lodo (Mud Jet Nozzles) -->
-                        <ellipse cx="8" cy="10" rx="1.8" ry="1.3" fill="#1C1408" stroke="#3D2B11" stroke-width="0.5"/>
-                        <ellipse cx="28" cy="10" rx="1.8" ry="1.3" fill="#1C1408" stroke="#3D2B11" stroke-width="0.5"/>
-
-                        <!-- Costilla Estabilizadora Izquierda Soldada -->
-                        <path d="M4 12L10 11L9 24L3 24L4 12Z" fill="url(#tribOilGoldRib)" stroke="#3D2B11" stroke-width="0.75"/>
-                        <!-- Insertos de Carburo Izquierdos -->
-                        <circle cx="6" cy="15" r="0.75" fill="#FFF2CC" stroke="#3D2B11" stroke-width="0.3"/>
-                        <circle cx="8" cy="18" r="0.75" fill="#FFF2CC" stroke="#3D2B11" stroke-width="0.3"/>
-                        <circle cx="5.5" cy="21" r="0.75" fill="#FFF2CC" stroke="#3D2B11" stroke-width="0.3"/>
-
-                        <!-- Costilla Estabilizadora Derecha Soldada -->
-                        <path d="M32 12L26 11L27 24L33 24L32 12Z" fill="url(#tribOilGoldRib)" stroke="#3D2B11" stroke-width="0.75"/>
-                        <!-- Insertos de Carburo Derechos -->
-                        <circle cx="30" cy="15" r="0.75" fill="#FFF2CC" stroke="#3D2B11" stroke-width="0.3"/>
-                        <circle cx="28" cy="18" r="0.75" fill="#FFF2CC" stroke="#3D2B11" stroke-width="0.3"/>
-                        <circle cx="30.5" cy="21" r="0.75" fill="#FFF2CC" stroke="#3D2B11" stroke-width="0.3"/>
-
-                        <!-- Costilla Estabilizadora Central Soldada (Aleta Frontal Principal de TribOil) -->
-                        <path d="M14 7H22L23 25L18 28L13 25L14 7Z" fill="url(#tribOilGoldRib)" stroke="#3D2B11" stroke-width="0.8"/>
-                        <!-- Filas de Insertos Esféricos de Carburo de Tungsteno (Botones de Desgaste) -->
-                        <circle cx="16" cy="12" r="0.8" fill="#FFF2CC" stroke="#3D2B11" stroke-width="0.35"/>
-                        <circle cx="20" cy="12" r="0.8" fill="#FFF2CC" stroke="#3D2B11" stroke-width="0.35"/>
-                        <circle cx="16" cy="16" r="0.8" fill="#FFF2CC" stroke="#3D2B11" stroke-width="0.35"/>
-                        <circle cx="20" cy="16" r="0.8" fill="#FFF2CC" stroke="#3D2B11" stroke-width="0.35"/>
-                        <circle cx="16" cy="20" r="0.8" fill="#FFF2CC" stroke="#3D2B11" stroke-width="0.35"/>
-                        <circle cx="20" cy="20" r="0.8" fill="#FFF2CC" stroke="#3D2B11" stroke-width="0.35"/>
-                        <circle cx="18" cy="23.5" r="0.8" fill="#FFF2CC" stroke="#3D2B11" stroke-width="0.35"/>
-
-                        <!-- Conos Dentados de Perforación Inferiores (Roller Cones con Dientes en Zigzag) -->
-                        <!-- Cono Izquierdo con Dientes Cónicos -->
-                        <path d="M3 24L7 30L9 26L13 32L15 28L17 33L14 40L9 39L4 34L2 24Z" fill="url(#tribOilConeGrad)" stroke="#2B1D0B" stroke-width="0.75"/>
-                        <!-- Fila de Insertos Perimétricos en el Cono Izquierdo -->
-                        <circle cx="5" cy="30" r="0.5" fill="#FFE599"/>
-                        <circle cx="8" cy="34" r="0.5" fill="#FFE599"/>
-                        <circle cx="11" cy="37" r="0.5" fill="#FFE599"/>
-
-                        <!-- Cono Derecho con Dientes Cónicos -->
-                        <path d="M33 24L29 30L27 26L23 32L21 28L19 33L22 40L27 39L32 34L34 24Z" fill="url(#tribOilConeGrad)" stroke="#2B1D0B" stroke-width="0.75"/>
-                        <!-- Fila de Insertos Perimétricos en el Cono Derecho -->
-                        <circle cx="31" cy="30" r="0.5" fill="#FFE599"/>
-                        <circle cx="28" cy="34" r="0.5" fill="#FFE599"/>
-                        <circle cx="25" cy="37" r="0.5" fill="#FFE599"/>
-
-                        <!-- Dientes Centrales Entrelazados en Fondo de Pozo -->
-                        <path d="M14 28L18 25L22 28L20 34L18 41L16 34Z" fill="url(#tribOilTeethGrad)" stroke="#2B1D0B" stroke-width="0.75"/>
-
-                        <!-- Vértice de Perforación Central (Punta TribOil con Micro-Destello) -->
-                        <circle cx="18" cy="41" r="1.5" fill="#006849" stroke="#34D399" stroke-width="0.75"/>
-
-                        <defs>
-                            <!-- Gradiente Metálico Forjado de Cuerpo Oro/Bronce -->
-                            <linearGradient id="tribOilGoldBody" x1="2" y1="4" x2="34" y2="23" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#D4AF37"/>
-                                <stop offset="0.25" stop-color="#EBC882"/>
-                                <stop offset="0.55" stop-color="#B88A44"/>
-                                <stop offset="0.85" stop-color="#8A5F24"/>
-                                <stop offset="1" stop-color="#543810"/>
-                            </linearGradient>
-                            <!-- Gradiente de Costillas Soldadas -->
-                            <linearGradient id="tribOilGoldRib" x1="13" y1="7" x2="23" y2="28" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#F3D59B"/>
-                                <stop offset="0.5" stop-color="#C2944B"/>
-                                <stop offset="1" stop-color="#7A5119"/>
-                            </linearGradient>
-                            <!-- Gradiente de Conos Dentados de Corte -->
-                            <linearGradient id="tribOilConeGrad" x1="2" y1="24" x2="34" y2="40" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#A67C38"/>
-                                <stop offset="0.35" stop-color="#D4AF37"/>
-                                <stop offset="0.7" stop-color="#734F18"/>
-                                <stop offset="1" stop-color="#3D2507"/>
-                            </linearGradient>
-                            <!-- Gradiente de Dientes Centrales -->
-                            <linearGradient id="tribOilTeethGrad" x1="14" y1="25" x2="22" y2="41" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#EBC882"/>
-                                <stop offset="0.6" stop-color="#A67C38"/>
-                                <stop offset="1" stop-color="#4A2F0A"/>
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                </div>
-                <!-- Micro-destello de Fricción de Corte en la Punta -->
-                <div class="scroll-drill-tip-glow"></div>
-                <!-- Badge Flotante de Profundidad Operativa -->
-                <div class="absolute left-8 top-1/2 -translate-y-1/2 px-2 py-1 rounded bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-lg font-mono text-[10px] font-bold text-brand dark:text-brand-light whitespace-nowrap opacity-0 group-hover:opacity-100 xl:group-hover:opacity-100 transition-opacity duration-200">
-                    <span id="scrollDepthPct">0%</span>
-                    <span class="text-[8px] text-slate-400 font-normal ml-0.5">AVANCE</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Base de Fondo de Pozo / Objetivo TD (Total Depth) -->
-        <div class="w-4 h-1 rounded-full bg-slate-300 dark:bg-slate-700 mt-1"></div>
     </div>
 
     <!-- Preloader Rápido (<500ms) -->
@@ -1281,8 +1166,9 @@
         </div>
     </footer>
 
-    <!-- Script Principal -->
+    <!-- Scripts -->
     <script src="js/main.js" defer></script>
+    <script src="js/oil-canvas.js" defer></script>
 </body>
 
 </html>
