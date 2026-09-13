@@ -2,8 +2,33 @@
    TribOil — Estilos Globales & Sistema de Diseño Industrial
    ========================================== */
 
-/* --- Variables & Sistema de Temas (Dark & Light) --- */
+/* --- Variables & Sistema de Temas (Light Base / White Default & Dark Option) --- */
 :root,
+[data-theme="light"] {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --brand: #006849;
+  --brand-light: #008a62;
+  --brand-dark: #004d36;
+
+  --surface: #ffffff;
+  --surface-subtle: #f8fafc;
+  --surface-header: rgba(255, 255, 255, 0.92);
+  --surface-card: #ffffff;
+  --surface-card-hover: #f1f5f9;
+  --surface-border: rgba(15, 23, 42, 0.08);
+  --surface-border-strong: rgba(15, 23, 42, 0.16);
+
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-dim: #94a3b8;
+
+  --marquee-bg: #f8fafc;
+  --marquee-border: rgba(15, 23, 42, 0.08);
+  --logo-filter: grayscale(1) brightness(0.35) opacity(0.65);
+  --logo-filter-hover: grayscale(0) brightness(1) opacity(1);
+}
+
 [data-theme="dark"] {
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -12,6 +37,7 @@
   --brand-dark: #004d36;
   
   --surface: #0b0f15;
+  --surface-subtle: #0e131c;
   --surface-header: rgba(14, 19, 28, 0.88);
   --surface-card: #121824;
   --surface-card-hover: #182030;
@@ -25,30 +51,6 @@
   --marquee-bg: #090d13;
   --marquee-border: rgba(255, 255, 255, 0.06);
   --logo-filter: grayscale(1) brightness(1.2) opacity(0.55);
-  --logo-filter-hover: grayscale(0) brightness(1) opacity(1);
-}
-
-[data-theme="light"] {
-  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  --brand: #006849;
-  --brand-light: #008a62;
-  --brand-dark: #004d36;
-  
-  --surface: #f8fafc;
-  --surface-header: rgba(255, 255, 255, 0.9);
-  --surface-card: #ffffff;
-  --surface-card-hover: #f1f5f9;
-  --surface-border: rgba(15, 23, 42, 0.08);
-  --surface-border-strong: rgba(15, 23, 42, 0.16);
-  
-  --text-main: #0f172a;
-  --text-muted: #475569;
-  --text-dim: #94a3b8;
-
-  --marquee-bg: #ffffff;
-  --marquee-border: rgba(15, 23, 42, 0.08);
-  --logo-filter: grayscale(1) brightness(0.35) opacity(0.65);
   --logo-filter-hover: grayscale(0) brightness(1) opacity(1);
 }
 
@@ -263,15 +265,15 @@ header#mainNav {
 [data-theme="light"] .dark-logo { display: none; }
 [data-theme="light"] .light-logo { display: block; }
 
-/* Adaptaciones Light Mode para Header y TopBar */
+/* Adaptaciones Light Mode (Blanco/Claro) Completo */
 [data-theme="light"] .top-bar {
-  background: rgba(248, 250, 252, 0.95);
+  background: rgba(255, 255, 255, 0.95);
   border-bottom-color: rgba(15, 23, 42, 0.08);
 }
 
 [data-theme="light"] .top-bar a,
 [data-theme="light"] .top-bar span {
-  color: #64748b;
+  color: #475569;
 }
 
 [data-theme="light"] .top-bar a:hover {
@@ -279,19 +281,20 @@ header#mainNav {
 }
 
 [data-theme="light"] header#mainNav {
-  background: rgba(255, 255, 255, 0.85);
-  border-color: rgba(15, 23, 42, 0.08);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(15, 23, 42, 0.09);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 [data-theme="light"] header#mainNav.scrolled {
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(255, 255, 255, 0.98);
   border-color: rgba(0, 104, 73, 0.25);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 [data-theme="light"] .nav-link {
-  color: #475569;
+  color: #334155;
+  font-weight: 600;
 }
 
 [data-theme="light"] .nav-link:hover {
@@ -301,6 +304,101 @@ header#mainNav {
 [data-theme="light"] #ham1,
 [data-theme="light"] #ham2 {
   background: #0f172a;
+}
+
+/* Menú Móvil en Tema Claro */
+[data-theme="light"] .mobile-menu {
+  background: rgba(255, 255, 255, 0.98);
+}
+
+[data-theme="light"] .mobile-menu a {
+  color: #1e293b;
+}
+
+/* Tarjetas y Secciones en Tema Claro */
+[data-theme="light"] .service-feature-box {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .service-card {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .service-card .card-number {
+  background: rgba(255, 255, 255, 0.9);
+  color: #0f172a;
+  border-color: rgba(15, 23, 42, 0.1);
+}
+
+[data-theme="light"] .telemetry-dashboard {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(15, 23, 42, 0.09);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .telemetry-dashboard * {
+  color: #0f172a;
+}
+
+[data-theme="light"] .telemetry-dashboard .text-white\/40,
+[data-theme="light"] .telemetry-dashboard .text-white\/50,
+[data-theme="light"] .telemetry-dashboard .text-white\/60,
+[data-theme="light"] .telemetry-dashboard .text-white\/70 {
+  color: #64748b;
+}
+
+[data-theme="light"] .telemetry-dashboard .bg-\[\#0b0f15\]\/50,
+[data-theme="light"] .telemetry-dashboard .bg-\[\#0b0f15\]\/60,
+[data-theme="light"] .telemetry-dashboard .bg-\[\#0b0f15\]\/80 {
+  background: #f1f5f9;
+  border-color: rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] .telemetry-btn {
+  background: #f1f5f9;
+  border-color: rgba(15, 23, 42, 0.1);
+  color: #475569;
+}
+
+[data-theme="light"] .telemetry-btn.active {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #ffffff;
+}
+
+[data-theme="light"] .form-input {
+  background: #f8fafc;
+  border-color: rgba(15, 23, 42, 0.12);
+  color: #0f172a;
+}
+
+[data-theme="light"] .form-input::placeholder {
+  color: #94a3b8;
+}
+
+[data-theme="light"] .form-input:focus {
+  background: #ffffff;
+  border-color: var(--brand);
+}
+
+[data-theme="light"] footer {
+  background: #f1f5f9;
+  border-top-color: rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] footer h5,
+[data-theme="light"] footer p,
+[data-theme="light"] footer a,
+[data-theme="light"] footer span {
+  color: #475569;
+}
+
+[data-theme="light"] footer a:hover {
+  color: var(--brand);
 }
 
 /* Mobile Menu */
