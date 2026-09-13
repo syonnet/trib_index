@@ -63,12 +63,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Cargar preferencia guardada o respetar dark mode por defecto
+  // Cargar preferencia guardada o respetar light mode (blanco) por defecto
   const savedTheme = localStorage.getItem("triboil_theme");
   if (savedTheme) {
     applyTheme(savedTheme);
   } else {
-    applyTheme("dark");
+    applyTheme("light");
   }
 
   themeToggle?.addEventListener("click", () => {
