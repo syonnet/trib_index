@@ -1972,13 +1972,13 @@ header#mainNav {
 }
 
 /* =========================================================================
-   TORRE MONUMENTAL DE FONDO LATERAL DERECHO (PARALLAX & GIRO 3D)
+   TORRE MONUMENTAL DE FONDO LATERAL DERECHO (PARALLAX, COTAS & GIRO 3D)
    ========================================================================= */
 #lateralRigBackdrop {
-  opacity: 0.38;
+  opacity: 0.36;
   transition: opacity 0.4s ease;
-  mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 45%, rgba(0, 0, 0, 0.45) 75%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 45%, rgba(0, 0, 0, 0.45) 75%, transparent 100%);
+  mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 48%, rgba(0, 0, 0, 0.35) 82%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 48%, rgba(0, 0, 0, 0.35) 82%, transparent 100%);
 }
 
 #lateralRig3DWrapper {
@@ -1989,10 +1989,10 @@ header#mainNav {
 #lateralRigImg {
   will-change: transform;
   transform-origin: center top;
-  filter: contrast(1.06);
+  filter: contrast(1.08);
 }
 
-/* Modo claro: Se funde como un grabado arquitectónico */
+/* Modo claro: Grabado técnico arquitectónico */
 [data-theme="light"] #lateralRigImg {
   mix-blend-mode: multiply;
 }
@@ -2003,7 +2003,71 @@ header#mainNav {
 }
 
 [data-theme="dark"] #lateralRigImg {
-  filter: invert(0.92) hue-rotate(160deg) contrast(1.2) brightness(0.95);
+  filter: invert(0.92) hue-rotate(160deg) contrast(1.22) brightness(0.95);
   mix-blend-mode: screen;
+}
+
+/* --- Riel de Cotas de Elevación (HUD Elevation Ticks) --- */
+.rig-elev-tick {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0.45;
+  transform: translateX(0);
+}
+
+.rig-elev-tick .tick-dot {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rig-elev-tick .tick-text {
+  transition: color 0.35s ease;
+}
+
+.rig-elev-tick.active {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+.rig-elev-tick.active .tick-dot {
+  background: var(--brand) !important;
+  box-shadow: 0 0 10px rgba(0, 104, 73, 0.7);
+  transform: scale(1.35);
+}
+
+.rig-elev-tick.active .tick-text {
+  color: var(--brand) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.1em;
+}
+
+.rig-elev-tick.active .tick-sub {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="dark"] .rig-elev-tick.active .tick-dot {
+  background: #34d399 !important;
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.9);
+}
+
+[data-theme="dark"] .rig-elev-tick.active .tick-text {
+  color: #34d399 !important;
+}
+
+[data-theme="dark"] .rig-elev-tick.active .tick-sub {
+  color: #ffffff !important;
+}
+
+/* --- Capa de Haz de Luz Especular Dinámico (Specular Light Sweep) --- */
+#lateralRigLightSweep {
+  will-change: transform;
+  background: linear-gradient(105deg, transparent 15%, rgba(255, 255, 255, 0.45) 48%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0.45) 52%, transparent 85%);
+  mix-blend-mode: overlay;
+  opacity: 0.75;
+}
+
+[data-theme="dark"] #lateralRigLightSweep {
+  background: linear-gradient(105deg, transparent 15%, rgba(52, 211, 153, 0.3) 48%, rgba(255, 255, 255, 0.6) 50%, rgba(52, 211, 153, 0.3) 52%, transparent 85%);
+  mix-blend-mode: color-dodge;
+  opacity: 0.6;
 }
 

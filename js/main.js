@@ -719,10 +719,36 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================
-  // TORRE MONUMENTAL DE FONDO LATERAL: PARALLAX Y GIRO 3D
+  // TORRE MONUMENTAL DE FONDO LATERAL: PARALLAX, COTAS Y GIRO 3D
   // ==========================================
   const lateralRigImg = document.getElementById("lateralRigImg");
   const lateralRig3DWrapper = document.getElementById("lateralRig3DWrapper");
+  const lateralRigLightSweep = document.getElementById("lateralRigLightSweep");
+  const elevTicks = {
+    crown: document.getElementById("tickCrown"),
+    mast: document.getElementById("tickMast"),
+    floor: document.getElementById("tickFloor"),
+    bop: document.getElementById("tickBop"),
+    strata: document.getElementById("tickStrata"),
+  };
+
+  const setActiveElevTick = (activeKey) => {
+    Object.keys(elevTicks).forEach((key) => {
+      const el = elevTicks[key];
+      if (!el) return;
+      if (key === activeKey) {
+        if (!el.classList.contains("active")) {
+          el.classList.add("active");
+          const ping = el.querySelector(".tick-dot");
+          if (ping) ping.classList.add("animate-ping");
+        }
+      } else {
+        el.classList.remove("active");
+        const ping = el.querySelector(".tick-dot");
+        if (ping) ping.classList.remove("animate-ping");
+      }
+    });
+  };
 
   if (lateralRigImg && lateralRig3DWrapper) {
     ScrollTrigger.create({
@@ -738,12 +764,30 @@ document.addEventListener("DOMContentLoaded", () => {
         const yOffset = -p * maxTravel;
 
         // 2. Giro axial tridimensional (rotateY) suave y continuo mientras la página baja
-        // Oscila armónicamente en 3D simulando una perspectiva orbital (+22deg a -22deg)
-        const rotationY = Math.sin(p * Math.PI * 2.5) * 22;
-        const tiltZ = Math.sin(p * Math.PI * 1.5) * 1.8;
+        const rotationY = Math.sin(p * Math.PI * 2.5) * 20;
+        const tiltZ = Math.sin(p * Math.PI * 1.5) * 1.5;
 
         lateralRigImg.style.transform = `translate3d(0, ${yOffset.toFixed(1)}px, 0)`;
         lateralRig3DWrapper.style.transform = `perspective(1400px) rotateY(${rotationY.toFixed(2)}deg) rotateZ(${tiltZ.toFixed(2)}deg)`;
+
+        // 3. Haz de luz especular dinámico que se desliza por el metal al girar
+        if (lateralRigLightSweep) {
+          const sweepX = -rotationY * 3.8;
+          lateralRigLightSweep.style.transform = `translateX(${sweepX.toFixed(1)}%)`;
+        }
+
+        // 4. Sincronización de Cotas de Elevación HUD según profundidad
+        if (p < 0.22) {
+          setActiveElevTick("crown");
+        } else if (p < 0.48) {
+          setActiveElevTick("mast");
+        } else if (p < 0.72) {
+          setActiveElevTick("floor");
+        } else if (p < 0.88) {
+          setActiveElevTick("bop");
+        } else {
+          setActiveElevTick("strata");
+        }
       },
     });
   }

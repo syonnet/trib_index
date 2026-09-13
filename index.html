@@ -134,16 +134,67 @@
         <div class="w-4 h-1 rounded-full bg-slate-300 dark:bg-slate-700 mt-1"></div>
     </div>
 
-    <!-- Torre Monumental de Fondo en el Lateral Derecho con Parallax & Giro 3D -->
-    <div id="lateralRigBackdrop" class="hidden lg:block fixed right-0 top-0 h-screen w-[38vw] max-w-[620px] z-0 pointer-events-none overflow-hidden select-none" style="perspective: 1400px;">
-        <div id="lateralRig3DWrapper" class="relative w-full h-full flex justify-center items-start transform-gpu" style="transform-style: preserve-3d;">
-            <img src="assets/torre_2.jpg" id="lateralRigImg" alt="Plano monumental del taladro de perforación" class="w-full max-w-none h-auto object-contain object-top block transform-gpu pointer-events-none" loading="eager">
+    <!-- Torre Monumental de Fondo en el Lateral Derecho con Parallax, Cotas HUD y Giro 3D -->
+    <div id="lateralRigBackdrop" class="hidden xl:block fixed right-0 top-0 h-screen w-[30vw] max-w-[490px] z-0 pointer-events-none overflow-hidden select-none" style="perspective: 1400px;">
+        
+        <!-- Riel Técnico Vertical de Cotas de Elevación (HUD Elevation Ticks) -->
+        <div id="rigElevationRuler" class="absolute left-2 top-1/2 -translate-y-1/2 z-20 flex flex-col justify-between h-[380px] pointer-events-none border-l border-slate-300/60 dark:border-white/10 pl-2.5 transition-all duration-300">
+            <!-- Cota 1: Crown Block -->
+            <div class="rig-elev-tick active" id="tickCrown" data-elev="crown">
+                <div class="flex items-center gap-1.5">
+                    <span class="tick-dot w-1.5 h-1.5 rounded-full bg-brand dark:bg-brand-light shadow-sm"></span>
+                    <span class="tick-text text-[9px] font-mono font-bold tracking-wider uppercase text-brand dark:text-brand-light">+145 FT</span>
+                </div>
+                <span class="tick-sub text-[8px] font-mono text-slate-500 dark:text-white/40 block">CROWN & DRONE</span>
+            </div>
+            <!-- Cota 2: Monkey Board -->
+            <div class="rig-elev-tick" id="tickMast" data-elev="mast">
+                <div class="flex items-center gap-1.5">
+                    <span class="tick-dot w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-white/20"></span>
+                    <span class="tick-text text-[9px] font-mono font-semibold tracking-wider uppercase text-slate-400 dark:text-white/40">+90 FT</span>
+                </div>
+                <span class="tick-sub text-[8px] font-mono text-slate-400 dark:text-white/30 block">MONKEY BOARD</span>
+            </div>
+            <!-- Cota 3: Rig Floor -->
+            <div class="rig-elev-tick" id="tickFloor" data-elev="floor">
+                <div class="flex items-center gap-1.5">
+                    <span class="tick-dot w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-white/20"></span>
+                    <span class="tick-text text-[9px] font-mono font-semibold tracking-wider uppercase text-slate-400 dark:text-white/40">+30 FT</span>
+                </div>
+                <span class="tick-sub text-[8px] font-mono text-slate-400 dark:text-white/30 block">RIG FLOOR & CABINA</span>
+            </div>
+            <!-- Cota 4: BOP & Boca de Pozo -->
+            <div class="rig-elev-tick" id="tickBop" data-elev="bop">
+                <div class="flex items-center gap-1.5">
+                    <span class="tick-dot w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-white/20"></span>
+                    <span class="tick-text text-[9px] font-mono font-semibold tracking-wider uppercase text-slate-400 dark:text-white/40">0 FT</span>
+                </div>
+                <span class="tick-sub text-[8px] font-mono text-slate-400 dark:text-white/30 block">BOP & SUPERFICIE</span>
+            </div>
+            <!-- Cota 5: Estratos Geológicos Subterráneos -->
+            <div class="rig-elev-tick" id="tickStrata" data-elev="strata">
+                <div class="flex items-center gap-1.5">
+                    <span class="tick-dot w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-white/20"></span>
+                    <span class="tick-text text-[9px] font-mono font-semibold tracking-wider uppercase text-slate-400 dark:text-white/40">-12,450 FT</span>
+                </div>
+                <span class="tick-sub text-[8px] font-mono text-slate-400 dark:text-white/30 block">ESTRATOS NAPO</span>
+            </div>
         </div>
+
+        <!-- Contenedor Tridimensional del Taladro con Reflejo Especular Dinámico -->
+        <div id="lateralRig3DWrapper" class="relative w-full h-full flex justify-center items-start transform-gpu" style="transform-style: preserve-3d;">
+            <!-- Ilustración Monumental del Taladro -->
+            <img src="assets/torre_2.jpg" id="lateralRigImg" alt="Plano monumental del taladro de perforación" class="w-full max-w-none h-auto object-contain object-top block transform-gpu pointer-events-none" loading="eager">
+            
+            <!-- Capa de Haz de Luz Especular Dinámico (Light Sweep al rotar) -->
+            <div id="lateralRigLightSweep" class="absolute inset-0 pointer-events-none transition-transform duration-75"></div>
+        </div>
+
         <!-- Viñeta de degradado suave hacia la izquierda para que el contenido central se lea impecable -->
-        <div class="absolute inset-0 bg-gradient-to-r from-[#f8fafc] via-[#f8fafc]/30 to-transparent dark:from-[#0b0f15] dark:via-[#0b0f15]/30 dark:to-transparent pointer-events-none z-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-[#f8fafc] via-[#f8fafc]/40 to-transparent dark:from-[#0b0f15] dark:via-[#0b0f15]/40 dark:to-transparent pointer-events-none z-10"></div>
         <!-- Viñetas superior e inferior -->
-        <div class="absolute top-0 left-0 w-full h-28 bg-gradient-to-b from-[#f8fafc] dark:from-[#0b0f15] to-transparent pointer-events-none z-10"></div>
-        <div class="absolute bottom-0 left-0 w-full h-28 bg-gradient-to-t from-[#f8fafc] dark:from-[#0b0f15] to-transparent pointer-events-none z-10"></div>
+        <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-[#f8fafc] dark:from-[#0b0f15] to-transparent pointer-events-none z-10"></div>
+        <div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#f8fafc] dark:from-[#0b0f15] to-transparent pointer-events-none z-10"></div>
     </div>
 
     <!-- Preloader Rápido (<500ms) -->
