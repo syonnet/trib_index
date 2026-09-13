@@ -170,11 +170,16 @@ img[src*="logoWhite"] {
 /* --- Layout & Navegación --- */
 .nav-link {
   position: relative;
-  color: var(--text-muted);
+  color: #1e293b;
   font-size: 0.875rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   transition: color 0.25s ease;
+}
+
+[data-theme="dark"] .nav-link {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
 }
 
 .nav-link::after {
@@ -189,16 +194,29 @@ img[src*="logoWhite"] {
 }
 
 .nav-link:hover {
-  color: #fff;
+  color: var(--brand);
+}
+
+[data-theme="dark"] .nav-link:hover {
+  color: #ffffff;
 }
 
 .nav-link:hover::after {
   width: 100%;
 }
 
-/* Header Flotante Ejecutivo */
+/* Header Flotante Ejecutivo (Apple Pure White en Light Mode) */
 header#mainNav {
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background: #ffffff;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] header#mainNav {
+  background: rgba(11, 15, 21, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
 }
 
 @media (min-width: 1024px) {
@@ -208,19 +226,32 @@ header#mainNav {
     transform: translateX(-50%);
     width: 92% !important;
     max-width: 1440px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    background: rgba(14, 19, 28, 0.75);
+    border-radius: 14px;
+    border: 1px solid rgba(15, 23, 42, 0.09) !important;
+    background: #ffffff !important;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    padding: 0.6rem 2rem;
+  }
+
+  [data-theme="dark"] header#mainNav {
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: rgba(14, 19, 28, 0.85) !important;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    padding: 0.6rem 2rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
   }
 
   header#mainNav.scrolled {
     top: 20px !important;
-    background: rgba(14, 19, 28, 0.95);
-    border-color: rgba(0, 104, 73, 0.3);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    background: #ffffff !important;
+    border-color: rgba(0, 104, 73, 0.25) !important;
+    box-shadow: 0 14px 36px -4px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  [data-theme="dark"] header#mainNav.scrolled {
+    background: rgba(14, 19, 28, 0.96) !important;
+    border-color: rgba(0, 104, 73, 0.35) !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55) !important;
   }
 }
 
@@ -232,9 +263,9 @@ header#mainNav {
   width: 36px;
   height: 36px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--surface-border);
-  color: var(--text-muted);
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
   cursor: pointer;
   transition: all 0.25s ease;
   position: relative;
@@ -242,21 +273,22 @@ header#mainNav {
 }
 
 .theme-toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
+  background: #e2e8f0;
+  color: var(--brand);
   border-color: var(--brand);
   transform: scale(1.05);
 }
 
-[data-theme="light"] .theme-toggle-btn {
-  background: rgba(15, 23, 42, 0.05);
-  border-color: rgba(15, 23, 42, 0.12);
-  color: #475569;
+[data-theme="dark"] .theme-toggle-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.8);
 }
 
-[data-theme="light"] .theme-toggle-btn:hover {
-  background: rgba(15, 23, 42, 0.1);
-  color: #0f172a;
+[data-theme="dark"] .theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--brand);
+  color: #ffffff;
 }
 
 /* Logos Reactivos al Tema */
@@ -265,45 +297,38 @@ header#mainNav {
 [data-theme="light"] .dark-logo { display: none; }
 [data-theme="light"] .light-logo { display: block; }
 
-/* Adaptaciones Light Mode (Blanco/Claro) Completo */
-[data-theme="light"] .top-bar {
-  background: rgba(255, 255, 255, 0.95);
-  border-bottom-color: rgba(15, 23, 42, 0.08);
+/* Barra Superior Institucional (Top Bar) */
+.top-bar {
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-[data-theme="light"] .top-bar a,
-[data-theme="light"] .top-bar span {
+[data-theme="dark"] .top-bar {
+  background: rgba(14, 19, 28, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.top-bar a,
+.top-bar span,
+.top-bar button {
   color: #475569;
 }
 
-[data-theme="light"] .top-bar a:hover {
+[data-theme="dark"] .top-bar a,
+[data-theme="dark"] .top-bar span,
+[data-theme="dark"] .top-bar button {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.top-bar a:hover,
+.top-bar button:hover {
   color: var(--brand);
 }
 
-[data-theme="light"] header#mainNav {
-  background: rgba(255, 255, 255, 0.88);
-  border-color: rgba(15, 23, 42, 0.09);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-}
-
-[data-theme="light"] header#mainNav.scrolled {
-  background: rgba(255, 255, 255, 0.98);
-  border-color: rgba(0, 104, 73, 0.25);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-}
-
-[data-theme="light"] .nav-link {
-  color: #334155;
-  font-weight: 600;
-}
-
-[data-theme="light"] .nav-link:hover {
-  color: var(--brand);
-}
-
-[data-theme="light"] #ham1,
-[data-theme="light"] #ham2 {
-  background: #0f172a;
+[data-theme="dark"] .top-bar a:hover,
+[data-theme="dark"] .top-bar button:hover {
+  color: #ffffff;
 }
 
 /* Menú Móvil en Tema Claro */
