@@ -792,67 +792,242 @@ header#mainNav {
   color: rgba(255, 255, 255, 0.8);
 }
 
-/* --- Cápsula Técnica de Broca PDC Integrada (Drill Bit Badge Capsule) --- */
-.drill-bit-badge-capsule {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  padding: 0.55rem 2rem 0.55rem 1.15rem;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+/* --- Calibre Vertical de Sarta y Broca PDC (Opción B) --- */
+.drill-string-gauge {
+  width: 96px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(15, 23, 42, 0.12);
-  border-right: none;
-  border-radius: 9999px 0 0 9999px;
-  /* Silueta angular tipo Broca de Perforación (punta de corte chevron) */
-  clip-path: polygon(0% 0%, calc(100% - 16px) 0%, 100% 50%, calc(100% - 16px) 100%, 0% 100%, 0% 0%);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  letter-spacing: 0.06em;
-  color: #334155;
+  border-radius: 20px;
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
   transition: all 0.3s ease;
 }
 
-[data-theme="dark"] .drill-bit-badge-capsule {
+[data-theme="dark"] .drill-string-gauge {
   background: rgba(14, 19, 28, 0.88);
   border-color: rgba(255, 255, 255, 0.14);
-  color: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
 }
 
-/* Filo Cortador Esmeralda en la Punta de la Broca */
-.drill-bit-badge-capsule::after {
-  content: "";
+.gauge-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="dark"] .gauge-header {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.gauge-sub-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.gauge-depth-value {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+[data-theme="dark"] .gauge-depth-value {
+  color: #ffffff;
+}
+
+.gauge-unit {
+  font-size: 8px;
+  color: var(--brand);
+  font-weight: 700;
+}
+
+[data-theme="dark"] .gauge-unit {
+  color: var(--brand-light);
+}
+
+.gauge-rop-badge {
+  margin-top: 4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 104, 73, 0.08);
+  color: var(--brand);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .gauge-rop-badge {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--brand-light);
+}
+
+/* Columna de Estratos Geológicos */
+.gauge-strata-column {
+  position: relative;
+  width: 100%;
+  height: 170px;
+  margin: 10px 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.gauge-drill-pipe {
+  position: relative;
+  width: 6px;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .gauge-drill-pipe {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.gauge-pipe-fill {
   position: absolute;
   top: 0;
-  right: 0;
-  bottom: 0;
-  width: 16px;
-  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-light) 100%);
-  clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
-  filter: drop-shadow(0 0 6px rgba(0, 104, 73, 0.6));
+  left: 0;
+  width: 100%;
+  height: 65%;
+  background: linear-gradient(180deg, var(--brand) 0%, var(--brand-light) 100%);
+  border-radius: 4px;
+  box-shadow: 0 0 8px rgba(0, 104, 73, 0.5);
+  transition: height 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gauge-formations {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4px 0;
   pointer-events: none;
 }
 
-@keyframes drillBitRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.formation-marker {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  justify-content: flex-start;
+  padding-left: 2px;
 }
 
-.animate-drill-spin {
-  animation: drillBitRotate 8s linear infinite;
+.fm-tick {
+  width: 8px;
+  height: 1.5px;
+  background: rgba(15, 23, 42, 0.2);
+  border-radius: 1px;
+  transition: all 0.3s ease;
 }
 
-@media (max-width: 640px) {
-  .drill-bit-badge-capsule {
-    padding: 0.45rem 1.6rem 0.45rem 0.85rem;
-    clip-path: polygon(0% 0%, calc(100% - 13px) 0%, 100% 50%, calc(100% - 13px) 100%, 0% 100%, 0% 0%);
-    font-size: 10px;
-  }
-  .drill-bit-badge-capsule::after {
-    width: 13px;
-  }
+[data-theme="dark"] .fm-tick {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.fm-name {
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.formation-marker.active .fm-tick {
+  background: var(--brand);
+  width: 12px;
+}
+
+.formation-marker.active .fm-name {
+  color: var(--brand);
+  font-weight: 800;
+}
+
+[data-theme="dark"] .formation-marker.active .fm-tick {
+  background: var(--brand-light);
+}
+
+[data-theme="dark"] .formation-marker.active .fm-name {
+  color: var(--brand-light);
+}
+
+/* Ensamblaje de la Broca Inferior */
+.gauge-bit-assembly {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="dark"] .gauge-bit-assembly {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.bit-cone-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes bitVibration {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(1.5px) rotate(-1.5deg); }
+  75% { transform: translateY(1.5px) rotate(1.5deg); }
+}
+
+.animate-bit-vibration {
+  animation: bitVibration 0.35s ease-in-out infinite;
+}
+
+.bit-cutting-glow {
+  position: absolute;
+  bottom: -4px;
+  width: 18px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(16, 185, 129, 0.6) 0%, transparent 80%);
+  filter: blur(2px);
+}
+
+.gauge-bit-type {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 800;
+  color: var(--brand);
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .gauge-bit-type {
+  color: var(--brand-light);
 }
 
 /* Barra Inferior de Control de Telemetría (HUD Dock) en Cristal Blanco */

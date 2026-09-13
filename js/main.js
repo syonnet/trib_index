@@ -107,10 +107,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function animateHero() {
     if (typeof gsap === "undefined") return;
     const tl = gsap.timeline();
-    tl.from(".drill-bit-badge-capsule", {
+    tl.from("#heroSlider .hero-badge", {
       opacity: 0,
       y: 20,
-      duration: 0.6,
+      duration: 0.5,
       ease: "power3.out",
     })
       .from(
@@ -129,6 +129,11 @@ document.addEventListener("DOMContentLoaded", () => {
         "-=0.3"
       )
       .from(
+        "#heroDrillGaugeContainer",
+        { opacity: 0, x: 25, duration: 0.8, ease: "power3.out" },
+        "-=0.4"
+      )
+      .from(
         ".interactive-hotspot",
         {
           opacity: 0,
@@ -137,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
           duration: 0.8,
           ease: "back.out(1.7)",
         },
-        "-=0.4"
+        "-=0.5"
       )
       .from(
         "#heroDock",
@@ -147,17 +152,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================
-  // HERO SLIDER & DRILL-BIT TELEMETRY CONTROLLER
+  // HERO SLIDER & DRILL STRING GAUGE CONTROLLER (Opción B)
   // ==========================================
   const heroSlides = document.querySelectorAll(
     ".hero-hybrid-background .hero-slide, .hero-hotspot-background .hero-slide"
   );
   const hudTabs = document.querySelectorAll(".hud-dock-tab");
   const hotspotCounter = document.getElementById("hotspotCounter");
-  const hudCoords = document.getElementById("hudCoords");
-  const hudDrillBit = document.getElementById("hudDrillBit");
-  const hudDrillRop = document.getElementById("hudDrillRop");
-  const hudDepth = document.getElementById("hudDepth");
+  const gaugeDepthNum = document.getElementById("gaugeDepthNum");
+  const gaugeRopBadge = document.getElementById("gaugeRopBadge");
+  const gaugePipeFill = document.getElementById("gaugePipeFill");
+  const gaugeBitType = document.getElementById("gaugeBitType");
+  const fmTiyuyacu = document.getElementById("fmTiyuyacu");
+  const fmNapo = document.getElementById("fmNapo");
+  const fmHollin = document.getElementById("fmHollin");
   const hs1Title = document.getElementById("hs1Title");
   const hs1Desc = document.getElementById("hs1Desc");
   const hs2Title = document.getElementById("hs2Title");
@@ -215,19 +223,26 @@ document.addEventListener("DOMContentLoaded", () => {
       hotspotCounter.textContent = `0${currentSlide + 1} / 0${heroSlides.length}`;
     }
 
-    // Actualizar Coordenadas GPS y Telemetría de Perforación (Broca PDC, ROP, Profundidad y Formación)
-    if (hudCoords && activeSlide.dataset.coord) {
-      hudCoords.textContent = `COORD: ${activeSlide.dataset.coord}`;
+    // Actualizar Calibre Vertical de Sarta de Perforación (Opción B)
+    if (gaugeDepthNum && activeSlide.dataset.depthNum) {
+      gaugeDepthNum.textContent = activeSlide.dataset.depthNum;
     }
-    if (hudDrillBit && activeSlide.dataset.bit) {
-      hudDrillBit.textContent = activeSlide.dataset.bit;
+    if (gaugeRopBadge && activeSlide.dataset.rop) {
+      gaugeRopBadge.textContent = activeSlide.dataset.rop;
     }
-    if (hudDrillRop && activeSlide.dataset.rop) {
-      hudDrillRop.textContent = activeSlide.dataset.rop;
+    if (gaugeBitType && activeSlide.dataset.bit) {
+      gaugeBitType.textContent = activeSlide.dataset.bit;
     }
-    if (hudDepth && activeSlide.dataset.depth) {
-      hudDepth.textContent = activeSlide.dataset.depth;
+    if (gaugePipeFill && activeSlide.dataset.pipeFill) {
+      gaugePipeFill.style.height = activeSlide.dataset.pipeFill;
     }
+
+    // Actualizar Formación Geológica Activa de la Amazonía
+    const currentFm = activeSlide.dataset.formation || "napo";
+    [fmTiyuyacu, fmNapo, fmHollin].forEach((fm) => fm?.classList.remove("active"));
+    if (currentFm === "tiyuyacu" && fmTiyuyacu) fmTiyuyacu.classList.add("active");
+    if (currentFm === "napo" && fmNapo) fmNapo.classList.add("active");
+    if (currentFm === "hollin" && fmHollin) fmHollin.classList.add("active");
 
     // Actualizar Información Dinámica de los 3 Hotspots según el slide activo
     const t1 = activeSlide.dataset.hs1Title || "";
