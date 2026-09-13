@@ -552,8 +552,8 @@ header#mainNav {
   color: #fff;
 }
 
-/* --- Hero Section: Opción 2 HUD Industrial Táctico (Full Bleed 100vh) --- */
-.hero-hud-section {
+/* --- Hero Section: Opción 3 Exploración Interactiva con Hotspots --- */
+.hero-hotspot-section {
   position: relative;
   width: 100%;
   min-height: 100dvh;
@@ -562,24 +562,24 @@ header#mainNav {
   background: #070a0f;
 }
 
-.hero-hud-background {
+.hero-hotspot-background {
   position: absolute;
   inset: 0;
   z-index: 1;
 }
 
-.hero-hud-background .hero-slide {
+.hero-hotspot-background .hero-slide {
   position: absolute;
   inset: 0;
   opacity: 0;
   transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.hero-hud-background .hero-slide.active {
+.hero-hotspot-background .hero-slide.active {
   opacity: 1;
 }
 
-.hero-hud-background .hero-slide img {
+.hero-hotspot-background .hero-slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -587,12 +587,12 @@ header#mainNav {
   transition: transform 7s ease-out;
 }
 
-.hero-hud-background .hero-slide.active img {
+.hero-hotspot-background .hero-slide.active img {
   transform: scale(1);
 }
 
-/* Viñeta Óptica Suave (Sin capas lechosas, solo profundidad perimetral tipo visor de cabina) */
-.hud-vignette {
+/* Viñeta Óptica Suave para Contraste */
+.hotspot-vignette {
   position: absolute;
   inset: 0;
   background: 
@@ -601,7 +601,7 @@ header#mainNav {
   pointer-events: none;
 }
 
-.hero-hud-content {
+.hero-hotspot-content {
   position: relative;
   z-index: 10;
   width: 100%;
@@ -610,46 +610,134 @@ header#mainNav {
   flex-direction: column;
 }
 
-.hud-headline {
-  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.9);
+/* Capa de Hotspots Interactivos */
+.hotspots-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
 }
 
-.hud-copy {
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.85);
+.interactive-hotspot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  z-index: 25;
 }
 
-/* Panel de Telemetría SCADA Lateral */
-.hud-scada-box {
+.hotspot-trigger {
   position: relative;
-  background: rgba(7, 10, 15, 0.55);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.25);
+  border: 1.5px solid rgba(52, 211, 153, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.45);
+}
+
+.hotspot-trigger:hover,
+.interactive-hotspot.active .hotspot-trigger {
+  transform: scale(1.18);
+  background: rgba(16, 185, 129, 0.5);
+  box-shadow: 0 0 32px rgba(52, 211, 153, 0.8);
+}
+
+.hotspot-ping {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px solid #34d399;
+  animation: hotspotPing 2.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes hotspotPing {
+  0% { transform: scale(0.85); opacity: 1; }
+  75%, 100% { transform: scale(1.85); opacity: 0; }
+}
+
+.hotspot-core {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #34d399;
+}
+
+.hotspot-crosshair {
+  position: absolute;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.hotspot-card {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 16px);
+  transform: translateY(-50%) translateX(10px);
+  width: 280px;
+  background: rgba(7, 10, 15, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 14px;
-  padding: 1.5rem;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  padding: 14px 16px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65), 0 0 25px rgba(16, 185, 129, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.hud-scada-corner-tl {
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  width: 12px;
-  height: 12px;
-  border-top: 2px solid #34d399;
-  border-left: 2px solid #34d399;
-  border-top-left-radius: 4px;
+.interactive-hotspot:hover .hotspot-card,
+.interactive-hotspot.active .hotspot-card {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(-50%) translateX(0);
 }
 
-.hud-scada-corner-br {
-  position: absolute;
-  bottom: -2px;
-  right: -2px;
-  width: 12px;
-  height: 12px;
-  border-bottom: 2px solid #34d399;
-  border-right: 2px solid #34d399;
-  border-bottom-right-radius: 4px;
+@media (max-width: 768px) {
+  .hotspot-card {
+    left: auto;
+    right: calc(100% + 12px);
+    width: 220px;
+    transform: translateY(-50%) translateX(-10px);
+  }
+}
+
+.hotspot-card-badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #34d399;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.hotspot-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.hotspot-card-desc {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.45;
 }
 
 /* Dock de Control de Telemetría Inferior */

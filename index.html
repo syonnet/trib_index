@@ -224,67 +224,121 @@
     <!-- Toast de Notificaciones -->
     <div class="toast" id="toast"></div>
 
-    <!-- Hero Section con Estética HUD Industrial Táctico (Opción 2: SpaceX / Telemetría Upstream) -->
-    <section class="hero-hud-section" id="heroSlider">
-        <!-- Diapositivas Full Bleed (100vh Pantalla Completa sin velo opaco) -->
-        <div class="hero-hud-background">
-            <div class="hero-slide active" data-index="0" data-service="Gerenciamiento de Campos" data-rig="Flota Estratégica" data-depth="Amazonía Ecuatoriana" data-coord="00°42'S 76°52'W" data-hp="1,500 HP">
+    <!-- Hero Section con Estética de Exploración Interactiva con Hotspots (Opción 3) -->
+    <section class="hero-hotspot-section" id="heroSlider">
+        <!-- Diapositivas Full Bleed (100vh Pantalla Completa) -->
+        <div class="hero-hotspot-background">
+            <div class="hero-slide active" data-index="0" data-service="Gerenciamiento de Campos" data-rig="Flota Estratégica" data-depth="Amazonía Ecuatoriana"
+                 data-hs1-title="Torre de Producción & Workover" data-hs1-desc="Monitoreo estructural de carga para pozos productores y reinyección."
+                 data-hs2-title="Facilidades de Boca de Pozo" data-hs2-desc="Líneas de flujo y manifolds de producción con telemetría continua."
+                 data-hs3-title="Supervisión Operativa 24/7" data-hs3-desc="Ingeniería de campo en sitio con protocolos de seguridad OHSAS 18001.">
                 <img src="assets/images/hero_1.webp" alt="Operaciones petroleras nocturnas en campo">
             </div>
-            <div class="hero-slide" data-index="1" data-service="Perforación de Pozos" data-rig="Taladro 1000 - 1500 HP" data-depth="Hasta 16,000+ ft" data-coord="01°12'S 77°14'W" data-hp="1,500 HP">
+            <div class="hero-slide" data-index="1" data-service="Perforación de Pozos" data-rig="Taladro 1000 - 1500 HP" data-depth="Hasta 16,000+ ft"
+                 data-hs1-title="Mástil Telescópico 1,500 HP" data-hs1-desc="Capacidad estática de 750,000 lbs para perforación profunda de hasta 16,000+ ft."
+                 data-hs2-title="Top Drive Hidráulico" data-hs2-desc="Transmisión directa de alto torque para formaciones geológicas de la Amazonía."
+                 data-hs3-title="Consola de Perforación SCADA" data-hs3-desc="Monitoreo de tasa de penetración (ROP), presión y peso sobre la broca (WOB).">
                 <img src="assets/images/hero_2.webp" alt="Taladro pesado de perforación en la Amazonía">
             </div>
-            <div class="hero-slide" data-index="2" data-service="Workover & Reacondicionamiento" data-rig="Taladros 550 - 750 HP" data-depth="Intervención Rápida" data-coord="00°28'S 76°38'W" data-hp="750 HP">
+            <div class="hero-slide" data-index="2" data-service="Workover & Reacondicionamiento" data-rig="Taladros 550 - 750 HP" data-depth="Intervención Rápida"
+                 data-hs1-title="Mástil Móvil 550 - 750 HP" data-hs1-desc="Intervención rápida de pozos con tiempos mínimos de movilización y montaje."
+                 data-hs2-title="Sistema Preventor BOP" data-hs2-desc="Control hidráulico de pozo certificado bajo los más exigentes estándares API."
+                 data-hs3-title="Unidad de Bombeo & Lodos" data-hs3-desc="Circulación forzada y acondicionamiento químico de fluidos de reacondicionamiento.">
                 <img src="assets/images/hero_3.webp" alt="Líneas de flujo y facilidades de pozo">
             </div>
-            <div class="hero-slide" data-index="3" data-service="Excelencia Operativa HSE" data-rig="Certificaciones ISO & OHSAS" data-depth="Campo Blanca Vinita" data-coord="00°15'S 76°45'W" data-hp="ALTO ESTÁNDAR">
+            <div class="hero-slide" data-index="3" data-service="Excelencia Operativa HSE" data-rig="Certificaciones ISO & OHSAS" data-depth="Campo Blanca Vinita"
+                 data-hs1-title="Personal Técnico Calificado" data-hs1-desc="Ingenieros y operadores de pozo con certificación WellCAP y casi 30 años de experiencia."
+                 data-hs2-title="Protocolos HSE de Cero Accidentes" data-hs2-desc="Operaciones auditadas bajo normas ISO 9001, 14001 y OHSAS 18001."
+                 data-hs3-title="Compromiso Bioclimático" data-hs3-desc="Mitigación activa del impacto ambiental en el ecosistema amazónico ecuatoriano.">
                 <img src="assets/images/hero_4.webp" alt="Equipo de ingeniería y seguridad HSE">
             </div>
-            <!-- Viñeta Óptica Suave (Sin velo lechoso, solo contraste perimetral de cabina) -->
-            <div class="hud-vignette"></div>
+            <!-- Viñeta Óptica Suave para Contraste -->
+            <div class="hotspot-vignette"></div>
         </div>
 
-        <!-- Capa de Interfaz Táctica HUD -->
-        <div class="hero-hud-content">
+        <!-- Capa de Micro-Puntos Interactivos (Hotspots) sobre la Maquinaria -->
+        <div class="hotspots-layer" id="hotspotsLayer">
+            <!-- Hotspot 1: Mástil / Torre (Centro Superior Derecho) -->
+            <div class="interactive-hotspot" style="top: 28%; left: 58%;" data-hotspot="1">
+                <button class="hotspot-trigger" aria-label="Inspeccionar mástil de perforación" title="Ver detalle del mástil">
+                    <span class="hotspot-ping"></span>
+                    <span class="hotspot-core"></span>
+                    <span class="hotspot-crosshair">+</span>
+                </button>
+                <div class="hotspot-card">
+                    <div class="hotspot-card-badge">01 · EQUIPO PRINCIPAL</div>
+                    <div class="hotspot-card-title" id="hs1Title">Torre de Producción & Workover</div>
+                    <p class="hotspot-card-desc" id="hs1Desc">Monitoreo estructural de carga para pozos productores y reinyección.</p>
+                </div>
+            </div>
+
+            <!-- Hotspot 2: Sistema de Potencia / Mecánico (Centro Derecho) -->
+            <div class="interactive-hotspot" style="top: 50%; left: 74%;" data-hotspot="2">
+                <button class="hotspot-trigger" aria-label="Inspeccionar sistema de potencia" title="Ver detalle de potencia">
+                    <span class="hotspot-ping"></span>
+                    <span class="hotspot-core"></span>
+                    <span class="hotspot-crosshair">+</span>
+                </button>
+                <div class="hotspot-card">
+                    <div class="hotspot-card-badge">02 · SISTEMA MECÁNICO</div>
+                    <div class="hotspot-card-title" id="hs2Title">Facilidades de Boca de Pozo</div>
+                    <p class="hotspot-card-desc" id="hs2Desc">Líneas de flujo y manifolds de producción con telemetría continua.</p>
+                </div>
+            </div>
+
+            <!-- Hotspot 3: Control Operativo & Seguridad (Inferior Centro) -->
+            <div class="interactive-hotspot" style="top: 66%; left: 46%;" data-hotspot="3">
+                <button class="hotspot-trigger" aria-label="Inspeccionar telemetría y seguridad" title="Ver detalle de telemetría">
+                    <span class="hotspot-ping"></span>
+                    <span class="hotspot-core"></span>
+                    <span class="hotspot-crosshair">+</span>
+                </button>
+                <div class="hotspot-card">
+                    <div class="hotspot-card-badge">03 · RIGOR HSE & SCADA</div>
+                    <div class="hotspot-card-title" id="hs3Title">Supervisión Operativa 24/7</div>
+                    <p class="hotspot-card-desc" id="hs3Desc">Ingeniería de campo en sitio con protocolos de seguridad OHSAS 18001.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capa de Interfaz y Contenido Asimétrico -->
+        <div class="hero-hotspot-content">
             <div class="max-w-[1500px] mx-auto px-6 md:px-10 w-full flex flex-col justify-between h-full pt-28 pb-8 sm:pb-10">
                 
-                <!-- Barra Superior de Telemetría Táctica (HUD Coordinate Line) -->
-                <div class="hud-top-bar flex items-center justify-between py-2.5 border-b border-white/15 text-[11px] font-mono tracking-widest text-white/80 uppercase mb-4">
+                <!-- Barra Superior de Estado Técnico -->
+                <div class="flex items-center justify-between py-2 border-b border-white/15 text-[11px] font-mono tracking-widest text-white/80 uppercase mb-4">
                     <div class="flex items-center gap-3">
                         <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                        <span class="text-white font-semibold">[+] OPERACIONES UPSTREAM ECUADOR</span>
-                        <span class="text-white/30 hidden sm:inline">|</span>
-                        <span class="text-emerald-300 hidden sm:inline" id="hudCoords">COORD: 00°42'S 76°52'W</span>
+                        <span class="text-white font-semibold">TRIB OIL & GAS · MAPA OPERATIVO DE CAMPO</span>
                     </div>
                     <div class="flex items-center gap-3">
-                        <span class="text-emerald-400 font-semibold">[STATUS: 24/7 EN LÍNEA]</span>
-                        <span class="text-white/30">|</span>
-                        <span class="text-white font-bold" id="hudCounter">01 / 04</span>
+                        <span class="text-emerald-400 font-semibold hidden sm:inline">[MODO INSPECCIÓN ACTIVO]</span>
+                        <span class="text-white/30 hidden sm:inline">|</span>
+                        <span class="text-white font-bold" id="hotspotCounter">01 / 04</span>
                     </div>
                 </div>
 
-                <!-- Bloque Central: Contenido Principal y Panel SCADA -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end my-auto py-6">
-                    <!-- Columna de Texto Flotante (Directo sobre la foto, cero cajas) -->
-                    <div class="lg:col-span-8 max-w-3xl">
-                        <!-- Badge Minimalista de Precisión -->
-                        <div class="hero-badge inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-emerald-400 text-xs font-mono tracking-wider uppercase mb-5 shadow-lg">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                            Fundada en 1996 · Casi 30 Años de Rigor Upstream en Ecuador
-                        </div>
+                <!-- Bloque Asimétrico de Texto (Cuadrante Inferior Izquierdo) -->
+                <div class="my-auto py-4 max-w-2xl">
+                    <!-- Badge Minimalista de Precisión -->
+                    <div class="hero-badge inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-emerald-400 text-xs font-mono tracking-wider uppercase mb-5 shadow-lg">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Fundada en 1996 · Casi 30 Años de Rigor Upstream en Ecuador
+                    </div>
 
-                        <!-- Titular Monumental con Sombra Óptica Nítida -->
-                        <h1 class="hud-headline text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.04] mb-6 text-white" id="heroHeadline">
-                            Ingeniería Upstream. <br class="hidden sm:inline" />
-                            <span class="text-white/60">Potencia y Rigor en Pozo.</span>
-                        </h1>
+                    <!-- Titular Monumental Asimétrico con Sombra Óptica -->
+                    <h1 class="hud-headline text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.06] mb-5 text-white" id="heroHeadline">
+                        Ingeniería Upstream. <br class="hidden sm:inline" />
+                        <span class="text-white/60">Potencia y Rigor en Pozo.</span>
+                    </h1>
 
-                        <!-- Bajada de Copy Nítida -->
-                        <p class="hud-copy text-white/90 text-base sm:text-lg lg:text-xl font-normal leading-relaxed max-w-2xl mb-8" id="heroDescription">
-                            Gerenciamiento integral de campos petroleros, taladros de perforación profunda y servicios de reacondicionamiento (workover) con el estándar más alto de seguridad y productividad en la Amazonía ecuatoriana.
-                        </p>
+                    <!-- Bajada de Copy Nítida -->
+                    <p class="hud-copy text-white/90 text-base sm:text-lg font-normal leading-relaxed mb-6" id="heroDescription">
+                        Gerenciamiento integral de campos petroleros, taladros de perforación profunda y servicios de reacondicionamiento (workover) con el estándar más alto de seguridad y productividad en la Amazonía ecuatoriana.
+                    </p>
 
-                        <!-- Botones Tácticos -->
+                    <!-- Botones y Tip de Interacción -->
+                    <div class="flex flex-col gap-4">
                         <div class="hero-cta-row flex flex-wrap items-center gap-4">
                             <a href="#soluciones" class="btn-primary">
                                 <span>Nuestras Soluciones</span>
@@ -294,36 +348,9 @@
                                 <span>Solicitar Ficha Técnica</span>
                             </a>
                         </div>
-                    </div>
-
-                    <!-- Columna Secundaria: Panel de Telemetría Táctica SCADA (1px Hairline, sin fondo pesado) -->
-                    <div class="hidden lg:block lg:col-span-4" id="heroSpecCardContainer">
-                        <div class="hud-scada-box">
-                            <div class="hud-scada-corner-tl"></div>
-                            <div class="hud-scada-corner-br"></div>
-                            <div class="flex items-center justify-between pb-3 border-b border-white/15 mb-4">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                                    <span class="text-[10px] font-mono tracking-widest text-white/70 uppercase">Telemetría de Campo</span>
-                                </div>
-                                <span class="text-[10px] font-mono text-emerald-400 font-bold tracking-widest uppercase">EN VIVO</span>
-                            </div>
-                            <div class="space-y-3">
-                                <div>
-                                    <div class="text-[10px] font-mono uppercase tracking-wider text-white/50">Línea Operativa</div>
-                                    <div class="text-lg font-bold text-white tracking-wide mt-0.5" id="hudService">Gerenciamiento de Campos</div>
-                                </div>
-                                <div class="grid grid-cols-2 gap-4 pt-2 border-t border-white/10">
-                                    <div>
-                                        <div class="text-[10px] font-mono uppercase tracking-wider text-white/50">Capacidad / Flota</div>
-                                        <div class="text-xs font-semibold text-emerald-300 font-mono mt-0.5" id="hudRig">Flota Estratégica</div>
-                                    </div>
-                                    <div>
-                                        <div class="text-[10px] font-mono uppercase tracking-wider text-white/50">Alcance Operativo</div>
-                                        <div class="text-xs font-medium text-white/90 mt-0.5" id="hudDepth">Amazonía Ecuatoriana</div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="inline-flex items-center gap-2 text-xs font-mono text-emerald-300/90 tracking-wide">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                            <span>Haz clic o pasa el cursor sobre los puntos <b class="text-white font-bold bg-white/15 px-1.5 py-0.5 rounded">(+)</b> en el taladro</span>
                         </div>
                     </div>
                 </div>

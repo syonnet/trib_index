@@ -107,17 +107,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function animateHero() {
     if (typeof gsap === "undefined") return;
     const tl = gsap.timeline();
-    tl.from(".hud-top-bar", {
+    tl.from("#heroSlider .hero-badge", {
       opacity: 0,
-      y: -15,
-      duration: 0.6,
-      ease: "power2.out",
+      y: 20,
+      duration: 0.5,
+      ease: "power3.out",
     })
-      .from(
-        "#heroSlider .hero-badge",
-        { opacity: 0, y: 20, duration: 0.5, ease: "power3.out" },
-        "-=0.3"
-      )
       .from(
         "#heroSlider h1",
         { opacity: 0, y: 30, duration: 0.8, ease: "power3.out" },
@@ -134,9 +129,15 @@ document.addEventListener("DOMContentLoaded", () => {
         "-=0.3"
       )
       .from(
-        ".hud-scada-box",
-        { opacity: 0, x: 25, duration: 0.7, ease: "power3.out" },
-        "-=0.5"
+        ".interactive-hotspot",
+        {
+          opacity: 0,
+          scale: 0,
+          stagger: 0.15,
+          duration: 0.8,
+          ease: "back.out(1.7)",
+        },
+        "-=0.4"
       )
       .from(
         "#heroDock",
@@ -146,19 +147,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================
-  // HERO SLIDER (HUD Telemetry Controller)
+  // HERO SLIDER & HOTSPOTS CONTROLLER (Opción 3)
   // ==========================================
-  const heroSlides = document.querySelectorAll(".hero-hud-background .hero-slide");
+  const heroSlides = document.querySelectorAll(".hero-hotspot-background .hero-slide");
   const hudTabs = document.querySelectorAll(".hud-dock-tab");
-  const hudCoords = document.getElementById("hudCoords");
-  const hudCounter = document.getElementById("hudCounter");
-  const hudService = document.getElementById("hudService");
-  const hudRig = document.getElementById("hudRig");
-  const hudDepth = document.getElementById("hudDepth");
+  const hotspotCounter = document.getElementById("hotspotCounter");
+  const hs1Title = document.getElementById("hs1Title");
+  const hs1Desc = document.getElementById("hs1Desc");
+  const hs2Title = document.getElementById("hs2Title");
+  const hs2Desc = document.getElementById("hs2Desc");
+  const hs3Title = document.getElementById("hs3Title");
+  const hs3Desc = document.getElementById("hs3Desc");
+  const heroHotspots = document.querySelectorAll(".interactive-hotspot");
 
   let currentSlide = 0;
   let sliderInterval;
-  const SLIDER_DURATION = 6000;
+  const SLIDER_DURATION = 6500;
 
   function goToSlide(index) {
     if (heroSlides.length === 0) return;
@@ -181,43 +185,47 @@ document.addEventListener("DOMContentLoaded", () => {
       hudTabs[currentSlide].setAttribute("aria-selected", "true");
     }
 
-    // Actualizar Telemetría Superior
-    if (hudCoords && activeSlide.dataset.coord) {
-      hudCoords.textContent = `COORD: ${activeSlide.dataset.coord}`;
-    }
-    if (hudCounter) {
-      hudCounter.textContent = `0${currentSlide + 1} / 0${heroSlides.length}`;
+    // Actualizar Contador
+    if (hotspotCounter) {
+      hotspotCounter.textContent = `0${currentSlide + 1} / 0${heroSlides.length}`;
     }
 
-    // Actualizar Panel SCADA con micro-transición
-    if (hudService && activeSlide.dataset.service) {
-      const serviceName = activeSlide.dataset.service;
-      const rigInfo = activeSlide.dataset.rig || "";
-      const depthInfo = activeSlide.dataset.depth || "";
+    // Actualizar Información Dinámica de los 3 Hotspots según el slide activo
+    const t1 = activeSlide.dataset.hs1Title || "";
+    const d1 = activeSlide.dataset.hs1Desc || "";
+    const t2 = activeSlide.dataset.hs2Title || "";
+    const d2 = activeSlide.dataset.hs2Desc || "";
+    const t3 = activeSlide.dataset.hs3Title || "";
+    const d3 = activeSlide.dataset.hs3Desc || "";
 
-      if (typeof gsap !== "undefined") {
-        gsap.to([hudService, hudRig, hudDepth], {
-          opacity: 0,
-          y: -4,
-          duration: 0.2,
-          onComplete: () => {
-            hudService.textContent = serviceName;
-            if (hudRig) hudRig.textContent = rigInfo;
-            if (hudDepth) hudDepth.textContent = depthInfo;
-            gsap.to([hudService, hudRig, hudDepth], {
-              opacity: 1,
-              y: 0,
-              duration: 0.3,
-              stagger: 0.05,
-              ease: "power2.out",
-            });
-          },
-        });
-      } else {
-        hudService.textContent = serviceName;
-        if (hudRig) hudRig.textContent = rigInfo;
-        if (hudDepth) hudDepth.textContent = depthInfo;
-      }
+    if (typeof gsap !== "undefined") {
+      gsap.to([hs1Title, hs1Desc, hs2Title, hs2Desc, hs3Title, hs3Desc], {
+        opacity: 0,
+        y: -3,
+        duration: 0.15,
+        onComplete: () => {
+          if (hs1Title) hs1Title.textContent = t1;
+          if (hs1Desc) hs1Desc.textContent = d1;
+          if (hs2Title) hs2Title.textContent = t2;
+          if (hs2Desc) hs2Desc.textContent = d2;
+          if (hs3Title) hs3Title.textContent = t3;
+          if (hs3Desc) hs3Desc.textContent = d3;
+          gsap.to([hs1Title, hs1Desc, hs2Title, hs2Desc, hs3Title, hs3Desc], {
+            opacity: 1,
+            y: 0,
+            duration: 0.25,
+            stagger: 0.03,
+            ease: "power2.out",
+          });
+        },
+      });
+    } else {
+      if (hs1Title) hs1Title.textContent = t1;
+      if (hs1Desc) hs1Desc.textContent = d1;
+      if (hs2Title) hs2Title.textContent = t2;
+      if (hs2Desc) hs2Desc.textContent = d2;
+      if (hs3Title) hs3Title.textContent = t3;
+      if (hs3Desc) hs3Desc.textContent = d3;
     }
 
     // Resetear y animar la barra de progreso de telemetría activa
@@ -248,6 +256,27 @@ document.addEventListener("DOMContentLoaded", () => {
       sliderInterval = setInterval(nextSlide, SLIDER_DURATION);
     }
   }
+
+  // Interacción Táctil y Clic con los Hotspots del Hero
+  heroHotspots.forEach((hs) => {
+    const trigger = hs.querySelector(".hotspot-trigger");
+    trigger?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isActive = hs.classList.contains("active");
+      heroHotspots.forEach((other) => other.classList.remove("active"));
+      if (!isActive) {
+        hs.classList.add("active");
+        clearInterval(sliderInterval); // Pausar slider mientras se inspecciona
+      } else {
+        sliderInterval = setInterval(nextSlide, SLIDER_DURATION);
+      }
+    });
+  });
+
+  // Cerrar hotspots al hacer clic fuera
+  document.addEventListener("click", () => {
+    heroHotspots.forEach((hs) => hs.classList.remove("active"));
+  });
 
   hudTabs.forEach((tab) => {
     tab.addEventListener("click", () => {
