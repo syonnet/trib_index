@@ -756,4 +756,247 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
+
+  // ==========================================
+  // TRIBOIL · FLUID STREAM CANVAS (SOLUCIONES)
+  // Partículas de hidrocarburos/petróleo fluyendo por flow field trigonométrico
+  // Repulsión magnética al cursor y soporte táctil
+  // Trail difuminado 100% transparente con destination-out (compatible con Light/Dark)
+  // Pausa inteligente con IntersectionObserver para óptimo rendimiento (60 FPS)
+  // ==========================================
+  (function initFluidStreamCanvas() {
+    const canvas = document.getElementById("oil-canvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+
+    // Configuración Cromática y Dinámica
+    const COLOR_PALETTES = {
+      light: {
+        navy: [15, 23, 42],     // #0F172A (Petróleo profundo / Slate 900)
+        green: [0, 104, 73],    // #006849 (Verde TribOil oficial)
+        accent: [0, 138, 98],   // #008A62 (Verde técnico)
+      },
+      dark: {
+        navy: [30, 41, 59],     // #1E293B (Bruma de hidrocarburo)
+        green: [16, 185, 129],  // #10B981 (Esmeralda bioluminiscente)
+        accent: [52, 211, 153], // #34D399 (Verde menta brillante)
+      },
+    };
+
+    const RATIO_NAVY = 0.65;
+    const DENSITY = 22;            // Menor = más densidad de partículas
+    const MAX_ALPHA = 0.55;
+    const MOUSE_RADIUS = 150;
+    const MOUSE_FORCE = 1.35;
+    const FLOW_SCALE = 0.0016;
+    const DAMPING = 0.94;
+    const FLOW_FORCE = 0.085;
+    const BASE_SPEED_Y = 0.12;     // Deriva gravitacional de crudo
+
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let W = 0, H = 0;
+    let mouse = { x: -9999, y: -9999 };
+    let streams = [];
+    let isVisible = false;
+    let animId = null;
+
+    function isDarkMode() {
+      return (
+        document.documentElement.classList.contains("dark") ||
+        document.documentElement.dataset.theme === "dark"
+      );
+    }
+
+    function updateCoordinates(clientX, clientY) {
+      const rect = canvas.getBoundingClientRect();
+      if (
+        clientX >= rect.left - 60 &&
+        clientX <= rect.right + 60 &&
+        clientY >= rect.top - 60 &&
+        clientY <= rect.bottom + 60
+      ) {
+        mouse.x = (clientX - rect.left) * dpr;
+        mouse.y = (clientY - rect.top) * dpr;
+      } else {
+        mouse.x = -9999;
+        mouse.y = -9999;
+      }
+    }
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const parent = canvas.parentElement;
+      const rect = parent
+        ? parent.getBoundingClientRect()
+        : { width: window.innerWidth, height: window.innerHeight };
+      W = canvas.width = Math.floor(rect.width * dpr);
+      H = canvas.height = Math.floor(rect.height * dpr);
+      canvas.style.width = rect.width + "px";
+      canvas.style.height = rect.height + "px";
+      initStreams();
+      ctx.clearRect(0, 0, W, H);
+    }
+
+    function initStreams() {
+      streams = [];
+      const count = Math.floor(Math.min(W, H) / DENSITY);
+      for (let i = 0; i < count; i++) {
+        streams.push(createStream(true));
+      }
+    }
+
+    function createStream(initial = false) {
+      const rand = Math.random();
+      const hueType = rand < RATIO_NAVY ? "navy" : rand < 0.9 ? "green" : "accent";
+      return {
+        x: Math.random() * W,
+        y: initial ? Math.random() * H : Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.3 * dpr,
+        vy: (Math.random() - 0.5) * 0.3 * dpr + BASE_SPEED_Y * dpr,
+        life: 0,
+        maxLife: 220 + Math.random() * 320,
+        size: (Math.random() * 1.8 + 0.5) * dpr,
+        hue: hueType,
+      };
+    }
+
+    function flowAngle(x, y, t) {
+      const s = FLOW_SCALE / dpr;
+      const a =
+        Math.sin(x * s + t * 0.0002) * Math.cos(y * s * 1.2 - t * 0.00015) * Math.PI * 2 +
+        Math.sin((x + y) * s * 0.6 + t * 0.0001) * Math.PI;
+      return a * 0.5;
+    }
+
+    function step(t) {
+      if (!isVisible) {
+        animId = null;
+        return;
+      }
+
+      // Trail Fade 100% transparente sin ensuciar el fondo del tema
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.fillStyle = "rgba(0, 0, 0, 0.07)";
+      ctx.fillRect(0, 0, W, H);
+      ctx.globalCompositeOperation = "source-over";
+
+      const palette = isDarkMode() ? COLOR_PALETTES.dark : COLOR_PALETTES.light;
+
+      for (let i = 0; i < streams.length; i++) {
+        const s = streams[i];
+
+        // 1) Aplicar vector de flujo
+        const ang = flowAngle(s.x, s.y, t);
+        s.vx += Math.cos(ang) * FLOW_FORCE * dpr;
+        s.vy += Math.sin(ang) * FLOW_FORCE * dpr;
+
+        // 2) Repulsión magnética del cursor o toque
+        const mdx = s.x - mouse.x;
+        const mdy = s.y - mouse.y;
+        const md = Math.sqrt(mdx * mdx + mdy * mdy);
+        const mr = MOUSE_RADIUS * dpr;
+        if (md < mr && md > 0) {
+          const f = (1 - md / mr) * MOUSE_FORCE * dpr;
+          s.vx += (mdx / md) * f;
+          s.vy += (mdy / md) * f;
+        }
+
+        // 3) Fricción viscosa
+        s.vx *= DAMPING;
+        s.vy *= DAMPING;
+
+        // 4) Desplazamiento
+        s.x += s.vx;
+        s.y += s.vy;
+        s.life++;
+
+        // 5) Renderizado con opacidad orgánica
+        const lifeRatio = s.life / s.maxLife;
+        const alpha = Math.sin(lifeRatio * Math.PI) * MAX_ALPHA;
+        const [r, g, b] = palette[s.hue] || palette.navy;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, Math.max(0.5, s.size), 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        ctx.fill();
+
+        // 6) Reencarnación de partículas expiradas
+        if (
+          s.life > s.maxLife ||
+          s.x < -20 ||
+          s.x > W + 20 ||
+          s.y < -20 ||
+          s.y > H + 20
+        ) {
+          Object.assign(s, createStream());
+        }
+      }
+
+      animId = requestAnimationFrame(step);
+    }
+
+    // IntersectionObserver para pausar si no está en pantalla
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisible = entry.isIntersecting;
+          if (isVisible && !animId) {
+            animId = requestAnimationFrame(step);
+          } else if (!isVisible && animId) {
+            cancelAnimationFrame(animId);
+            animId = null;
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(canvas);
+
+    // Eventos de Mouse y Touch
+    window.addEventListener("resize", resize);
+    window.addEventListener("mousemove", (e) => {
+      updateCoordinates(e.clientX, e.clientY);
+    });
+    window.addEventListener("mouseleave", () => {
+      mouse.x = -9999;
+      mouse.y = -9999;
+    });
+
+    window.addEventListener(
+      "touchstart",
+      (e) => {
+        if (e.touches.length > 0) {
+          updateCoordinates(e.touches[0].clientX, e.touches[0].clientY);
+        }
+      },
+      { passive: true }
+    );
+    window.addEventListener(
+      "touchmove",
+      (e) => {
+        if (e.touches.length > 0) {
+          updateCoordinates(e.touches[0].clientX, e.touches[0].clientY);
+        }
+      },
+      { passive: true }
+    );
+    window.addEventListener("touchend", () => {
+      mouse.x = -9999;
+      mouse.y = -9999;
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && animId) {
+        cancelAnimationFrame(animId);
+        animId = null;
+      } else if (!document.hidden && isVisible && !animId) {
+        animId = requestAnimationFrame(step);
+      }
+    });
+
+    // Iniciar
+    resize();
+    if (isVisible) {
+      animId = requestAnimationFrame(step);
+    }
+  })();
 });

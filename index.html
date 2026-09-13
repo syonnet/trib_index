@@ -634,12 +634,21 @@
     <!-- Divisor -->
     <div class="max-w-[1500px] mx-auto px-6 md:px-10"><div class="hr-brand"></div></div>
 
-    <!-- Sección Nuestras Soluciones (Layout Asimétrico de Ingeniería) -->
-    <section id="soluciones" class="py-24 md:py-32">
-        <div class="max-w-[1500px] mx-auto px-6 md:px-10">
+    <!-- Sección Nuestras Soluciones (Layout Asimétrico de Ingeniería con Simulación de Fluidos) -->
+    <section id="soluciones" class="py-24 md:py-32 relative overflow-hidden">
+        <!-- Canvas de Dinámica de Fluidos e Hidrocarburos (Flow Field Canvas) -->
+        <canvas id="oil-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-0 opacity-75 dark:opacity-85"></canvas>
+
+        <div class="max-w-[1500px] mx-auto px-6 md:px-10 relative z-10">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
                 <div>
-                    <span class="text-xs font-mono font-semibold tracking-widest uppercase text-brand-light mb-3 block">Servicios de Ingeniería Upstream</span>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="text-xs font-mono font-semibold tracking-widest uppercase text-brand-light">Servicios de Ingeniería Upstream</span>
+                        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/40 text-brand dark:text-brand-light font-mono text-[9px] uppercase tracking-wider font-semibold">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand dark:bg-brand-light animate-pulse"></span>
+                            Dinámica de Fluidos
+                        </span>
+                    </div>
                     <h2 class="text-3xl md:text-5xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white">
                         Soluciones especializadas para <br><span class="text-slate-400 dark:text-white/40">la industria de hidrocarburos</span>
                     </h2>
