@@ -224,106 +224,146 @@
     <!-- Toast de Notificaciones -->
     <div class="toast" id="toast"></div>
 
-    <!-- Hero Section con Estética Cinema Viewport Panorámico (Opción 1: Apple / Leica Cinema) -->
-    <section class="hero-cinema-section pt-28 pb-14 sm:pt-32 sm:pb-16 lg:pt-36 lg:pb-20" id="heroSlider">
-        <!-- Zona Superior Editorial: Titular, Copy y CTAs Desacoplados -->
-        <div class="max-w-[1500px] mx-auto px-6 md:px-10 mb-8 sm:mb-10 lg:mb-12">
-            <div class="flex flex-col items-center text-center max-w-4xl mx-auto">
-                <!-- Badge Cápsula de Titanio y Vidrio -->
-                <div class="hero-badge inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white dark:bg-white/[0.06] border border-slate-200 dark:border-white/10 text-brand dark:text-brand-light text-xs font-mono tracking-wider uppercase mb-6 shadow-sm">
-                    <span class="w-2 h-2 rounded-full bg-brand dark:bg-brand-light animate-pulse"></span>
-                    Fundada en 1996 · Casi 30 Años de Rigor Upstream en Ecuador
-                </div>
-
-                <!-- Titular Monumental Apple -->
-                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05] mb-6 text-slate-900 dark:text-white" id="heroHeadline">
-                    Ingeniería Upstream. <br class="hidden sm:inline" />
-                    <span class="text-slate-500 dark:text-white/40">Potencia y Rigor en Pozo.</span>
-                </h1>
-
-                <!-- Bajada de Copy Pro -->
-                <p class="text-slate-600 dark:text-white/75 text-base sm:text-lg lg:text-xl font-normal leading-relaxed max-w-2xl mb-8" id="heroDescription">
-                    Gerenciamiento integral de campos petroleros, taladros de perforación profunda y servicios de reacondicionamiento (workover) con el estándar más alto de seguridad y productividad en la Amazonía ecuatoriana.
-                </p>
-
-                <!-- Botones Cápsula Apple -->
-                <div class="hero-cta-row flex flex-wrap items-center justify-center gap-4">
-                    <a href="#soluciones" class="btn-primary">
-                        <span>Nuestras Soluciones</span>
-                        <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
-                    </a>
-                    <a href="#contacto" class="btn-outline">
-                        <span>Solicitar Ficha Técnica</span>
-                    </a>
-                </div>
+    <!-- Hero Section con Estética HUD Industrial Táctico (Opción 2: SpaceX / Telemetría Upstream) -->
+    <section class="hero-hud-section" id="heroSlider">
+        <!-- Diapositivas Full Bleed (100vh Pantalla Completa sin velo opaco) -->
+        <div class="hero-hud-background">
+            <div class="hero-slide active" data-index="0" data-service="Gerenciamiento de Campos" data-rig="Flota Estratégica" data-depth="Amazonía Ecuatoriana" data-coord="00°42'S 76°52'W" data-hp="1,500 HP">
+                <img src="assets/images/hero_1.webp" alt="Operaciones petroleras nocturnas en campo">
             </div>
+            <div class="hero-slide" data-index="1" data-service="Perforación de Pozos" data-rig="Taladro 1000 - 1500 HP" data-depth="Hasta 16,000+ ft" data-coord="01°12'S 77°14'W" data-hp="1,500 HP">
+                <img src="assets/images/hero_2.webp" alt="Taladro pesado de perforación en la Amazonía">
+            </div>
+            <div class="hero-slide" data-index="2" data-service="Workover & Reacondicionamiento" data-rig="Taladros 550 - 750 HP" data-depth="Intervención Rápida" data-coord="00°28'S 76°38'W" data-hp="750 HP">
+                <img src="assets/images/hero_3.webp" alt="Líneas de flujo y facilidades de pozo">
+            </div>
+            <div class="hero-slide" data-index="3" data-service="Excelencia Operativa HSE" data-rig="Certificaciones ISO & OHSAS" data-depth="Campo Blanca Vinita" data-coord="00°15'S 76°45'W" data-hp="ALTO ESTÁNDAR">
+                <img src="assets/images/hero_4.webp" alt="Equipo de ingeniería y seguridad HSE">
+            </div>
+            <!-- Viñeta Óptica Suave (Sin velo lechoso, solo contraste perimetral de cabina) -->
+            <div class="hud-vignette"></div>
         </div>
 
-        <!-- Cinema Viewport Panorámico: Fotografías 100% Despejadas y Nítidas -->
-        <div class="max-w-[1500px] mx-auto px-6 md:px-10">
-            <div class="cinema-viewport-wrapper">
-                <div class="cinema-viewport">
-                    <!-- Diapositivas de fondo con alta resolución (Optimizadas WebP Local sin nada que las tape) -->
-                    <div class="hero-slide active" data-index="0" data-service="Gerenciamiento de Campos" data-rig="Flota Estratégica" data-depth="Amazonía Ecuatoriana">
-                        <img src="assets/images/hero_1.webp" alt="Operaciones petroleras nocturnas en campo">
+        <!-- Capa de Interfaz Táctica HUD -->
+        <div class="hero-hud-content">
+            <div class="max-w-[1500px] mx-auto px-6 md:px-10 w-full flex flex-col justify-between h-full pt-28 pb-8 sm:pb-10">
+                
+                <!-- Barra Superior de Telemetría Táctica (HUD Coordinate Line) -->
+                <div class="hud-top-bar flex items-center justify-between py-2.5 border-b border-white/15 text-[11px] font-mono tracking-widest text-white/80 uppercase mb-4">
+                    <div class="flex items-center gap-3">
+                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span class="text-white font-semibold">[+] OPERACIONES UPSTREAM ECUADOR</span>
+                        <span class="text-white/30 hidden sm:inline">|</span>
+                        <span class="text-emerald-300 hidden sm:inline" id="hudCoords">COORD: 00°42'S 76°52'W</span>
                     </div>
-                    <div class="hero-slide" data-index="1" data-service="Perforación de Pozos" data-rig="Taladro 1000 - 1500 HP" data-depth="Hasta 16,000+ ft">
-                        <img src="assets/images/hero_2.webp" alt="Taladro pesado de perforación en la Amazonía">
+                    <div class="flex items-center gap-3">
+                        <span class="text-emerald-400 font-semibold">[STATUS: 24/7 EN LÍNEA]</span>
+                        <span class="text-white/30">|</span>
+                        <span class="text-white font-bold" id="hudCounter">01 / 04</span>
                     </div>
-                    <div class="hero-slide" data-index="2" data-service="Workover & Reacondicionamiento" data-rig="Taladros 550 - 750 HP" data-depth="Intervención Rápida">
-                        <img src="assets/images/hero_3.webp" alt="Líneas de flujo y facilidades de pozo">
-                    </div>
-                    <div class="hero-slide" data-index="3" data-service="Excelencia Operativa HSE" data-rig="Certificaciones ISO & OHSAS" data-depth="Campo Blanca Vinita">
-                        <img src="assets/images/hero_4.webp" alt="Equipo de ingeniería y seguridad HSE">
-                    </div>
+                </div>
 
-                    <!-- Micro-Visor Óptico Leica / Cinema Viewfinder Tag -->
-                    <div class="cinema-viewfinder-tag">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            <span class="text-[11px] font-mono tracking-widest uppercase text-white/95 font-semibold" id="cinemaSlideTag">01 // GERENCIAMIENTO DE CAMPOS</span>
+                <!-- Bloque Central: Contenido Principal y Panel SCADA -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end my-auto py-6">
+                    <!-- Columna de Texto Flotante (Directo sobre la foto, cero cajas) -->
+                    <div class="lg:col-span-8 max-w-3xl">
+                        <!-- Badge Minimalista de Precisión -->
+                        <div class="hero-badge inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-emerald-400 text-xs font-mono tracking-wider uppercase mb-5 shadow-lg">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            Fundada en 1996 · Casi 30 Años de Rigor Upstream en Ecuador
                         </div>
-                        <div class="text-[10px] font-mono text-white/70 hidden sm:block" id="cinemaSlideSub">FLOTA ESTRATÉGICA · AMAZONÍA ECUATORIANA</div>
+
+                        <!-- Titular Monumental con Sombra Óptica Nítida -->
+                        <h1 class="hud-headline text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.04] mb-6 text-white" id="heroHeadline">
+                            Ingeniería Upstream. <br class="hidden sm:inline" />
+                            <span class="text-white/60">Potencia y Rigor en Pozo.</span>
+                        </h1>
+
+                        <!-- Bajada de Copy Nítida -->
+                        <p class="hud-copy text-white/90 text-base sm:text-lg lg:text-xl font-normal leading-relaxed max-w-2xl mb-8" id="heroDescription">
+                            Gerenciamiento integral de campos petroleros, taladros de perforación profunda y servicios de reacondicionamiento (workover) con el estándar más alto de seguridad y productividad en la Amazonía ecuatoriana.
+                        </p>
+
+                        <!-- Botones Tácticos -->
+                        <div class="hero-cta-row flex flex-wrap items-center gap-4">
+                            <a href="#soluciones" class="btn-primary">
+                                <span>Nuestras Soluciones</span>
+                                <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
+                            </a>
+                            <a href="#contacto" class="btn-outline !bg-black/35 !border-white/30 !text-white hover:!bg-white hover:!text-slate-900 shadow-lg">
+                                <span>Solicitar Ficha Técnica</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Columna Secundaria: Panel de Telemetría Táctica SCADA (1px Hairline, sin fondo pesado) -->
+                    <div class="hidden lg:block lg:col-span-4" id="heroSpecCardContainer">
+                        <div class="hud-scada-box">
+                            <div class="hud-scada-corner-tl"></div>
+                            <div class="hud-scada-corner-br"></div>
+                            <div class="flex items-center justify-between pb-3 border-b border-white/15 mb-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    <span class="text-[10px] font-mono tracking-widest text-white/70 uppercase">Telemetría de Campo</span>
+                                </div>
+                                <span class="text-[10px] font-mono text-emerald-400 font-bold tracking-widest uppercase">EN VIVO</span>
+                            </div>
+                            <div class="space-y-3">
+                                <div>
+                                    <div class="text-[10px] font-mono uppercase tracking-wider text-white/50">Línea Operativa</div>
+                                    <div class="text-lg font-bold text-white tracking-wide mt-0.5" id="hudService">Gerenciamiento de Campos</div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4 pt-2 border-t border-white/10">
+                                    <div>
+                                        <div class="text-[10px] font-mono uppercase tracking-wider text-white/50">Capacidad / Flota</div>
+                                        <div class="text-xs font-semibold text-emerald-300 font-mono mt-0.5" id="hudRig">Flota Estratégica</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-[10px] font-mono uppercase tracking-wider text-white/50">Alcance Operativo</div>
+                                        <div class="text-xs font-medium text-white/90 mt-0.5" id="hudDepth">Amazonía Ecuatoriana</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Dock de Control Panorámico Inferior (Segmented Controller) -->
-                <div class="cinema-dock-wrapper mt-5 sm:mt-6">
-                    <div class="apple-hero-dock" id="heroDock" role="tablist" aria-label="Líneas de servicio destacadas">
-                        <button class="hero-dock-pill active" data-slide="0" role="tab" aria-selected="true" aria-label="01 Gerenciamiento">
-                            <div class="dock-meta">
-                                <span class="dock-num">01</span>
-                                <span class="text-[9px] text-brand dark:text-brand-light font-mono hidden sm:inline font-semibold">ACTIVO</span>
-                            </div>
-                            <div class="dock-title">Gerenciamiento</div>
-                            <div class="dock-bar"><div class="fill"></div></div>
-                        </button>
-                        <button class="hero-dock-pill" data-slide="1" role="tab" aria-selected="false" aria-label="02 Perforación">
-                            <div class="dock-meta">
-                                <span class="dock-num">02</span>
-                                <span class="text-[9px] text-slate-400 dark:text-white/30 font-mono hidden sm:inline">DRILLING</span>
-                            </div>
-                            <div class="dock-title">Perforación</div>
-                            <div class="dock-bar"><div class="fill"></div></div>
-                        </button>
-                        <button class="hero-dock-pill" data-slide="2" role="tab" aria-selected="false" aria-label="03 Reacondicionamiento">
-                            <div class="dock-meta">
-                                <span class="dock-num">03</span>
-                                <span class="text-[9px] text-slate-400 dark:text-white/30 font-mono hidden sm:inline">WORKOVER</span>
-                            </div>
-                            <div class="dock-title">Reacondicionamiento</div>
-                            <div class="dock-bar"><div class="fill"></div></div>
-                        </button>
-                        <button class="hero-dock-pill" data-slide="3" role="tab" aria-selected="false" aria-label="04 Excelencia HSE">
-                            <div class="dock-meta">
-                                <span class="dock-num">04</span>
-                                <span class="text-[9px] text-slate-400 dark:text-white/30 font-mono hidden sm:inline">HSE & Q</span>
-                            </div>
-                            <div class="dock-title">Excelencia HSE</div>
-                            <div class="dock-bar"><div class="fill"></div></div>
-                        </button>
-                    </div>
+                <!-- Barra Inferior de Control de Telemetría (HUD Dock) -->
+                <div class="hud-dock-wrapper" id="heroDock" role="tablist" aria-label="Líneas de servicio destacadas">
+                    <button class="hud-dock-tab active" data-slide="0" role="tab" aria-selected="true" aria-label="01 Gerenciamiento">
+                        <div class="hud-tab-meta">
+                            <span class="hud-tab-num">01</span>
+                            <span class="hud-tab-badge">ACTIVO</span>
+                        </div>
+                        <div class="hud-tab-name">Gerenciamiento</div>
+                        <div class="hud-tab-meter"><div class="hud-fill"></div></div>
+                    </button>
+                    <button class="hud-dock-tab" data-slide="1" role="tab" aria-selected="false" aria-label="02 Perforación">
+                        <div class="hud-tab-meta">
+                            <span class="hud-tab-num">02</span>
+                            <span class="hud-tab-sub">DRILLING</span>
+                        </div>
+                        <div class="hud-tab-name">Perforación</div>
+                        <div class="hud-tab-meter"><div class="hud-fill"></div></div>
+                    </button>
+                    <button class="hud-dock-tab" data-slide="2" role="tab" aria-selected="false" aria-label="03 Reacondicionamiento">
+                        <div class="hud-tab-meta">
+                            <span class="hud-tab-num">03</span>
+                            <span class="hud-tab-sub">WORKOVER</span>
+                        </div>
+                        <div class="hud-tab-name">Reacondicionamiento</div>
+                        <div class="hud-tab-meter"><div class="hud-fill"></div></div>
+                    </button>
+                    <button class="hud-dock-tab" data-slide="3" role="tab" aria-selected="false" aria-label="04 Excelencia HSE">
+                        <div class="hud-tab-meta">
+                            <span class="hud-tab-num">04</span>
+                            <span class="hud-tab-sub">HSE & Q</span>
+                        </div>
+                        <div class="hud-tab-name">Excelencia HSE</div>
+                        <div class="hud-tab-meter"><div class="hud-fill"></div></div>
+                    </button>
                 </div>
+
             </div>
         </div>
     </section>

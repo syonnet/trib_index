@@ -552,116 +552,216 @@ header#mainNav {
   color: #fff;
 }
 
-/* --- Hero Cinema Section (Opción 1: Viewport Panorámico Apple / Leica) --- */
-.hero-cinema-section {
+/* --- Hero Section: Opción 2 HUD Industrial Táctico (Full Bleed 100vh) --- */
+.hero-hud-section {
   position: relative;
   width: 100%;
-  background: var(--bg-body);
-  transition: background-color 0.3s ease;
+  min-height: 100dvh;
+  display: flex;
   overflow: hidden;
+  background: #070a0f;
 }
 
-.cinema-viewport-wrapper {
-  position: relative;
-  width: 100%;
+.hero-hud-background {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
-.cinema-viewport {
-  position: relative;
-  width: 100%;
-  height: 500px;
-  border-radius: 28px;
-  overflow: hidden;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.14), 0 0 0 1px rgba(255, 255, 255, 0.9);
-  background: #0b0f15;
-}
-
-@media (min-width: 1024px) {
-  .cinema-viewport {
-    height: 560px;
-    border-radius: 32px;
-  }
-}
-
-@media (max-width: 640px) {
-  .cinema-viewport {
-    height: 360px;
-    border-radius: 20px;
-  }
-}
-
-[data-theme="dark"] .cinema-viewport {
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06);
-}
-
-.cinema-viewport .hero-slide {
+.hero-hud-background .hero-slide {
   position: absolute;
   inset: 0;
   opacity: 0;
   transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.cinema-viewport .hero-slide.active {
+.hero-hud-background .hero-slide.active {
   opacity: 1;
 }
 
-.cinema-viewport .hero-slide img {
+.hero-hud-background .hero-slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.05);
+  transform: scale(1.04);
   transition: transform 7s ease-out;
 }
 
-.cinema-viewport .hero-slide.active img {
+.hero-hud-background .hero-slide.active img {
   transform: scale(1);
 }
 
-/* Micro-Visor Óptico Leica / Cinema Viewfinder */
-.cinema-viewfinder-tag {
+/* Viñeta Óptica Suave (Sin capas lechosas, solo profundidad perimetral tipo visor de cabina) */
+.hud-vignette {
   position: absolute;
-  bottom: 1.25rem;
-  left: 1.25rem;
-  z-index: 20;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 95% 85% at 50% 50%, rgba(7, 10, 15, 0.15) 0%, rgba(7, 10, 15, 0.65) 100%),
+    linear-gradient(180deg, rgba(7, 10, 15, 0.5) 0%, transparent 18%, transparent 82%, rgba(7, 10, 15, 0.85) 100%);
+  pointer-events: none;
+}
+
+.hero-hud-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: 8px 16px;
-  border-radius: 12px;
-  background: rgba(11, 15, 21, 0.72);
+}
+
+.hud-headline {
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.hud-copy {
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.85);
+}
+
+/* Panel de Telemetría SCADA Lateral */
+.hud-scada-box {
+  position: relative;
+  background: rgba(7, 10, 15, 0.55);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
-  pointer-events: none;
-  transition: all 0.3s ease;
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-@media (max-width: 640px) {
-  .cinema-viewfinder-tag {
-    bottom: 0.75rem;
-    left: 0.75rem;
-    padding: 6px 12px;
+.hud-scada-corner-tl {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid #34d399;
+  border-left: 2px solid #34d399;
+  border-top-left-radius: 4px;
+}
+
+.hud-scada-corner-br {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 12px;
+  height: 12px;
+  border-bottom: 2px solid #34d399;
+  border-right: 2px solid #34d399;
+  border-bottom-right-radius: 4px;
+}
+
+/* Dock de Control de Telemetría Inferior */
+.hud-dock-wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  width: 100%;
+  background: rgba(7, 10, 15, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 6px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 768px) {
+  .hud-dock-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+    border-radius: 12px;
   }
 }
 
-/* Dock de Control Panorámico */
-.cinema-dock-wrapper {
-  width: 100%;
+.hud-dock-tab {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  text-align: left;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 52px;
 }
 
-.cinema-dock-wrapper .apple-hero-dock {
-  position: relative;
-  bottom: auto;
-  left: auto;
-  transform: none;
+.hud-dock-tab:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.hud-dock-tab.active {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(52, 211, 153, 0.4);
+  box-shadow: 0 0 16px rgba(52, 211, 153, 0.15);
+}
+
+.hud-tab-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
+  margin-bottom: 3px;
+}
+
+.hud-tab-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.hud-dock-tab.active .hud-tab-num {
+  color: #34d399;
+}
+
+.hud-tab-badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: #34d399;
+  letter-spacing: 0.05em;
+}
+
+.hud-tab-sub {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.05em;
+}
+
+.hud-tab-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s ease;
+}
+
+.hud-dock-tab.active .hud-tab-name {
+  color: #ffffff;
+}
+
+.hud-tab-meter {
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.hud-fill {
+  height: 100%;
+  width: 0%;
+  background: #34d399;
+  box-shadow: 0 0 8px #34d399;
 }
 
 /* Apple Keynote Floating Dock / Segmented Controller */

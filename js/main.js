@@ -107,12 +107,17 @@ document.addEventListener("DOMContentLoaded", () => {
   function animateHero() {
     if (typeof gsap === "undefined") return;
     const tl = gsap.timeline();
-    tl.from("#heroSlider .hero-badge", {
+    tl.from(".hud-top-bar", {
       opacity: 0,
-      y: 20,
+      y: -15,
       duration: 0.6,
-      ease: "power3.out",
+      ease: "power2.out",
     })
+      .from(
+        "#heroSlider .hero-badge",
+        { opacity: 0, y: 20, duration: 0.5, ease: "power3.out" },
+        "-=0.3"
+      )
       .from(
         "#heroSlider h1",
         { opacity: 0, y: 30, duration: 0.8, ease: "power3.out" },
@@ -129,24 +134,27 @@ document.addEventListener("DOMContentLoaded", () => {
         "-=0.3"
       )
       .from(
-        ".cinema-viewport",
-        { opacity: 0, y: 30, scale: 0.98, duration: 0.9, ease: "power3.out" },
-        "-=0.3"
+        ".hud-scada-box",
+        { opacity: 0, x: 25, duration: 0.7, ease: "power3.out" },
+        "-=0.5"
       )
       .from(
         "#heroDock",
         { opacity: 0, y: 20, duration: 0.6, ease: "power3.out" },
-        "-=0.4"
+        "-=0.3"
       );
   }
 
   // ==========================================
-  // HERO SLIDER (Cinema Viewport Controller)
+  // HERO SLIDER (HUD Telemetry Controller)
   // ==========================================
-  const heroSlides = document.querySelectorAll(".hero-slide");
-  const dockPills = document.querySelectorAll(".hero-dock-pill");
-  const cinemaSlideTag = document.getElementById("cinemaSlideTag");
-  const cinemaSlideSub = document.getElementById("cinemaSlideSub");
+  const heroSlides = document.querySelectorAll(".hero-hud-background .hero-slide");
+  const hudTabs = document.querySelectorAll(".hud-dock-tab");
+  const hudCoords = document.getElementById("hudCoords");
+  const hudCounter = document.getElementById("hudCounter");
+  const hudService = document.getElementById("hudService");
+  const hudRig = document.getElementById("hudRig");
+  const hudDepth = document.getElementById("hudDepth");
 
   let currentSlide = 0;
   let sliderInterval;
@@ -157,9 +165,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Desactivar slide anterior
     heroSlides[currentSlide].classList.remove("active");
-    if (dockPills[currentSlide]) {
-      dockPills[currentSlide].classList.remove("active");
-      dockPills[currentSlide].setAttribute("aria-selected", "false");
+    if (hudTabs[currentSlide]) {
+      hudTabs[currentSlide].classList.remove("active");
+      hudTabs[currentSlide].setAttribute("aria-selected", "false");
     }
 
     currentSlide = index;
@@ -168,48 +176,53 @@ document.addEventListener("DOMContentLoaded", () => {
     const activeSlide = heroSlides[currentSlide];
     activeSlide.classList.add("active");
 
-    if (dockPills[currentSlide]) {
-      dockPills[currentSlide].classList.add("active");
-      dockPills[currentSlide].setAttribute("aria-selected", "true");
+    if (hudTabs[currentSlide]) {
+      hudTabs[currentSlide].classList.add("active");
+      hudTabs[currentSlide].setAttribute("aria-selected", "true");
     }
 
-    // Actualizar Micro-Visor Óptico Leica / Cinema Viewfinder Tag
-    if (cinemaSlideTag && activeSlide.dataset.service) {
-      const formattedNum = currentSlide + 1 < 10 ? `0${currentSlide + 1}` : currentSlide + 1;
-      const serviceName = activeSlide.dataset.service.toUpperCase();
-      const rigInfo = (activeSlide.dataset.rig || "").toUpperCase();
-      const depthInfo = (activeSlide.dataset.depth || "").toUpperCase();
+    // Actualizar Telemetría Superior
+    if (hudCoords && activeSlide.dataset.coord) {
+      hudCoords.textContent = `COORD: ${activeSlide.dataset.coord}`;
+    }
+    if (hudCounter) {
+      hudCounter.textContent = `0${currentSlide + 1} / 0${heroSlides.length}`;
+    }
+
+    // Actualizar Panel SCADA con micro-transición
+    if (hudService && activeSlide.dataset.service) {
+      const serviceName = activeSlide.dataset.service;
+      const rigInfo = activeSlide.dataset.rig || "";
+      const depthInfo = activeSlide.dataset.depth || "";
 
       if (typeof gsap !== "undefined") {
-        gsap.to([cinemaSlideTag, cinemaSlideSub], {
+        gsap.to([hudService, hudRig, hudDepth], {
           opacity: 0,
-          y: -3,
+          y: -4,
           duration: 0.2,
           onComplete: () => {
-            cinemaSlideTag.textContent = `${formattedNum} // ${serviceName}`;
-            if (cinemaSlideSub) {
-              cinemaSlideSub.textContent = rigInfo && depthInfo ? `${rigInfo} · ${depthInfo}` : rigInfo || depthInfo;
-            }
-            gsap.to([cinemaSlideTag, cinemaSlideSub], {
+            hudService.textContent = serviceName;
+            if (hudRig) hudRig.textContent = rigInfo;
+            if (hudDepth) hudDepth.textContent = depthInfo;
+            gsap.to([hudService, hudRig, hudDepth], {
               opacity: 1,
               y: 0,
               duration: 0.3,
               stagger: 0.05,
-              ease: "power2.out"
+              ease: "power2.out",
             });
-          }
+          },
         });
       } else {
-        cinemaSlideTag.textContent = `${formattedNum} // ${serviceName}`;
-        if (cinemaSlideSub) {
-          cinemaSlideSub.textContent = rigInfo && depthInfo ? `${rigInfo} · ${depthInfo}` : rigInfo || depthInfo;
-        }
+        hudService.textContent = serviceName;
+        if (hudRig) hudRig.textContent = rigInfo;
+        if (hudDepth) hudDepth.textContent = depthInfo;
       }
     }
 
-    // Resetear y animar la barra de progreso del pill activo
-    dockPills.forEach((pill) => {
-      const fill = pill.querySelector(".fill");
+    // Resetear y animar la barra de progreso de telemetría activa
+    hudTabs.forEach((tab) => {
+      const fill = tab.querySelector(".hud-fill");
       if (fill) {
         fill.style.width = "0%";
         fill.style.transition = "none";
@@ -217,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     requestAnimationFrame(() => {
-      const activeFill = dockPills[currentSlide]?.querySelector(".fill");
+      const activeFill = hudTabs[currentSlide]?.querySelector(".hud-fill");
       if (activeFill) {
         activeFill.style.transition = `width ${SLIDER_DURATION}ms linear`;
         activeFill.style.width = "100%";
@@ -236,10 +249,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  dockPills.forEach((pill) => {
-    pill.addEventListener("click", () => {
+  hudTabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
       clearInterval(sliderInterval);
-      goToSlide(parseInt(pill.dataset.slide));
+      goToSlide(parseInt(tab.dataset.slide));
       sliderInterval = setInterval(nextSlide, SLIDER_DURATION);
     });
   });
