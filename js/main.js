@@ -719,78 +719,31 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================
-  // SCROLLYTELLING RIG PARALLAX (TALADRO EN OPERACIÓN 1500 HP)
+  // TORRE MONUMENTAL DE FONDO LATERAL: PARALLAX Y GIRO 3D
   // ==========================================
-  const scrollyRigTrack = document.getElementById("scrollyRigTrack");
-  const scrollyRigElevation = document.getElementById("scrollyRigElevation");
-  const scrollyRigSection = document.getElementById("scrollyRigSection");
-  const scrollyRigProgressBar = document.getElementById("scrollyRigProgressBar");
-  const scrollyRigToggle = document.getElementById("scrollyRigToggle");
-  const scrollyRigCard = document.getElementById("scrollyRigCard");
-  const scrollyRigPill = document.getElementById("scrollyRigPill");
-  const scrollyPillPct = document.getElementById("scrollyPillPct");
+  const lateralRigImg = document.getElementById("lateralRigImg");
+  const lateralRig3DWrapper = document.getElementById("lateralRig3DWrapper");
 
-  if (scrollyRigToggle && scrollyRigCard && scrollyRigPill) {
-    scrollyRigToggle.addEventListener("click", () => {
-      scrollyRigCard.classList.add("hidden");
-      scrollyRigPill.classList.remove("hidden");
-      scrollyRigPill.classList.add("flex");
-    });
-    scrollyRigPill.addEventListener("click", () => {
-      scrollyRigPill.classList.add("hidden");
-      scrollyRigPill.classList.remove("flex");
-      scrollyRigCard.classList.remove("hidden");
-    });
-  }
-
-  if (scrollyRigTrack) {
+  if (lateralRigImg && lateralRig3DWrapper) {
     ScrollTrigger.create({
       start: "top top",
       end: "bottom bottom",
       onUpdate: (self) => {
         const p = self.progress; // 0.0 a 1.0
-        // La imagen tiene un ancho de 340px y altura aprox de 801px (ratio 1:2.357).
-        // El viewport mide 260px de alto.
-        // El recorrido vertical máximo es trackHeight - viewportHeight.
-        const trackHeight = scrollyRigTrack.offsetHeight || 800;
-        const viewportHeight = 260;
-        const maxScroll = Math.max(0, trackHeight - viewportHeight);
-        const yOffset = -p * maxScroll;
 
-        scrollyRigTrack.style.transform = `translate(-50%, ${yOffset.toFixed(1)}px)`;
+        // 1. Descenso vertical Parallax a lo largo de toda la página
+        const imgHeight = lateralRigImg.offsetHeight || 2600;
+        const windowHeight = window.innerHeight;
+        const maxTravel = Math.max(0, imgHeight - windowHeight);
+        const yOffset = -p * maxTravel;
 
-        const pct = Math.round(p * 100);
-        if (scrollyRigProgressBar) {
-          scrollyRigProgressBar.style.width = `${pct}%`;
-        }
-        if (scrollyPillPct) {
-          scrollyPillPct.textContent = `${pct}%`;
-        }
+        // 2. Giro axial tridimensional (rotateY) suave y continuo mientras la página baja
+        // Oscila armónicamente en 3D simulando una perspectiva orbital (+22deg a -22deg)
+        const rotationY = Math.sin(p * Math.PI * 2.5) * 22;
+        const tiltZ = Math.sin(p * Math.PI * 1.5) * 1.8;
 
-        // Segmentos descriptivos de la anatomía del taladro según cota
-        if (scrollyRigElevation && scrollyRigSection) {
-          if (p < 0.18) {
-            const elev = Math.round(145 - p * 200);
-            scrollyRigElevation.textContent = `+${elev} FT`;
-            scrollyRigSection.textContent = "CROWN BLOCK & DRONE";
-          } else if (p < 0.42) {
-            const elev = Math.round(105 - (p - 0.18) * 250);
-            scrollyRigElevation.textContent = `+${elev} FT`;
-            scrollyRigSection.textContent = "MÁSTIL & CHANGER";
-          } else if (p < 0.68) {
-            const elev = Math.round(45 - (p - 0.42) * 120);
-            scrollyRigElevation.textContent = `+${elev} FT`;
-            scrollyRigSection.textContent = "MESA ROTARIA / CABINA";
-          } else if (p < 0.86) {
-            const elev = Math.round(15 - (p - 0.68) * 100);
-            scrollyRigElevation.textContent = elev >= 0 ? `+${elev} FT` : `${elev} FT`;
-            scrollyRigSection.textContent = "SUBESTRUCTURA & BOMBAS";
-          } else {
-            const depth = Math.round(450 + (p - 0.86) * 85000);
-            scrollyRigElevation.textContent = `-${depth.toLocaleString()} FT`;
-            scrollyRigSection.textContent = "BOP & ESTRATOS NAPO";
-          }
-        }
+        lateralRigImg.style.transform = `translate3d(0, ${yOffset.toFixed(1)}px, 0)`;
+        lateralRig3DWrapper.style.transform = `perspective(1400px) rotateY(${rotationY.toFixed(2)}deg) rotateZ(${tiltZ.toFixed(2)}deg)`;
       },
     });
   }

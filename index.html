@@ -134,86 +134,17 @@
         <div class="w-4 h-1 rounded-full bg-slate-300 dark:bg-slate-700 mt-1"></div>
     </div>
 
-    <!-- Visor Técnico de Scrollytelling Parallax: Taladro en Operación (Storyteller de Descenso) -->
-    <aside id="scrollyRigHud" class="hidden xl:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col items-end pointer-events-none transition-all duration-300 select-none">
-        <!-- Contenedor Principal del HUD con Cristal Biselado -->
-        <div id="scrollyRigCard" class="pointer-events-auto bg-white/95 dark:bg-[#0e131c]/95 backdrop-blur-xl border border-slate-200/90 dark:border-white/10 rounded-2xl shadow-2xl p-3 w-[184px] transition-all duration-300 flex flex-col gap-2.5">
-            
-            <!-- Cabecera del HUD: Identificador de Equipo, Estado en Vivo y Botón Minimizar -->
-            <div class="flex items-center justify-between border-b border-slate-200/70 dark:border-white/10 pb-2">
-                <div class="flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-brand dark:bg-brand-light animate-pulse"></span>
-                    <span class="text-[10px] font-mono font-bold tracking-wider uppercase text-slate-800 dark:text-white/90">TALADRO 1500 HP</span>
-                </div>
-                <button id="scrollyRigToggle" class="w-5 h-5 rounded-md flex items-center justify-center text-slate-400 hover:text-brand dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer" title="Minimizar visor" aria-label="Minimizar visor">
-                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Ventana de Visualización Óptica / Cámara de Descenso Parallax -->
-            <div class="relative w-full h-[260px] rounded-xl overflow-hidden bg-slate-50 dark:bg-[#070a0f] border border-slate-200/80 dark:border-white/10 shadow-inner group">
-                
-                <!-- Retícula / Crosshair de Precisión SCADA -->
-                <div class="absolute inset-0 pointer-events-none z-20 flex flex-col justify-between p-2">
-                    <!-- Regla Lateral Graduada de Altitud -->
-                    <div class="flex justify-between items-start text-[8px] font-mono text-slate-400 dark:text-white/40">
-                        <span>+150 FT</span>
-                        <span>CORONA</span>
-                    </div>
-                    <!-- Línea Central de Enfoque Láser con Mira -->
-                    <div class="relative w-full flex items-center justify-center">
-                        <div class="w-full h-[1px] bg-brand/35 dark:bg-brand-light/35"></div>
-                        <div class="absolute w-2.5 h-2.5 rounded-full border border-brand dark:border-brand-light bg-brand/20 dark:bg-brand-light/20 flex items-center justify-center">
-                            <div class="w-1 h-1 rounded-full bg-brand dark:bg-brand-light"></div>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-end text-[8px] font-mono text-slate-400 dark:text-white/40">
-                        <span>-16K FT</span>
-                        <span>ESTRATOS</span>
-                    </div>
-                </div>
-
-                <!-- Imagen del Taladro con Desplazamiento Parallax Vertical -->
-                <div class="scrolly-rig-track absolute top-0 left-1/2 -translate-x-1/2 w-[340px] pointer-events-none transition-transform duration-75 ease-out" id="scrollyRigTrack">
-                    <img src="assets/torre_2.jpg" alt="Anatomía estructural del taladro de perforación" class="scrolly-rig-image w-full h-auto block" loading="eager">
-                </div>
-
-                <!-- Gradientes de viñeta superior e inferior para fundir bordes -->
-                <div class="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-white/95 dark:from-[#070a0f] to-transparent pointer-events-none z-10"></div>
-                <div class="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-white/95 dark:from-[#070a0f] to-transparent pointer-events-none z-10"></div>
-            </div>
-
-            <!-- Pie de Telemetría Dinámica: Cota y Etapa Actual -->
-            <div class="flex flex-col gap-1 pt-1 border-t border-slate-200/70 dark:border-white/10">
-                <div class="flex items-center justify-between">
-                    <span class="text-[9px] font-mono uppercase tracking-wider text-slate-500 dark:text-white/50">COTA / ELEV</span>
-                    <span id="scrollyRigElevation" class="text-[11px] font-mono font-bold text-brand dark:text-brand-light">+145 FT</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <span class="text-[9px] font-mono uppercase tracking-wider text-slate-500 dark:text-white/50">SECCIÓN</span>
-                    <span id="scrollyRigSection" class="text-[10px] font-mono font-semibold text-slate-800 dark:text-white/90 truncate max-w-[100px] text-right">CROWN BLOCK</span>
-                </div>
-                <!-- Mini barra de progreso del pozo -->
-                <div class="w-full h-1 bg-slate-200 dark:bg-white/10 rounded-full overflow-hidden mt-0.5">
-                    <div id="scrollyRigProgressBar" class="h-full bg-gradient-to-r from-brand to-brand-light w-0 transition-all duration-75"></div>
-                </div>
-            </div>
+    <!-- Torre Monumental de Fondo en el Lateral Derecho con Parallax & Giro 3D -->
+    <div id="lateralRigBackdrop" class="hidden lg:block fixed right-0 top-0 h-screen w-[38vw] max-w-[620px] z-0 pointer-events-none overflow-hidden select-none" style="perspective: 1400px;">
+        <div id="lateralRig3DWrapper" class="relative w-full h-full flex justify-center items-start transform-gpu" style="transform-style: preserve-3d;">
+            <img src="assets/torre_2.jpg" id="lateralRigImg" alt="Plano monumental del taladro de perforación" class="w-full max-w-none h-auto object-contain object-top block transform-gpu pointer-events-none" loading="eager">
         </div>
-
-        <!-- Botón Flotante Alternativo cuando el visor está minimizado -->
-        <button id="scrollyRigPill" class="hidden pointer-events-auto items-center gap-2 px-3 py-2 rounded-full bg-white/95 dark:bg-[#0e131c]/95 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-xl hover:border-brand hover:scale-105 transition-all text-xs font-mono font-bold text-slate-800 dark:text-white cursor-pointer" title="Expandir visor del taladro">
-            <span class="w-2 h-2 rounded-full bg-brand dark:bg-brand-light animate-pulse"></span>
-            <svg class="w-4 h-4 text-brand dark:text-brand-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="12 2 2 22 22 22 12 2"></polygon>
-                <line x1="12" y1="9" x2="12" y2="15"></line>
-                <line x1="12" y1="18" x2="12.01" y2="18"></line>
-            </svg>
-            <span id="scrollyPillPct">0%</span>
-        </button>
-    </aside>
+        <!-- Viñeta de degradado suave hacia la izquierda para que el contenido central se lea impecable -->
+        <div class="absolute inset-0 bg-gradient-to-r from-[#f8fafc] via-[#f8fafc]/30 to-transparent dark:from-[#0b0f15] dark:via-[#0b0f15]/30 dark:to-transparent pointer-events-none z-10"></div>
+        <!-- Viñetas superior e inferior -->
+        <div class="absolute top-0 left-0 w-full h-28 bg-gradient-to-b from-[#f8fafc] dark:from-[#0b0f15] to-transparent pointer-events-none z-10"></div>
+        <div class="absolute bottom-0 left-0 w-full h-28 bg-gradient-to-t from-[#f8fafc] dark:from-[#0b0f15] to-transparent pointer-events-none z-10"></div>
+    </div>
 
     <!-- Preloader Rápido (<500ms) -->
     <div class="preloader" id="preloader">
