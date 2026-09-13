@@ -758,11 +758,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================
-  // TRIBOIL · FLUID STREAM CANVAS (SOLUCIONES)
+  // TRIBOIL · FLUID STREAM CANVAS (FONDO GLOBAL - OPCIÓN B)
   // Partículas de hidrocarburos/petróleo fluyendo por flow field trigonométrico
-  // Repulsión magnética al cursor y soporte táctil
+  // Repulsión magnética al cursor en toda la ventana y soporte táctil
   // Trail difuminado 100% transparente con destination-out (compatible con Light/Dark)
-  // Pausa inteligente con IntersectionObserver para óptimo rendimiento (60 FPS)
+  // Pausa inteligente con visibilitychange para óptimo rendimiento (60 FPS)
   // ==========================================
   (function initFluidStreamCanvas() {
     const canvas = document.getElementById("oil-canvas");
@@ -784,9 +784,9 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const RATIO_NAVY = 0.65;
-    const DENSITY = 22;            // Menor = más densidad de partículas
+    const DENSITY = 22;            // Densidad adaptativa a resolución
     const MAX_ALPHA = 0.55;
-    const MOUSE_RADIUS = 150;
+    const MOUSE_RADIUS = 160;
     const MOUSE_FORCE = 1.35;
     const FLOW_SCALE = 0.0016;
     const DAMPING = 0.94;
@@ -797,7 +797,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let W = 0, H = 0;
     let mouse = { x: -9999, y: -9999 };
     let streams = [];
-    let isVisible = false;
+    let isRunning = true;
     let animId = null;
 
     function isDarkMode() {
@@ -807,32 +807,12 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     }
 
-    function updateCoordinates(clientX, clientY) {
-      const rect = canvas.getBoundingClientRect();
-      if (
-        clientX >= rect.left - 60 &&
-        clientX <= rect.right + 60 &&
-        clientY >= rect.top - 60 &&
-        clientY <= rect.bottom + 60
-      ) {
-        mouse.x = (clientX - rect.left) * dpr;
-        mouse.y = (clientY - rect.top) * dpr;
-      } else {
-        mouse.x = -9999;
-        mouse.y = -9999;
-      }
-    }
-
     function resize() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const parent = canvas.parentElement;
-      const rect = parent
-        ? parent.getBoundingClientRect()
-        : { width: window.innerWidth, height: window.innerHeight };
-      W = canvas.width = Math.floor(rect.width * dpr);
-      H = canvas.height = Math.floor(rect.height * dpr);
-      canvas.style.width = rect.width + "px";
-      canvas.style.height = rect.height + "px";
+      W = canvas.width = Math.floor(window.innerWidth * dpr);
+      H = canvas.height = Math.floor(window.innerHeight * dpr);
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
       initStreams();
       ctx.clearRect(0, 0, W, H);
     }
@@ -869,7 +849,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function step(t) {
-      if (!isVisible) {
+      if (!isRunning) {
         animId = null;
         return;
       }
@@ -890,7 +870,7 @@ document.addEventListener("DOMContentLoaded", () => {
         s.vx += Math.cos(ang) * FLOW_FORCE * dpr;
         s.vy += Math.sin(ang) * FLOW_FORCE * dpr;
 
-        // 2) Repulsión magnética del cursor o toque
+        // 2) Repulsión magnética del cursor o toque global
         const mdx = s.x - mouse.x;
         const mdy = s.y - mouse.y;
         const md = Math.sqrt(mdx * mdx + mdy * mdy);
@@ -934,27 +914,11 @@ document.addEventListener("DOMContentLoaded", () => {
       animId = requestAnimationFrame(step);
     }
 
-    // IntersectionObserver para pausar si no está en pantalla
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          isVisible = entry.isIntersecting;
-          if (isVisible && !animId) {
-            animId = requestAnimationFrame(step);
-          } else if (!isVisible && animId) {
-            cancelAnimationFrame(animId);
-            animId = null;
-          }
-        });
-      },
-      { threshold: 0.05 }
-    );
-    observer.observe(canvas);
-
-    // Eventos de Mouse y Touch
+    // Eventos Globales de Mouse y Touch en toda la ventana
     window.addEventListener("resize", resize);
     window.addEventListener("mousemove", (e) => {
-      updateCoordinates(e.clientX, e.clientY);
+      mouse.x = e.clientX * dpr;
+      mouse.y = e.clientY * dpr;
     });
     window.addEventListener("mouseleave", () => {
       mouse.x = -9999;
@@ -965,7 +929,8 @@ document.addEventListener("DOMContentLoaded", () => {
       "touchstart",
       (e) => {
         if (e.touches.length > 0) {
-          updateCoordinates(e.touches[0].clientX, e.touches[0].clientY);
+          mouse.x = e.touches[0].clientX * dpr;
+          mouse.y = e.touches[0].clientY * dpr;
         }
       },
       { passive: true }
@@ -974,7 +939,8 @@ document.addEventListener("DOMContentLoaded", () => {
       "touchmove",
       (e) => {
         if (e.touches.length > 0) {
-          updateCoordinates(e.touches[0].clientX, e.touches[0].clientY);
+          mouse.x = e.touches[0].clientX * dpr;
+          mouse.y = e.touches[0].clientY * dpr;
         }
       },
       { passive: true }
@@ -984,19 +950,24 @@ document.addEventListener("DOMContentLoaded", () => {
       mouse.y = -9999;
     });
 
+    // Pausa inteligente si la pestaña no está activa
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden && animId) {
-        cancelAnimationFrame(animId);
-        animId = null;
-      } else if (!document.hidden && isVisible && !animId) {
-        animId = requestAnimationFrame(step);
+      if (document.hidden) {
+        isRunning = false;
+        if (animId) {
+          cancelAnimationFrame(animId);
+          animId = null;
+        }
+      } else {
+        isRunning = true;
+        if (!animId) {
+          animId = requestAnimationFrame(step);
+        }
       }
     });
 
-    // Iniciar
+    // Iniciar animación global
     resize();
-    if (isVisible) {
-      animId = requestAnimationFrame(step);
-    }
+    animId = requestAnimationFrame(step);
   })();
 });
