@@ -792,44 +792,70 @@ header#mainNav {
   color: rgba(255, 255, 255, 0.8);
 }
 
-/* Panel SCADA de Telemetría (Opción 2) en Cristal Blanco */
-.hud-scada-box {
+/* --- Barra de Estado con Silueta Técnica de Broca PDC (Drill Bit) --- */
+.drill-bit-status-bar {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.6rem 2.5rem 0.6rem 1.15rem;
   background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(15, 23, 42, 0.12);
-  border-radius: 12px;
-  padding: 1.25rem 1.5rem;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  border-right: none;
+  border-radius: 9999px 0 0 9999px;
+  /* Silueta angular tipo Broca de Perforación (corte en punta de corte / chevron) */
+  clip-path: polygon(0% 0%, calc(100% - 22px) 0%, 100% 50%, calc(100% - 22px) 100%, 0% 100%, 0% 0%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.04);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #334155;
+  transition: all 0.3s ease;
 }
 
-[data-theme="dark"] .hud-scada-box {
-  background: rgba(14, 19, 28, 0.85);
-  border-color: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+[data-theme="dark"] .drill-bit-status-bar {
+  background: rgba(14, 19, 28, 0.88);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
 }
 
-.hud-scada-corner-tl {
+/* Filo Cortador Esmeralda en la Punta de la Broca */
+.drill-bit-status-bar::after {
+  content: "";
   position: absolute;
-  top: -1px;
-  left: -1px;
-  width: 14px;
-  height: 14px;
-  border-top: 2px solid var(--brand);
-  border-left: 2px solid var(--brand);
-  border-top-left-radius: 4px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 22px;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-light) 100%);
+  clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+  filter: drop-shadow(0 0 8px rgba(0, 104, 73, 0.6));
+  pointer-events: none;
 }
 
-.hud-scada-corner-br {
-  position: absolute;
-  bottom: -1px;
-  right: -1px;
-  width: 14px;
-  height: 14px;
-  border-bottom: 2px solid var(--brand);
-  border-right: 2px solid var(--brand);
-  border-bottom-right-radius: 4px;
+@keyframes drillBitRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-drill-spin {
+  animation: drillBitRotate 8s linear infinite;
+}
+
+@media (max-width: 640px) {
+  .drill-bit-status-bar {
+    padding: 0.5rem 1.75rem 0.5rem 0.75rem;
+    clip-path: polygon(0% 0%, calc(100% - 16px) 0%, 100% 50%, calc(100% - 16px) 100%, 0% 100%, 0% 0%);
+    font-size: 10px;
+  }
+  .drill-bit-status-bar::after {
+    width: 16px;
+  }
 }
 
 /* Barra Inferior de Control de Telemetría (HUD Dock) en Cristal Blanco */

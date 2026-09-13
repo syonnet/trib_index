@@ -107,10 +107,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function animateHero() {
     if (typeof gsap === "undefined") return;
     const tl = gsap.timeline();
-    tl.from(".hud-top-bar", {
+    tl.from(".drill-bit-status-bar", {
       opacity: 0,
       y: -15,
-      duration: 0.5,
+      duration: 0.6,
       ease: "power3.out",
     })
       .from(
@@ -134,11 +134,6 @@ document.addEventListener("DOMContentLoaded", () => {
         "-=0.3"
       )
       .from(
-        "#heroSpecCardContainer",
-        { opacity: 0, x: 20, duration: 0.7, ease: "power3.out" },
-        "-=0.4"
-      )
-      .from(
         ".interactive-hotspot",
         {
           opacity: 0,
@@ -147,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
           duration: 0.8,
           ease: "back.out(1.7)",
         },
-        "-=0.5"
+        "-=0.4"
       )
       .from(
         "#heroDock",
@@ -157,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================
-  // HERO SLIDER & TELEMETRY CONTROLLER (Híbrido 2 + 3)
+  // HERO SLIDER & DRILL-BIT TELEMETRY CONTROLLER
   // ==========================================
   const heroSlides = document.querySelectorAll(
     ".hero-hybrid-background .hero-slide, .hero-hotspot-background .hero-slide"
@@ -165,8 +160,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const hudTabs = document.querySelectorAll(".hud-dock-tab");
   const hotspotCounter = document.getElementById("hotspotCounter");
   const hudCoords = document.getElementById("hudCoords");
-  const hudService = document.getElementById("hudService");
-  const hudRig = document.getElementById("hudRig");
+  const hudDrillBit = document.getElementById("hudDrillBit");
+  const hudDrillRop = document.getElementById("hudDrillRop");
   const hudDepth = document.getElementById("hudDepth");
   const hs1Title = document.getElementById("hs1Title");
   const hs1Desc = document.getElementById("hs1Desc");
@@ -225,15 +220,15 @@ document.addEventListener("DOMContentLoaded", () => {
       hotspotCounter.textContent = `0${currentSlide + 1} / 0${heroSlides.length}`;
     }
 
-    // Actualizar Coordenadas GPS y Telemetría SCADA
+    // Actualizar Coordenadas GPS y Telemetría de Perforación (Broca PDC, ROP, Profundidad y Formación)
     if (hudCoords && activeSlide.dataset.coord) {
       hudCoords.textContent = `COORD: ${activeSlide.dataset.coord}`;
     }
-    if (hudService && activeSlide.dataset.service) {
-      hudService.textContent = activeSlide.dataset.service;
+    if (hudDrillBit && activeSlide.dataset.bit) {
+      hudDrillBit.textContent = activeSlide.dataset.bit;
     }
-    if (hudRig && activeSlide.dataset.rig) {
-      hudRig.textContent = activeSlide.dataset.rig;
+    if (hudDrillRop && activeSlide.dataset.rop) {
+      hudDrillRop.textContent = activeSlide.dataset.rop;
     }
     if (hudDepth && activeSlide.dataset.depth) {
       hudDepth.textContent = activeSlide.dataset.depth;
