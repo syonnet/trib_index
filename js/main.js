@@ -107,17 +107,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function animateHero() {
     if (typeof gsap === "undefined") return;
     const tl = gsap.timeline();
-    tl.from(".drill-bit-status-bar", {
+    tl.from(".drill-bit-badge-capsule", {
       opacity: 0,
-      y: -15,
+      y: 20,
       duration: 0.6,
       ease: "power3.out",
     })
-      .from(
-        "#heroSlider .hero-badge",
-        { opacity: 0, y: 20, duration: 0.5, ease: "power3.out" },
-        "-=0.3"
-      )
       .from(
         "#heroSlider h1",
         { opacity: 0, y: 30, duration: 0.8, ease: "power3.out" },
