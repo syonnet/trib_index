@@ -1982,27 +1982,47 @@ header#mainNav {
 }
 
 #lateralRig3DWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
   will-change: transform;
   transform-origin: center top;
 }
 
-#lateralRigImg {
-  will-change: transform;
+.lateral-rig-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-width: none !important;
+  height: auto;
+  object-fit: contain;
+  object-position: top center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.45s ease, visibility 0.45s ease;
+  will-change: transform, opacity;
   transform-origin: center top;
   filter: contrast(1.08);
+  pointer-events: none;
 }
 
-/* Modo claro: Grabado técnico arquitectónico */
-[data-theme="light"] #lateralRigImg {
+.lateral-rig-layer.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Modo claro: Grabado técnico arquitectónico fotorrealista */
+[data-theme="light"] .lateral-rig-layer {
   mix-blend-mode: multiply;
 }
 
 /* Modo oscuro: Blueprint técnico luminiscente en azul acero y verde esmeralda */
 [data-theme="dark"] #lateralRigBackdrop {
-  opacity: 0.32;
+  opacity: 0.35;
 }
 
-[data-theme="dark"] #lateralRigImg {
+[data-theme="dark"] .lateral-rig-layer {
   filter: invert(0.92) hue-rotate(160deg) contrast(1.22) brightness(0.95);
   mix-blend-mode: screen;
 }

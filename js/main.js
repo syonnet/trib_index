@@ -719,11 +719,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================
-  // TORRE MONUMENTAL DE FONDO LATERAL: PARALLAX, COTAS Y GIRO 3D
+  // TORRE MONUMENTAL DE FONDO LATERAL: TRILOGÍA 3D FOTORREALISTA
   // ==========================================
-  const lateralRigImg = document.getElementById("lateralRigImg");
   const lateralRig3DWrapper = document.getElementById("lateralRig3DWrapper");
   const lateralRigLightSweep = document.getElementById("lateralRigLightSweep");
+  const rigCameraAngle = document.getElementById("rigCameraAngle");
+
+  const rigLayers = {
+    frontal: document.getElementById("lateralRigImgFrontal"),
+    lateral: document.getElementById("lateralRigImgLateral"),
+    posterior: document.getElementById("lateralRigImgPosterior"),
+  };
+
   const elevTicks = {
     crown: document.getElementById("tickCrown"),
     mast: document.getElementById("tickMast"),
@@ -750,7 +757,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  if (lateralRigImg && lateralRig3DWrapper) {
+  const setActiveRigCamera = (camKey, angleText) => {
+    Object.keys(rigLayers).forEach((key) => {
+      const img = rigLayers[key];
+      if (!img) return;
+      if (key === camKey) {
+        img.classList.add("active");
+      } else {
+        img.classList.remove("active");
+      }
+    });
+    if (rigCameraAngle && angleText) {
+      rigCameraAngle.textContent = angleText;
+    }
+  };
+
+  if (lateralRig3DWrapper && (rigLayers.frontal || rigLayers.lateral || rigLayers.posterior)) {
     ScrollTrigger.create({
       start: "top top",
       end: "bottom bottom",
@@ -758,25 +780,39 @@ document.addEventListener("DOMContentLoaded", () => {
         const p = self.progress; // 0.0 a 1.0
 
         // 1. Descenso vertical Parallax a lo largo de toda la página
-        const imgHeight = lateralRigImg.offsetHeight || 2600;
+        // La altura de cualquiera de las capas 3D (todas miden 1344 x 3172 px)
+        const refImg = rigLayers.frontal || rigLayers.lateral || rigLayers.posterior;
+        const imgHeight = (refImg && refImg.offsetHeight) || 2600;
         const windowHeight = window.innerHeight;
         const maxTravel = Math.max(0, imgHeight - windowHeight);
         const yOffset = -p * maxTravel;
 
-        // 2. Giro axial tridimensional (rotateY) suave y continuo mientras la página baja
-        const rotationY = Math.sin(p * Math.PI * 2.5) * 20;
-        const tiltZ = Math.sin(p * Math.PI * 1.5) * 1.5;
+        // Desplazamos las tres capas sincronizadas verticalmente
+        Object.values(rigLayers).forEach((img) => {
+          if (img) img.style.transform = `translate3d(0, ${yOffset.toFixed(1)}px, 0)`;
+        });
 
-        lateralRigImg.style.transform = `translate3d(0, ${yOffset.toFixed(1)}px, 0)`;
+        // 2. Giro axial tridimensional (rotateY) continuo en 3D
+        const rotationY = Math.sin(p * Math.PI * 2.5) * 18;
+        const tiltZ = Math.sin(p * Math.PI * 1.5) * 1.4;
         lateralRig3DWrapper.style.transform = `perspective(1400px) rotateY(${rotationY.toFixed(2)}deg) rotateZ(${tiltZ.toFixed(2)}deg)`;
 
-        // 3. Haz de luz especular dinámico que se desliza por el metal al girar
+        // 3. Haz de luz especular dinámico que viaja sobre las vigas de acero
         if (lateralRigLightSweep) {
-          const sweepX = -rotationY * 3.8;
-          lateralRigLightSweep.style.transform = `translateX(${sweepX.toFixed(1)}%)`;
+          const sweepX = -rotationY * 3.6;
+          lateralRigLightSweep.style.transform = `translate3d(${sweepX.toFixed(1)}%, ${yOffset.toFixed(1)}px, 0)`;
         }
 
-        // 4. Sincronización de Cotas de Elevación HUD según profundidad
+        // 4. Conmutación de Ángulo de Cámara 3D (Frontal Oblicua -> Lateral Frontal -> Posterior Oblicua)
+        if (p < 0.38) {
+          setActiveRigCamera("frontal", "CAM 315° NW");
+        } else if (p < 0.72) {
+          setActiveRigCamera("lateral", "CAM 000° N");
+        } else {
+          setActiveRigCamera("posterior", "CAM 045° NE");
+        }
+
+        // 5. Sincronización de Cotas de Elevación HUD según profundidad en pozo
         if (p < 0.22) {
           setActiveElevTick("crown");
         } else if (p < 0.48) {
