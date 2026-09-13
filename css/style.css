@@ -552,6 +552,54 @@ header#mainNav {
   color: #fff;
 }
 
+/* --- Hero CTA Buttons: Refinamiento Táctil y Responsivo --- */
+.hero-btn {
+  border-radius: 12px !important;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.hero-btn:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 639px) {
+  .hero-cta-row {
+    width: 100%;
+    gap: 8px !important;
+  }
+  .hero-btn {
+    width: 100% !important;
+    height: 44px;
+    padding: 0.65rem 1.25rem !important;
+    font-size: 0.75rem !important;
+    border-radius: 10px !important;
+    justify-content: center;
+  }
+  .hero-btn svg,
+  .hero-btn i {
+    width: 14px !important;
+    height: 14px !important;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .hero-cta-row {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+  .hero-btn {
+    width: auto !important;
+    height: 46px;
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.8125rem !important;
+    border-radius: 10px !important;
+  }
+}
+
 /* --- Hero Section: Híbrido 2 + 3 en Diseño Claro Luminoso (Apple Precision Light + SCADA + Hotspots) --- */
 .hero-hybrid-section {
   position: relative;
@@ -628,6 +676,17 @@ header#mainNav {
   inset: 0;
   z-index: 20;
   pointer-events: none;
+}
+
+/* Ocultar hotspots y fichas técnicas exclusivamente en responsive (<1024px: celulares, tablets, iPads) */
+@media (max-width: 1023px) {
+  .hotspots-layer,
+  .interactive-hotspot {
+    display: none !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
 }
 
 .interactive-hotspot {
@@ -1081,42 +1140,138 @@ header#mainNav {
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
 }
 
-@media (max-width: 640px) {
+/* =========================================================================
+   MEDIA QUERIES DE RESOLUCIÓN ESPECÍFICAS (MÓVILES, TABLETS, IPADS & DESKTOP)
+   ========================================================================= */
+
+/* --- 1. CELULARES / SMARTPHONES (Pantallas compactas hasta 639px: iPhone, Galaxy, etc.) --- */
+@media (max-width: 639px) {
+  /* Distribución de la Card de Datos (HUD Dock): Cuadrícula 2x2 simétrica que aprovecha el ancho completo sin cortarse */
   .hud-dock-wrapper {
-    display: flex;
-    overflow-x: auto;
-    gap: 6px;
-    padding: 6px;
-    border-radius: 14px;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6px !important;
+    padding: 6px !important;
+    border-radius: 14px !important;
+    overflow: visible !important;
+    margin-top: 8px;
   }
-  .hud-dock-wrapper::-webkit-scrollbar {
-    display: none;
-  }
+
   .hud-dock-tab {
-    flex: 1 0 auto;
-    min-width: 130px;
-    min-height: 48px;
-    padding: 6px 10px;
+    min-height: 46px !important;
+    padding: 6px 8px !important;
+    border-radius: 10px !important;
   }
+
+  .hud-dock-tab .hud-tab-meta {
+    margin-bottom: 2px !important;
+  }
+
+  .hud-dock-tab .hud-tab-num {
+    font-size: 9px !important;
+  }
+
+  .hud-dock-tab .hud-tab-badge,
+  .hud-dock-tab .hud-tab-sub {
+    font-size: 8px !important;
+    padding: 1px 4px !important;
+  }
+
   .hud-dock-tab .hud-tab-name {
-    font-size: 11px;
-    font-weight: 700;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .hud-dock-tab .hud-tab-meter {
+    margin-top: 4px !important;
+    height: 2px !important;
   }
 }
 
-@media (min-width: 641px) and (max-width: 840px) {
+/* --- 2. MÓVILES GRANDES / PHABLETS (640px a 767px) --- */
+@media (min-width: 640px) and (max-width: 767px) {
   .hud-dock-wrapper {
-    grid-template-columns: repeat(2, 1fr);
-    border-radius: 12px;
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 6px !important;
+    padding: 6px !important;
+    border-radius: 14px !important;
+  }
+
+  .hud-dock-tab {
+    min-height: 48px !important;
+    padding: 6px 8px !important;
+  }
+
+  .hud-dock-tab .hud-tab-name {
+    font-size: 11px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
+/* --- 3. TABLETS E IPADS EN VERTICAL (768px a 1023px) ---
+   (iPad Mini 768px, iPad 10.2"/10.9" 810-820px, iPad Air, iPad Pro 11" 834px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-hybrid-content > div {
+    padding-top: 7.5rem !important;
+    padding-bottom: 1.75rem !important;
+  }
+
+  .hud-dock-wrapper {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 8px !important;
+    padding: 8px !important;
+    border-radius: 16px !important;
+  }
+
+  .hud-dock-tab {
+    min-height: 54px !important;
+    padding: 8px 12px !important;
+    border-radius: 10px !important;
+  }
+
+  .hud-dock-tab .hud-tab-name {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+  }
+}
+
+/* --- 4. TABLETS GRANDES E IPADS PRO EN HORIZONTAL (1024px a 1279px) ---
+   (iPad Pro 12.9", iPad Air horizontal, monitores compactos) */
 @media (min-width: 1024px) and (max-width: 1279px) {
   .drill-string-gauge {
-    transform: scale(0.9);
+    transform: scale(0.85);
     transform-origin: right center;
+  }
+
+  .hud-dock-wrapper {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 8px !important;
+    padding: 8px !important;
+    border-radius: 16px !important;
+  }
+
+  .hud-dock-tab {
+    min-height: 56px !important;
+    padding: 8px 12px !important;
+  }
+}
+
+/* --- 5. DESKTOP & MONITORES AMPLIOS (min-width: 1280px) --- */
+@media (min-width: 1280px) {
+  .hud-dock-wrapper {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 10px !important;
+    padding: 10px !important;
+    border-radius: 16px !important;
   }
 }
 

@@ -329,8 +329,8 @@
             <div class="hybrid-light-vignette"></div>
         </div>
 
-        <!-- Capa de Micro-Puntos Interactivos (Hotspots) en Cristal Blanco & Esmeralda -->
-        <div class="hotspots-layer" id="hotspotsLayer">
+        <!-- Capa de Micro-Puntos Interactivos (Hotspots) en Cristal Blanco & Esmeralda: visible exclusivamente en Desktop (>=1024px) -->
+        <div class="hotspots-layer hidden lg:block" id="hotspotsLayer">
             <!-- Hotspot 1: Mástil / Torre (Centro Superior Derecho) -->
             <div class="interactive-hotspot light-hotspot" style="top: 26%; left: 62%;" data-hotspot="1">
                 <button class="hotspot-trigger" aria-label="Inspeccionar mástil de perforación" title="Ver detalle del mástil">
@@ -417,16 +417,16 @@
 
                         <!-- Botones y Guía de Interacción -->
                         <div class="flex flex-col gap-3 sm:gap-4">
-                            <div class="hero-cta-row flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-                                <a href="#soluciones" class="btn-primary w-full sm:w-auto text-center justify-center">
+                            <div class="hero-cta-row flex flex-col sm:flex-row sm:items-center gap-3">
+                                <a href="#soluciones" class="btn-primary hero-btn w-full sm:w-auto text-center justify-center">
                                     <span>Nuestras Soluciones</span>
                                     <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
                                 </a>
-                                <a href="#contacto" class="btn-outline w-full sm:w-auto text-center justify-center">
+                                <a href="#contacto" class="btn-outline hero-btn w-full sm:w-auto text-center justify-center">
                                     <span>Solicitar Ficha Técnica</span>
                                 </a>
                             </div>
-                            <div class="inline-flex items-center gap-2 text-xs font-mono text-slate-600 dark:text-brand-light tracking-wide">
+                            <div class="hidden lg:inline-flex items-center gap-2 text-xs font-mono text-slate-600 dark:text-brand-light tracking-wide">
                                 <span class="w-2 h-2 rounded-full bg-brand dark:bg-brand-light animate-pulse flex-shrink-0"></span>
                                 <span class="text-[11px] sm:text-xs">Toca los puntos <b class="text-brand dark:text-brand-light font-bold bg-white dark:bg-white/10 px-1 py-0.5 rounded shadow-xs border border-slate-200 dark:border-white/10">(+)</b> en el taladro para ver componentes</span>
                             </div>
