@@ -153,14 +153,20 @@
 
             <!-- Action Button, Theme Toggle & Hamburger -->
             <div class="flex items-center gap-3">
-                <!-- Theme Toggle Button -->
-                <button class="theme-toggle-btn" id="themeToggle" aria-label="Cambiar modo claro / oscuro" title="Cambiar tema claro/oscuro">
-                    <i data-lucide="sun" class="w-4 h-4 hidden" id="themeSunIcon"></i>
-                    <i data-lucide="moon" class="w-4 h-4" id="themeMoonIcon"></i>
-                </button>
+                <!-- Theme Segmented Switch (Apple Style: Claro / Oscuro por separado) -->
+                <div class="theme-segmented-switch" id="themeSegmentedSwitch" role="group" aria-label="Selector de tema">
+                    <button type="button" class="btn-theme-light active" id="btnThemeLight" title="Modo Claro" aria-label="Activar modo claro">
+                        <i data-lucide="sun" class="w-3.5 h-3.5"></i>
+                        <span class="hidden sm:inline">Claro</span>
+                    </button>
+                    <button type="button" class="btn-theme-dark" id="btnThemeDark" title="Modo Oscuro" aria-label="Activar modo oscuro">
+                        <i data-lucide="moon" class="w-3.5 h-3.5"></i>
+                        <span class="hidden sm:inline">Oscuro</span>
+                    </button>
+                </div>
 
                 <a href="#contacto" class="hidden md:inline-flex btn-primary !py-2.5 !px-5 text-xs">
-                    Cotizar Servicios
+                    Cotizar
                     <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                 </a>
                 <button class="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 focus:outline-none" id="hamburger" aria-label="Abrir menú">
@@ -176,8 +182,20 @@
         <div class="w-full max-w-sm mx-auto flex flex-col justify-between h-full">
             <div class="mb-8">
                 <div class="flex items-center justify-between mb-8">
-                    <img src="assets/logoWhite.png" alt="TribOil" class="h-8 w-auto opacity-90 dark-logo">
-                    <img src="assets/logoGreen.png" alt="TribOil" class="h-8 w-auto light-logo">
+                    <div>
+                        <img src="assets/logoWhite.png" alt="TribOil" class="h-8 w-auto opacity-90 dark-logo">
+                        <img src="assets/logoGreen.png" alt="TribOil" class="h-8 w-auto light-logo">
+                    </div>
+                    <div class="theme-segmented-switch" role="group" aria-label="Selector de tema móvil">
+                        <button type="button" class="btn-theme-light" title="Modo Claro" aria-label="Activar modo claro">
+                            <i data-lucide="sun" class="w-3.5 h-3.5"></i>
+                            <span>Claro</span>
+                        </button>
+                        <button type="button" class="btn-theme-dark" title="Modo Oscuro" aria-label="Activar modo oscuro">
+                            <i data-lucide="moon" class="w-3.5 h-3.5"></i>
+                            <span>Oscuro</span>
+                        </button>
+                    </div>
                 </div>
                 <nav class="flex flex-col gap-4">
                     <a href="#nosotros" class="py-2.5 border-b border-slate-200 dark:border-white/5 text-xl font-medium text-slate-800 dark:text-white/80 hover:text-brand dark:hover:text-white">Nosotros</a>
@@ -208,56 +226,54 @@
 
     <!-- Hero Section con Estética Apple Keynote / Industrial Pro -->
     <section class="hero-slider" id="heroSlider">
-        <!-- Diapositivas de fondo con alta resolución (Optimizadas WebP Local) -->
+        <!-- Diapositivas de fondo con alta resolución (Optimizadas WebP Local sin velo degradado) -->
         <div class="hero-slide active" data-index="0" data-service="Gerenciamiento de Campos" data-rig="Flota Estratégica" data-depth="Amazonía Ecuatoriana">
             <img src="assets/images/hero_1.webp" alt="Operaciones petroleras nocturnas en campo">
-            <div class="hero-overlay"></div>
         </div>
         <div class="hero-slide" data-index="1" data-service="Perforación de Pozos" data-rig="Taladro 1000 - 1500 HP" data-depth="Hasta 16,000+ ft">
             <img src="assets/images/hero_2.webp" alt="Taladro pesado de perforación en la Amazonía">
-            <div class="hero-overlay"></div>
         </div>
         <div class="hero-slide" data-index="2" data-service="Workover & Reacondicionamiento" data-rig="Taladros 550 - 750 HP" data-depth="Intervención Rápida">
             <img src="assets/images/hero_3.webp" alt="Líneas de flujo y facilidades de pozo">
-            <div class="hero-overlay"></div>
         </div>
         <div class="hero-slide" data-index="3" data-service="Excelencia Operativa HSE" data-rig="Certificaciones ISO & OHSAS" data-depth="Campo Blanca Vinita">
             <img src="assets/images/hero_4.webp" alt="Equipo de ingeniería y seguridad HSE">
-            <div class="hero-overlay"></div>
         </div>
 
         <!-- Contenido Central del Hero: Jerarquía Apple Pro -->
         <div class="absolute inset-0 flex items-center z-10 pt-20 pb-32 md:pb-28">
             <div class="max-w-[1500px] mx-auto px-6 md:px-10 w-full">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
-                    <!-- Columna Principal de Texto -->
+                    <!-- Columna Principal de Texto: Enmarcada en Apple Hero Card de Alta Nitidez -->
                     <div class="lg:col-span-8 max-w-3xl">
-                        <!-- Badge Cápsula de Titanio y Vidrio -->
-                        <div class="hero-badge inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/85 dark:bg-white/[0.06] backdrop-blur-md border border-slate-200 dark:border-white/10 text-brand dark:text-brand-light text-xs font-mono tracking-wider uppercase mb-6 shadow-sm">
-                            <span class="w-2 h-2 rounded-full bg-brand dark:bg-brand-light animate-pulse"></span>
-                            Fundada en 1996 · Casi 30 Años de Rigor Upstream en Ecuador
-                        </div>
+                        <div class="apple-hero-card">
+                            <!-- Badge Cápsula de Titanio y Vidrio -->
+                            <div class="hero-badge inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-white/[0.08] backdrop-blur-md border border-slate-200/90 dark:border-white/10 text-brand dark:text-brand-light text-xs font-mono tracking-wider uppercase mb-6 shadow-sm">
+                                <span class="w-2 h-2 rounded-full bg-brand dark:bg-brand-light animate-pulse"></span>
+                                Fundada en 1996 · Casi 30 Años de Rigor Upstream en Ecuador
+                            </div>
 
-                        <!-- Titular Monumental Apple -->
-                        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.04] mb-6 text-slate-900 dark:text-white" id="heroHeadline">
-                            Ingeniería Upstream. <br class="hidden sm:inline" />
-                            <span class="text-slate-500 dark:text-white/40">Potencia y Rigor en Pozo.</span>
-                        </h1>
+                            <!-- Titular Monumental Apple -->
+                            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.08] mb-5 text-slate-900 dark:text-white" id="heroHeadline">
+                                Ingeniería Upstream. <br class="hidden sm:inline" />
+                                <span class="text-slate-500 dark:text-white/40">Potencia y Rigor en Pozo.</span>
+                            </h1>
 
-                        <!-- Bajada de Copy Pro -->
-                        <p class="text-slate-600 dark:text-white/75 text-base sm:text-lg lg:text-xl font-normal leading-relaxed max-w-2xl mb-8" id="heroDescription">
-                            Gerenciamiento integral de campos petroleros, taladros de perforación profunda y servicios de reacondicionamiento (workover) con el estándar más alto de seguridad y productividad en la Amazonía ecuatoriana.
-                        </p>
+                            <!-- Bajada de Copy Pro -->
+                            <p class="text-slate-700 dark:text-white/80 text-base sm:text-lg font-normal leading-relaxed max-w-2xl mb-8" id="heroDescription">
+                                Gerenciamiento integral de campos petroleros, taladros de perforación profunda y servicios de reacondicionamiento (workover) con el estándar más alto de seguridad y productividad en la Amazonía ecuatoriana.
+                            </p>
 
-                        <!-- Botones Cápsula Apple -->
-                        <div class="hero-cta-row flex flex-wrap items-center gap-4">
-                            <a href="#soluciones" class="btn-primary">
-                                <span>Nuestras Soluciones</span>
-                                <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
-                            </a>
-                            <a href="#contacto" class="btn-outline">
-                                <span>Solicitar Ficha Técnica</span>
-                            </a>
+                            <!-- Botones Cápsula Apple -->
+                            <div class="hero-cta-row flex flex-wrap items-center gap-4">
+                                <a href="#soluciones" class="btn-primary">
+                                    <span>Nuestras Soluciones</span>
+                                    <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
+                                </a>
+                                <a href="#contacto" class="btn-outline">
+                                    <span>Solicitar Ficha Técnica</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
 

@@ -40,28 +40,23 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================
-  // GESTOR DE TEMA (CLARO / OSCURO)
+  // GESTOR DE TEMA (CLARO / OSCURO POR SEPARADO)
   // ==========================================
-  const themeToggle = document.getElementById("themeToggle");
-  const themeSunIcon = document.getElementById("themeSunIcon");
-  const themeMoonIcon = document.getElementById("themeMoonIcon");
+  const lightButtons = document.querySelectorAll(".btn-theme-light");
+  const darkButtons = document.querySelectorAll(".btn-theme-dark");
 
   function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
+      darkButtons.forEach((btn) => btn.classList.add("active"));
+      lightButtons.forEach((btn) => btn.classList.remove("active"));
     } else {
       document.documentElement.classList.remove("dark");
+      lightButtons.forEach((btn) => btn.classList.add("active"));
+      darkButtons.forEach((btn) => btn.classList.remove("active"));
     }
     localStorage.setItem("triboil_theme", theme);
-
-    if (theme === "light") {
-      themeSunIcon?.classList.remove("hidden");
-      themeMoonIcon?.classList.add("hidden");
-    } else {
-      themeSunIcon?.classList.add("hidden");
-      themeMoonIcon?.classList.remove("hidden");
-    }
 
     if (typeof lucide !== "undefined") {
       lucide.createIcons();
@@ -76,10 +71,16 @@ document.addEventListener("DOMContentLoaded", () => {
     applyTheme("light");
   }
 
-  themeToggle?.addEventListener("click", () => {
-    const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
-    const nextTheme = currentTheme === "dark" ? "light" : "dark";
-    applyTheme(nextTheme);
+  lightButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      applyTheme("light");
+    });
+  });
+
+  darkButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      applyTheme("dark");
+    });
   });
 
   // ==========================================
