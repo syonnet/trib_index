@@ -552,78 +552,120 @@ header#mainNav {
   color: #fff;
 }
 
-/* --- Hero Slider --- */
-.hero-slider {
+/* --- Hero Cinema Section (Opción 1: Viewport Panorámico Apple / Leica) --- */
+.hero-cinema-section {
   position: relative;
   width: 100%;
-  min-height: 100dvh;
+  background: var(--bg-body);
+  transition: background-color 0.3s ease;
   overflow: hidden;
-  display: flex;
-  align-items: center;
 }
 
-.hero-slide {
+.cinema-viewport-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.cinema-viewport {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.14), 0 0 0 1px rgba(255, 255, 255, 0.9);
+  background: #0b0f15;
+}
+
+@media (min-width: 1024px) {
+  .cinema-viewport {
+    height: 560px;
+    border-radius: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .cinema-viewport {
+    height: 360px;
+    border-radius: 20px;
+  }
+}
+
+[data-theme="dark"] .cinema-viewport {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.cinema-viewport .hero-slide {
   position: absolute;
   inset: 0;
   opacity: 0;
   transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.hero-slide.active {
+.cinema-viewport .hero-slide.active {
   opacity: 1;
 }
 
-.hero-slide img {
+.cinema-viewport .hero-slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.04);
-  transition: transform 6s ease-out;
+  transform: scale(1.05);
+  transition: transform 7s ease-out;
 }
 
-.hero-slide.active img {
+.cinema-viewport .hero-slide.active img {
   transform: scale(1);
 }
 
-.hero-overlay {
-  display: none !important;
-}
-
-/* Apple Pro Floating Hero Card (Fotos 100% nítidas y textos con máxima legibilidad) */
-.apple-hero-card {
-  position: relative;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  border-radius: 28px;
-  padding: 2.25rem 2.5rem;
-  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.7);
-  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+/* Micro-Visor Óptico Leica / Cinema Viewfinder */
+.cinema-viewfinder-tag {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: rgba(11, 15, 21, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  transition: all 0.3s ease;
 }
 
 @media (max-width: 640px) {
-  .apple-hero-card {
-    padding: 1.5rem 1.25rem;
-    border-radius: 20px;
+  .cinema-viewfinder-tag {
+    bottom: 0.75rem;
+    left: 0.75rem;
+    padding: 6px 12px;
   }
 }
 
-[data-theme="dark"] .apple-hero-card {
-  background: rgba(11, 15, 21, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 28px 65px -15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+/* Dock de Control Panorámico */
+.cinema-dock-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.cinema-dock-wrapper .apple-hero-dock {
+  position: relative;
+  bottom: auto;
+  left: auto;
+  transform: none;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 /* Apple Keynote Floating Dock / Segmented Controller */
 .apple-hero-dock {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 94%;
-  max-width: 1180px;
-  z-index: 30;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);

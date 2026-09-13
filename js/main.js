@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function animateHero() {
+    if (typeof gsap === "undefined") return;
     const tl = gsap.timeline();
     tl.from("#heroSlider .hero-badge", {
       opacity: 0,
@@ -114,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .from(
         "#heroSlider h1",
-        { opacity: 0, y: 35, duration: 0.8, ease: "power3.out" },
+        { opacity: 0, y: 30, duration: 0.8, ease: "power3.out" },
         "-=0.3"
       )
       .from(
@@ -128,26 +129,24 @@ document.addEventListener("DOMContentLoaded", () => {
         "-=0.3"
       )
       .from(
-        "#heroSpecCardContainer",
-        { opacity: 0, y: 20, duration: 0.6, ease: "power3.out" },
-        "-=0.4"
+        ".cinema-viewport",
+        { opacity: 0, y: 30, scale: 0.98, duration: 0.9, ease: "power3.out" },
+        "-=0.3"
       )
       .from(
         "#heroDock",
-        { opacity: 0, y: 30, duration: 0.6, ease: "power3.out" },
-        "-=0.3"
+        { opacity: 0, y: 20, duration: 0.6, ease: "power3.out" },
+        "-=0.4"
       );
   }
 
   // ==========================================
-  // HERO SLIDER (Apple Keynote Pro Controller)
+  // HERO SLIDER (Cinema Viewport Controller)
   // ==========================================
   const heroSlides = document.querySelectorAll(".hero-slide");
   const dockPills = document.querySelectorAll(".hero-dock-pill");
-  const specSlideIndex = document.getElementById("specSlideIndex");
-  const specService = document.getElementById("specService");
-  const specRig = document.getElementById("specRig");
-  const specDepth = document.getElementById("specDepth");
+  const cinemaSlideTag = document.getElementById("cinemaSlideTag");
+  const cinemaSlideSub = document.getElementById("cinemaSlideSub");
 
   let currentSlide = 0;
   let sliderInterval;
@@ -174,22 +173,24 @@ document.addEventListener("DOMContentLoaded", () => {
       dockPills[currentSlide].setAttribute("aria-selected", "true");
     }
 
-    // Actualizar Ficha Técnica Flotante Apple Spec Card con micro-transición
-    if (specSlideIndex) {
-      specSlideIndex.textContent = `0${currentSlide + 1} / 0${heroSlides.length}`;
-    }
+    // Actualizar Micro-Visor Óptico Leica / Cinema Viewfinder Tag
+    if (cinemaSlideTag && activeSlide.dataset.service) {
+      const formattedNum = currentSlide + 1 < 10 ? `0${currentSlide + 1}` : currentSlide + 1;
+      const serviceName = activeSlide.dataset.service.toUpperCase();
+      const rigInfo = (activeSlide.dataset.rig || "").toUpperCase();
+      const depthInfo = (activeSlide.dataset.depth || "").toUpperCase();
 
-    if (specService && activeSlide.dataset.service) {
       if (typeof gsap !== "undefined") {
-        gsap.to([specService, specRig, specDepth], {
+        gsap.to([cinemaSlideTag, cinemaSlideSub], {
           opacity: 0,
-          y: -4,
+          y: -3,
           duration: 0.2,
           onComplete: () => {
-            specService.textContent = activeSlide.dataset.service || "";
-            if (specRig) specRig.textContent = activeSlide.dataset.rig || "";
-            if (specDepth) specDepth.textContent = activeSlide.dataset.depth || "";
-            gsap.to([specService, specRig, specDepth], {
+            cinemaSlideTag.textContent = `${formattedNum} // ${serviceName}`;
+            if (cinemaSlideSub) {
+              cinemaSlideSub.textContent = rigInfo && depthInfo ? `${rigInfo} · ${depthInfo}` : rigInfo || depthInfo;
+            }
+            gsap.to([cinemaSlideTag, cinemaSlideSub], {
               opacity: 1,
               y: 0,
               duration: 0.3,
@@ -199,9 +200,10 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
       } else {
-        specService.textContent = activeSlide.dataset.service || "";
-        if (specRig) specRig.textContent = activeSlide.dataset.rig || "";
-        if (specDepth) specDepth.textContent = activeSlide.dataset.depth || "";
+        cinemaSlideTag.textContent = `${formattedNum} // ${serviceName}`;
+        if (cinemaSlideSub) {
+          cinemaSlideSub.textContent = rigInfo && depthInfo ? `${rigInfo} · ${depthInfo}` : rigInfo || depthInfo;
+        }
       }
     }
 
