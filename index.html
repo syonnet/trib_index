@@ -8,6 +8,26 @@
     <meta name="description" content="Especialistas en gerenciamiento integral de campos petroleros, taladros de perforación y taladros de workover en Ecuador. Operaciones seguras y sostenibles.">
     <link rel="icon" type="image/png" href="assets/fav.png">
 
+    <!-- Metadatos Open Graph (LinkedIn, WhatsApp, Teams, Redes Sociales) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.triboilgas.com/">
+    <meta property="og:title" content="TribOil — Gerenciamiento de Campos y Servicios Petroleros">
+    <meta property="og:description" content="Líder en perforación profunda, servicios de workover y gerenciamiento integral de campos petroleros en la Cuenca Amazónica del Ecuador.">
+    <meta property="og:image" content="https://i.postimg.cc/MZLB76Lg/23.jpg">
+    <meta property="og:locale" content="es_EC">
+    <meta property="og:site_name" content="TribOil Services">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.triboilgas.com/">
+    <meta name="twitter:title" content="TribOil — Gerenciamiento de Campos y Servicios Petroleros">
+    <meta name="twitter:description" content="Líder en perforación profunda, servicios de workover y gerenciamiento integral de campos petroleros en la Cuenca Amazónica del Ecuador.">
+    <meta name="twitter:image" content="https://i.postimg.cc/MZLB76Lg/23.jpg">
+
+    <!-- Canonical & Indexación -->
+    <link rel="canonical" href="https://www.triboilgas.com/">
+    <meta name="robots" content="index, follow">
+
     <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,7 +71,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body class="bg-[#f8fafc] text-slate-900 antialiased selection:bg-brand selection:text-white">
+<body class="bg-[#fbfbfd] dark:bg-[#0b0f15] text-slate-900 dark:text-[#f3f4f6] antialiased selection:bg-brand selection:text-white">
 
     <!-- Micro-textura Noise -->
     <div class="noise"></div>
@@ -292,30 +312,19 @@
         </div>
 
         <!-- Viñeta de degradado suave hacia la izquierda para que el contenido central se lea impecable -->
-        <div class="absolute inset-0 bg-gradient-to-r from-[#f8fafc] via-[#f8fafc]/40 to-transparent dark:from-[#0b0f15] dark:via-[#0b0f15]/40 dark:to-transparent pointer-events-none z-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-[#fbfbfd] via-[#fbfbfd]/40 to-transparent dark:from-[#0b0f15] dark:via-[#0b0f15]/40 dark:to-transparent pointer-events-none z-10"></div>
         <!-- Viñetas superior e inferior -->
-        <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-[#f8fafc] dark:from-[#0b0f15] to-transparent pointer-events-none z-10"></div>
-        <div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#f8fafc] dark:from-[#0b0f15] to-transparent pointer-events-none z-10"></div>
-    </div>
-
-    <!-- Preloader Rápido (<500ms) -->
-    <div class="preloader" id="preloader">
-        <div class="flex flex-col items-center gap-4">
-            <img src="assets/logoWhite.png" alt="TribOil Logo" class="preloader-logo w-36">
-            <div class="preloader-bar-track">
-                <div class="preloader-bar" id="preloaderBar"></div>
-            </div>
-            <span class="text-[10px] font-mono tracking-widest uppercase text-white/40">Iniciando plataforma operativa...</span>
-        </div>
+        <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-[#fbfbfd] dark:from-[#0b0f15] to-transparent pointer-events-none z-10"></div>
+        <div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#fbfbfd] dark:from-[#0b0f15] to-transparent pointer-events-none z-10"></div>
     </div>
 
     <!-- Top Bar Institucional & Accesos Rápidos -->
-    <div class="top-bar fixed top-0 left-0 w-full z-50 h-10 border-b border-slate-200/80 dark:border-white/5 bg-white/95 dark:bg-[#0e131c]/90 backdrop-blur-md hidden lg:block transition-colors duration-300">
+    <div class="top-bar fixed top-0 left-0 w-full z-50 h-10 border-b border-slate-200/80 dark:border-white/5 bg-[#fbfbfd]/95 dark:bg-[#0e131c]/90 backdrop-blur-md hidden lg:block transition-colors duration-300">
         <div class="max-w-[1500px] mx-auto h-full px-6 md:px-10 flex items-center justify-between">
             <!-- Left: Intranet Dropdown -->
             <div class="relative group h-full flex items-center">
                 <button class="flex items-center gap-2 text-[11px] font-mono uppercase tracking-wider text-slate-600 dark:text-white/60 hover:text-brand dark:hover:text-white transition-colors duration-200">
-                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-brand-light"></i>
+                    <i data-lucide="shield-check" id="intranetShield" class="w-3.5 h-3.5 text-brand-light"></i>
                     Intranet Corporativa
                     <i data-lucide="chevron-down" class="w-3 h-3 transition-transform duration-200 group-hover:rotate-180"></i>
                 </button>
@@ -353,7 +362,7 @@
                 <span class="flex items-center gap-1.5">
                     <i data-lucide="map-pin" class="w-3 h-3 text-brand-light"></i> Base El Coca & Quito, Ecuador
                 </span>
-                <span class="flex items-center gap-1.5">
+                <span class="flex items-center gap-1.5" id="topBarPhone">
                     <i data-lucide="phone" class="w-3 h-3 text-brand-light"></i> +593 (02) 3956540
                 </span>
                 <div class="flex items-center gap-2 border-l border-slate-200 dark:border-white/10 pl-4">
@@ -370,7 +379,7 @@
 
     <!-- Navigation Header -->
     <header class="fixed top-0 left-0 w-full z-[9999]" id="mainNav">
-        <div class="max-w-[1500px] mx-auto px-6 md:px-10 py-2 flex items-center justify-between">
+        <div class="max-w-[1500px] mx-auto px-6 md:px-8 py-3.5 flex items-center justify-between">
             <!-- Brand Logo Adaptativo -->
             <a href="#" class="flex items-center group">
                 <img src="assets/logoWhite.png" alt="TribOil Logo" class="h-8 md:h-8.5 w-auto object-contain dark-logo transition-transform duration-200 group-hover:scale-105">
@@ -453,23 +462,12 @@
 
             <div class="pt-6 border-t border-slate-200 dark:border-white/10">
                 <span class="text-[10px] font-mono tracking-widest uppercase text-slate-400 dark:text-white/40 block mb-3">Intranet Corporativa</span>
-                <div class="grid grid-cols-2 gap-2 text-xs text-slate-600 dark:text-white/60 mb-6">
+                <div class="grid grid-cols-2 gap-2 text-xs text-slate-600 dark:text-white/60 mb-2">
                     <a href="https://forms.office.com/pages/responsepage.aspx?id=oneFCI-_SEekK--m01noB_FftykoV9ZPjdq-xEBrY_dUM1ozNTFLREVSMVFQOE81OTNGNTM4OVJWMy4u" target="_blank" class="hover:text-brand-light">Encuesta Médica</a>
                     <a href="https://www.triboilgas.com/hesk/" target="_blank" class="hover:text-brand-light">Ticket Soporte</a>
                     <a href="http://64.190.27.46:8040/jde/E1Menu.maf?" target="_blank" class="hover:text-brand-light">JD Edwards</a>
                     <a href="https://compers.online" target="_blank" class="hover:text-brand-light">Compers TTHH</a>
                 </div>
-                <button type="button" class="btn-cotizar-rig w-full text-center btn-open-cotizador justify-center !py-3">
-                    <span class="cotizar-sheen"></span>
-                    <span class="relative z-10 flex items-center justify-center gap-2">
-                        <span class="relative flex h-2 w-2">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-80"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
-                        </span>
-                        <span class="font-bold tracking-wider text-xs uppercase text-white font-mono">Cotizar Operaciones</span>
-                        <i data-lucide="arrow-right" class="w-4 h-4 text-amber-300"></i>
-                    </span>
-                </button>
             </div>
         </div>
     </div>
@@ -575,10 +573,10 @@
                     <!-- Columna de Texto Flotante en Modo Claro (Slate 900) -->
                     <div class="lg:col-span-9 max-w-3xl">
                         <!-- Badge Cápsula de Titanio y Vidrio Blanco -->
-                        <div class="hero-badge inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 dark:bg-white/[0.08] backdrop-blur-md border border-slate-200 dark:border-white/10 text-brand dark:text-brand-light text-xs font-mono tracking-wider uppercase mb-4 sm:mb-5 shadow-sm max-w-full">
-                            <span class="w-2 h-2 rounded-full bg-brand dark:bg-brand-light animate-pulse flex-shrink-0"></span>
-                            <span class="truncate">Fundada en 1996 · Rigor Upstream</span>
-                            <span class="inline-flex lg:hidden items-center gap-1 ml-1 px-2 py-0.5 rounded-full bg-brand/10 dark:bg-brand/20 text-brand dark:text-brand-light font-bold text-[10px] flex-shrink-0">
+                        <div class="hero-badge inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white/95 dark:bg-white/[0.08] backdrop-blur-md border border-slate-200 dark:border-white/10 text-brand dark:text-brand-light text-[10.5px] sm:text-xs font-mono tracking-wide sm:tracking-wider uppercase mb-3.5 sm:mb-5 shadow-sm max-w-full">
+                            <span class="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-brand dark:bg-brand-light animate-pulse flex-shrink-0"></span>
+                            <span class="whitespace-nowrap">Fundada en 1996 · Rigor Upstream</span>
+                            <span class="inline-flex lg:hidden items-center gap-1 ml-1 px-1.5 py-0.5 rounded-full bg-brand/10 dark:bg-brand/20 text-brand dark:text-brand-light font-bold text-[9px] sm:text-[10px] flex-shrink-0">
                                 <span class="w-1.5 h-1.5 rounded-full bg-brand animate-ping"></span>
                                 <span id="mobileDepthBadge">12,450 FT</span>
                             </span>
@@ -590,25 +588,18 @@
                             <span class="text-slate-500 dark:text-white/45">Potencia y Rigor en Pozo.</span>
                         </h1>
 
-                        <!-- Bajada de Copy Pro -->
-                        <p class="text-slate-700 dark:text-white/80 text-sm sm:text-base lg:text-lg font-normal leading-relaxed max-w-2xl mb-6 sm:mb-8 line-clamp-3 sm:line-clamp-none" id="heroDescription">
+                        <!-- Bajada de Copy Pro (Texto Completo sin recortes) -->
+                        <p class="text-slate-700 dark:text-white/80 text-sm sm:text-base lg:text-lg font-normal leading-relaxed max-w-2xl mb-6 sm:mb-8" id="heroDescription">
                             Gerenciamiento integral de campos petroleros, taladros de perforación profunda y servicios de reacondicionamiento (workover) con el estándar más alto de seguridad y productividad en la Amazonía ecuatoriana.
                         </p>
 
-                        <!-- Botones y Guía de Interacción -->
+                        <!-- Botón Principal Elegante y Desaturado -->
                         <div class="flex flex-col gap-3 sm:gap-4">
                             <div class="hero-cta-row flex flex-col sm:flex-row sm:items-center gap-3">
-                                <a href="#soluciones" class="btn-primary hero-btn w-full sm:w-auto text-center justify-center">
-                                    <span>Nuestras Soluciones</span>
+                                <a href="#nosotros" class="btn-primary hero-btn w-full sm:w-auto text-center justify-center">
+                                    <span>Nosotros</span>
                                     <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
                                 </a>
-                                <a href="#contacto" class="btn-outline hero-btn w-full sm:w-auto text-center justify-center">
-                                    <span>Solicitar Ficha Técnica</span>
-                                </a>
-                            </div>
-                            <div class="hidden lg:inline-flex items-center gap-2 text-xs font-mono text-slate-600 dark:text-brand-light tracking-wide">
-                                <span class="w-2 h-2 rounded-full bg-brand dark:bg-brand-light animate-pulse flex-shrink-0"></span>
-                                <span class="text-[11px] sm:text-xs">Toca los puntos <b class="text-brand dark:text-brand-light font-bold bg-white dark:bg-white/10 px-1 py-0.5 rounded shadow-xs border border-slate-200 dark:border-white/10">(+)</b> en el taladro para ver componentes</span>
                             </div>
                         </div>
                     </div>
@@ -1477,6 +1468,10 @@
                                 Enviar Solicitud de Operaciones
                                 <i data-lucide="send" class="w-4 h-4"></i>
                             </button>
+                            <p class="text-[10px] text-center text-slate-400 dark:text-white/40 font-mono pt-1">
+                                Sus requerimientos están protegidos con confidencialidad industrial. Consulte nuestra 
+                                <button type="button" class="btn-open-privacy underline hover:text-brand dark:hover:text-brand-light transition-colors cursor-pointer">Política de Privacidad</button>.
+                            </p>
                         </form>
                     </div>
                 </div>
@@ -1485,7 +1480,7 @@
     </section>
 
     <!-- Footer Institucional -->
-    <footer class="border-t border-slate-200 dark:border-white/5 bg-slate-100 dark:bg-[#080c12] py-16 transition-colors duration-300">
+    <footer class="border-t border-slate-200 dark:border-white/5 bg-[#f5f6f9] dark:bg-[#080c12] py-16 transition-colors duration-300">
         <div class="max-w-[1500px] mx-auto px-6 md:px-10">
             <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
                 <!-- Brand Info -->
@@ -1541,6 +1536,10 @@
                         &copy; 2026 <span class="text-slate-900 dark:text-white/60 font-medium">TribOil</span>. Todos los derechos reservados.
                     </p>
                     <span class="hidden sm:inline text-slate-300 dark:text-white/20">|</span>
+                    <button type="button" class="btn-open-privacy text-slate-500 dark:text-white/40 hover:text-brand dark:hover:text-brand-light text-xs font-mono transition-colors cursor-pointer">
+                        Política de Privacidad
+                    </button>
+                    <span class="hidden sm:inline text-slate-300 dark:text-white/20">|</span>
                     <button id="dev-signature" class="text-slate-500 dark:text-white/30 hover:text-brand dark:hover:text-brand-light text-xs font-mono transition-colors">
                         Sistemas & Desarrollo
                     </button>
@@ -1592,7 +1591,7 @@
                         </div>
                     </div>
                     <!-- Botón Cerrar -->
-                    <button type="button" class="w-9 h-9 rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors" id="btnCloseCotizador" aria-label="Cerrar modal">
+                    <button type="button" class="w-9 h-9 rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 flex items-center justify-center text-slate-500 dark:text-white/60 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors" id="btnCloseCotizador" aria-label="Cerrar modal">
                         <i data-lucide="x" class="w-4 h-4"></i>
                     </button>
                 </div>
@@ -1635,7 +1634,7 @@
                                 </label>
                                 <div class="flex items-center gap-2 font-mono">
                                     <span id="cotizDepthDisplay" class="text-base font-bold text-brand dark:text-brand-light">12,500</span>
-                                    <span class="text-[10px] text-slate-400">FT</span>
+                                    <span class="text-[10px] text-slate-400 dark:text-white/40">FT</span>
                                     <span id="cotizFormationTag" class="px-2 py-0.5 rounded bg-brand/10 border border-brand/20 text-brand dark:text-brand-light text-[9px] font-bold">FM. NAPO</span>
                                 </div>
                             </div>
@@ -1657,19 +1656,19 @@
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="cotizPowerGroup">
                                 <button type="button" class="cotiz-power-chip" data-hp="550">
                                     <span class="font-bold text-xs">550 HP</span>
-                                    <span class="text-[8px] text-slate-400 block">Móvil Ligero</span>
+                                    <span class="text-[8px] text-slate-400 dark:text-white/40 block">Móvil Ligero</span>
                                 </button>
                                 <button type="button" class="cotiz-power-chip" data-hp="750">
                                     <span class="font-bold text-xs">750 HP</span>
-                                    <span class="text-[8px] text-slate-400 block">Workover Pesado</span>
+                                    <span class="text-[8px] text-slate-400 dark:text-white/40 block">Workover Pesado</span>
                                 </button>
                                 <button type="button" class="cotiz-power-chip" data-hp="1000">
                                     <span class="font-bold text-xs">1,000 HP</span>
-                                    <span class="text-[8px] text-slate-400 block">Perforación Media</span>
+                                    <span class="text-[8px] text-slate-400 dark:text-white/40 block">Perforación Media</span>
                                 </button>
                                 <button type="button" class="cotiz-power-chip active" data-hp="1500">
                                     <span class="font-bold text-xs">1,500 HP</span>
-                                    <span class="text-[8px] text-slate-400 block">Heavy Rig 750k</span>
+                                    <span class="text-[8px] text-slate-400 dark:text-white/40 block">Heavy Rig 750k</span>
                                 </button>
                             </div>
                         </div>
@@ -1750,23 +1749,23 @@
 
                                 <div class="space-y-2 text-xs font-mono">
                                     <div class="flex justify-between py-1 border-b border-slate-100 dark:border-white/5">
-                                        <span class="text-slate-400">Capacidad Estática:</span>
+                                        <span class="text-slate-400 dark:text-white/40">Capacidad Estática:</span>
                                         <span class="font-bold text-slate-800 dark:text-white" id="dossierHookload">750,000 LBS (340 TON)</span>
                                     </div>
                                     <div class="flex justify-between py-1 border-b border-slate-100 dark:border-white/5">
-                                        <span class="text-slate-400">Rango Operativo:</span>
+                                        <span class="text-slate-400 dark:text-white/40">Rango Operativo:</span>
                                         <span class="font-bold text-slate-800 dark:text-white" id="dossierDepthRange">Hasta 16,500+ FT</span>
                                     </div>
                                     <div class="flex justify-between py-1 border-b border-slate-100 dark:border-white/5">
-                                        <span class="text-slate-400">Sistema Preventor:</span>
+                                        <span class="text-slate-400 dark:text-white/40">Sistema Preventor:</span>
                                         <span class="font-bold text-slate-800 dark:text-white" id="dossierBOP">BOP 10,000 PSI Clase IV</span>
                                     </div>
                                     <div class="flex justify-between py-1 border-b border-slate-100 dark:border-white/5">
-                                        <span class="text-slate-400">Bombas de Lodo:</span>
+                                        <span class="text-slate-400 dark:text-white/40">Bombas de Lodo:</span>
                                         <span class="font-bold text-slate-800 dark:text-white" id="dossierMudPumps">2x Triplex 1,600 HP</span>
                                     </div>
                                     <div class="flex justify-between py-1">
-                                        <span class="text-slate-400">Base de Salida:</span>
+                                        <span class="text-slate-400 dark:text-white/40">Base de Salida:</span>
                                         <span class="font-bold text-brand dark:text-brand-light">Base El Coca (&lt; 48h)</span>
                                     </div>
                                 </div>
@@ -1817,6 +1816,68 @@
         </div>
     </div>
 
+    <!-- =========================================================================
+         MODAL: POLÍTICA DE PRIVACIDAD & CONFIDENCIALIDAD TÉCNICA UPSTREAM
+         ========================================================================= -->
+    <div id="privacyModal" class="fixed inset-0 z-[10000] overflow-y-auto hidden" aria-labelledby="privacy-modal-title" role="dialog" aria-modal="true">
+        <!-- Backdrop Oscuro con Blur -->
+        <div class="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity" id="privacyBackdrop"></div>
+
+        <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-6">
+            <div class="relative transform overflow-hidden rounded-2xl bg-white dark:bg-[#0e131c] text-left shadow-2xl border border-slate-200 dark:border-white/10 transition-all sm:my-8 w-full max-w-2xl">
+                
+                <!-- Header del Modal -->
+                <div class="px-6 py-4 border-b border-slate-200 dark:border-white/10 flex items-center justify-between bg-slate-50/80 dark:bg-white/5">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-brand/10 dark:bg-brand/20 flex items-center justify-center text-brand dark:text-brand-light">
+                            <i data-lucide="shield-check" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white font-mono" id="privacy-modal-title">
+                                Política de Privacidad & Confidencialidad
+                            </h3>
+                            <span class="text-[9px] font-mono text-slate-400 dark:text-white/40 block">PROTECCIÓN DE DATOS Y PROTOCOLOS UPSTREAM</span>
+                        </div>
+                    </div>
+                    <button type="button" id="btnClosePrivacyModal" class="w-8 h-8 rounded-lg text-slate-400 dark:text-white/60 hover:text-slate-700 dark:hover:text-white flex items-center justify-center hover:bg-slate-200 dark:hover:bg-white/10 transition-colors" title="Cerrar modal">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Contenido con Scroll -->
+                <div class="px-6 py-5 max-h-[60vh] overflow-y-auto space-y-4 text-xs text-slate-600 dark:text-white/70 leading-relaxed font-sans border-b border-slate-100 dark:border-white/5">
+                    <div>
+                        <h4 class="font-bold text-slate-900 dark:text-white text-xs font-mono uppercase tracking-wider mb-1">1. Compromiso de Confidencialidad Industrial</h4>
+                        <p>TribOil trata con estricta reserva toda información operativa, geológica, de ingeniería o requerimientos técnicos recibidos a través de nuestros canales y configuradores de cotización. Ningún dato técnico suministrado será divulgado a terceros ni utilizado para fines ajenos a la evaluación técnica de proyectos.</p>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-slate-900 dark:text-white text-xs font-mono uppercase tracking-wider mb-1">2. Tratamiento de Datos Personales y Corporativos</h4>
+                        <p>Los datos de contacto (nombres, cargos corporativos, correos y números telefónicos) se emplean exclusivamente para responder requerimientos comerciales, consultas de operadoras y coordinaciones operativas en cumplimiento con la Ley Orgánica de Protección de Datos Personales del Ecuador y estándares internacionales.</p>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-slate-900 dark:text-white text-xs font-mono uppercase tracking-wider mb-1">3. Seguridad de la Información y Telemetría</h4>
+                        <p>Implementamos protocolos de seguridad digital en nuestras aplicaciones web, salvaguardando accesos mediante cifrado SSL/TLS. La plataforma no almacena contraseñas ni accesos sensibles de operadoras ni proveedores en servidores públicos.</p>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-slate-900 dark:text-white text-xs font-mono uppercase tracking-wider mb-1">4. Canales de Ejercicio de Derechos</h4>
+                        <p>Cualquier titular o representante de operadora puede solicitar la actualización o rectificación de sus datos corporativos escribiendo directamente a nuestro equipo a través de <strong class="text-brand dark:text-brand-light">triboil@triboil.com</strong> o en nuestras oficinas centrales en Quito y Base El Coca.</p>
+                    </div>
+                </div>
+
+                <!-- Footer del Modal -->
+                <div class="px-6 py-3 bg-slate-50 dark:bg-white/5 flex items-center justify-between">
+                    <span class="text-[10px] font-mono text-slate-400 dark:text-white/40">Vigencia 2026 · TribOil Services</span>
+                    <button type="button" id="btnAcceptPrivacy" class="btn-primary !py-1.5 !px-5 text-xs font-mono">
+                        Comprendido
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Cápsula Flotante: Guardia Operativa & Despacho 24/7 (Base El Coca) -->
     <div id="dispatchWidget" class="fixed bottom-6 right-6 z-40 select-none">
         
@@ -1834,7 +1895,7 @@
                         <span class="text-[9px] font-mono text-slate-500 dark:text-white/40 block">DESPACHO & OPERACIONES UPSTREAM</span>
                     </div>
                 </div>
-                <button type="button" id="btnCloseDispatchPanel" class="w-6 h-6 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white flex items-center justify-center hover:bg-slate-200 dark:hover:bg-white/10 transition-colors" title="Cerrar panel">
+                <button type="button" id="btnCloseDispatchPanel" class="w-6 h-6 rounded-lg text-slate-400 dark:text-white/60 hover:text-slate-700 dark:hover:text-white flex items-center justify-center hover:bg-slate-200 dark:hover:bg-white/10 transition-colors" title="Cerrar panel">
                     <i data-lucide="x" class="w-3.5 h-3.5"></i>
                 </button>
             </div>

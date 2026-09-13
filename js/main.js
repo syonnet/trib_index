@@ -102,25 +102,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ==========================================
-  // PRELOADER RÁPIDO & REVELADO DE ENTRADA
+  // INICIO INMEDIATO (SIN SPLASH / PRELOADER)
   // ==========================================
-  const preloader = document.getElementById("preloader");
-  const preloaderBar = document.getElementById("preloaderBar");
-
-  if (preloader) {
-    if (preloaderBar) {
-      preloaderBar.style.width = "100%";
-    }
-    setTimeout(() => {
-      preloader.classList.add("fade-out");
-      animateHero();
-      setTimeout(() => {
-        preloader.style.display = "none";
-      }, 500);
-    }, 400);
-  } else {
-    animateHero();
-  }
+  animateHero();
 
   function animateHero() {
     if (typeof gsap === "undefined") return;
@@ -597,23 +581,52 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ==========================================
-  // NAVEGACIÓN PRINCIPAL
+  // NAVEGACIÓN PRINCIPAL (ESTADOS TOP Y SCROLL)
   // ==========================================
   const mainNav = document.getElementById("mainNav");
-  const topBarEl = document.querySelector(".top-bar");
   if (mainNav) {
     ScrollTrigger.create({
-      start: "top -40",
+      start: "top -15",
       onUpdate: (self) => {
-        if (self.scroll() > 40) {
+        if (self.scroll() > 15) {
           mainNav.classList.add("scrolled");
-          if (topBarEl) topBarEl.classList.add("top-bar-hidden");
         } else {
           mainNav.classList.remove("scrolled");
-          if (topBarEl) topBarEl.classList.remove("top-bar-hidden");
         }
       },
     });
+
+    // Alineación milimétrica: Inicia en el sello de la intranet y termina en el número de teléfono
+    function alignNavbarBounds() {
+      const shieldEl = document.getElementById("intranetShield") || document.querySelector(".top-bar [data-lucide='shield-check']");
+      const phoneEl = document.getElementById("topBarPhone") || document.querySelector(".top-bar [data-lucide='phone']")?.parentElement;
+
+      if (window.innerWidth >= 1024 && shieldEl && phoneEl) {
+        const shieldRect = shieldEl.getBoundingClientRect();
+        const phoneRect = phoneEl.getBoundingClientRect();
+        const leftPos = Math.round(shieldRect.left);
+        const widthVal = Math.round(phoneRect.right - shieldRect.left);
+
+        if (widthVal > 200) {
+          mainNav.style.setProperty("left", `${leftPos}px`, "important");
+          mainNav.style.setProperty("width", `${widthVal}px`, "important");
+          mainNav.style.setProperty("max-width", "none", "important");
+          mainNav.style.setProperty("transform", "none", "important");
+        }
+      } else if (window.innerWidth < 1024) {
+        mainNav.style.removeProperty("left");
+        mainNav.style.removeProperty("width");
+        mainNav.style.removeProperty("max-width");
+        mainNav.style.removeProperty("transform");
+      }
+    }
+
+    alignNavbarBounds();
+    window.addEventListener("resize", alignNavbarBounds);
+    window.addEventListener("orientationchange", alignNavbarBounds);
+    window.addEventListener("load", alignNavbarBounds);
+    setTimeout(alignNavbarBounds, 300);
+    setTimeout(alignNavbarBounds, 1000);
   }
 
   // Navegación suave anclas
@@ -1303,13 +1316,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const isDark = document.documentElement.getAttribute("data-theme") === "dark";
       return {
         isDark,
-        metalColor: isDark ? 0x222d3f : 0x3b4a5d,
-        metalness: isDark ? 0.85 : 0.75,
-        roughness: isDark ? 0.25 : 0.32,
+        metalColor: isDark ? 0x384a62 : 0x3b4a5d,
+        metalness: isDark ? 0.82 : 0.75,
+        roughness: isDark ? 0.28 : 0.32,
         wireColor: isDark ? 0x00e599 : 0x008a62,
-        wireOpacity: isDark ? 0.15 : 0.08,
-        ambientIntensity: isDark ? 0.65 : 0.85,
-        rimIntensity: isDark ? 2.0 : 1.3,
+        wireOpacity: isDark ? 0.25 : 0.08,
+        ambientIntensity: isDark ? 0.95 : 0.85,
+        rimIntensity: isDark ? 2.2 : 1.3,
       };
     };
 
@@ -1820,12 +1833,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Cerrar con tecla Escape
+  // ==========================================
+  // MODAL DE POLÍTICA DE PRIVACIDAD & CONFIDENCIALIDAD
+  // ==========================================
+  const privacyModal = document.getElementById("privacyModal");
+  const privacyBackdrop = document.getElementById("privacyBackdrop");
+  const btnClosePrivacyModal = document.getElementById("btnClosePrivacyModal");
+  const btnAcceptPrivacy = document.getElementById("btnAcceptPrivacy");
+  const btnsOpenPrivacy = document.querySelectorAll(".btn-open-privacy");
+
+  const openPrivacyModal = () => {
+    if (!privacyModal) return;
+    privacyModal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    if (window.lucide) window.lucide.createIcons();
+  };
+
+  const closePrivacyModal = () => {
+    if (!privacyModal) return;
+    privacyModal.classList.add("hidden");
+    document.body.style.overflow = "";
+  };
+
+  btnsOpenPrivacy.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      openPrivacyModal();
+    });
+  });
+
+  if (btnClosePrivacyModal) btnClosePrivacyModal.addEventListener("click", closePrivacyModal);
+  if (btnAcceptPrivacy) btnAcceptPrivacy.addEventListener("click", closePrivacyModal);
+  if (privacyBackdrop) privacyBackdrop.addEventListener("click", closePrivacyModal);
+
   window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && dispatchPanel && !dispatchPanel.classList.contains("hidden")) {
-      closeDispatchPanel();
+    if (e.key === "Escape" && privacyModal && !privacyModal.classList.contains("hidden")) {
+      closePrivacyModal();
     }
   });
 
+  // Lo primero que ve el usuario al ingresar: Política de Privacidad
+  setTimeout(() => {
+    openPrivacyModal();
+  }, 250);
+
 });
+
 

@@ -5,31 +5,35 @@
 /* --- Variables & Sistema de Temas (Light Base / White Default & Dark Option) --- */
 :root,
 [data-theme="light"] {
+  color-scheme: light;
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   --brand: #006849;
   --brand-light: #008a62;
   --brand-dark: #004d36;
 
-  --surface: #ffffff;
-  --surface-subtle: #f8fafc;
-  --surface-header: rgba(255, 255, 255, 0.92);
+  /* Blanco de Alta Gama: Alabastro Satinado / Apple Studio Soft White (#fbfbfd) */
+  --surface: #fbfbfd;
+  --surface-subtle: #f5f6f9;
+  --surface-header: rgba(251, 251, 253, 0.96);
   --surface-card: #ffffff;
-  --surface-card-hover: #f1f5f9;
-  --surface-border: rgba(15, 23, 42, 0.08);
-  --surface-border-strong: rgba(15, 23, 42, 0.16);
+  --surface-card-hover: #f3f4f8;
+  --surface-border: rgba(15, 23, 42, 0.07);
+  --surface-border-strong: rgba(15, 23, 42, 0.14);
 
   --text-main: #0f172a;
   --text-muted: #475569;
   --text-dim: #94a3b8;
 
-  --marquee-bg: #f8fafc;
-  --marquee-border: rgba(15, 23, 42, 0.08);
+  --marquee-bg: #f5f6f9;
+  --marquee-border: rgba(15, 23, 42, 0.07);
   --logo-filter: grayscale(1) brightness(0.35) opacity(0.65);
   --logo-filter-hover: grayscale(0) brightness(1) opacity(1);
 }
 
-[data-theme="dark"] {
+[data-theme="dark"],
+html.dark {
+  color-scheme: dark;
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   --brand: #006849;
@@ -50,8 +54,8 @@
 
   --marquee-bg: #090d13;
   --marquee-border: rgba(255, 255, 255, 0.06);
-  --logo-filter: grayscale(1) brightness(1.2) opacity(0.55);
-  --logo-filter-hover: grayscale(0) brightness(1) opacity(1);
+  --logo-filter: brightness(0) invert(1) opacity(0.6);
+  --logo-filter-hover: brightness(0) invert(1) opacity(1);
 }
 
 * {
@@ -72,6 +76,12 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+[data-theme="dark"] body,
+html.dark body {
+  background: #0b0f15 !important;
+  color: #f3f4f6 !important;
 }
 
 /* Números y telemetría tabulares */
@@ -192,12 +202,22 @@ img[src*="logoWhite"] {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 3px;
+  background: var(--surface-border-strong);
+  border-radius: 9999px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb,
+html.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--brand);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover,
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-light);
 }
 
 /* --- Layout & Navegación --- */
@@ -249,7 +269,7 @@ header#mainNav {
   border-radius: 0 !important;
   z-index: 9999 !important;
   transition: top 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(251, 251, 253, 0.96);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(15, 23, 42, 0.08);
@@ -288,21 +308,23 @@ header#mainNav::after {
 }
 
 @media (min-width: 1024px) {
-  /* En reposo superior: pegada casi adosada a la intranet (top: 40px), entrecortada a los lados (width 92%), con bordes redondeados (14px) como imagen 1 */
+  /* EN REPOSO SUPERIOR (ESTADO TOP - IMAGEN 1):
+     Flotante con margen de separación (12px) de la intranet, 4 esquinas redondeadas (14px) */
   header#mainNav {
     position: fixed !important;
-    top: 40px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: 92% !important;
-    max-width: 1400px;
+    top: 52px !important;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 88%;
+    max-width: 1280px;
     border-radius: 14px !important;
     border: 1px solid rgba(15, 23, 42, 0.09) !important;
-    background: rgba(255, 255, 255, 0.96) !important;
+    background: rgba(251, 251, 253, 0.96) !important;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
     padding: 0 !important;
+    transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-radius 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
   [data-theme="dark"] header#mainNav {
@@ -320,13 +342,15 @@ header#mainNav::after {
     border-radius: 9999px !important;
   }
 
-  /* Al hacer scroll: flota a top: 12px con sus bordes redondeados */
+  /* AL HACER SCROLL (ESTADO SCROLL - IMAGEN 2):
+     Adosada directamente debajo de la intranet (top: 40px), sin margen arriba,
+     esquinas superiores rectas acopladas y esquinas inferiores redondeadas (14px) */
   header#mainNav.scrolled {
-    top: 12px !important;
-    width: 92% !important;
-    max-width: 1400px;
-    background: rgba(255, 255, 255, 0.98) !important;
-    border-color: rgba(212, 175, 55, 0.35) !important;
+    top: 40px !important;
+    border-radius: 0 0 14px 14px !important;
+    border-top: none !important;
+    background: rgba(251, 251, 253, 0.98) !important;
+    border-color: rgba(212, 175, 55, 0.4) !important;
     box-shadow: 0 14px 36px -4px rgba(0, 0, 0, 0.12), 0 0 18px rgba(212, 175, 55, 0.25) !important;
   }
 
@@ -336,6 +360,7 @@ header#mainNav::after {
 
   [data-theme="dark"] header#mainNav.scrolled {
     background: rgba(11, 15, 22, 0.97) !important;
+    border-top: none !important;
     border-color: rgba(212, 175, 55, 0.45) !important;
     box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), 0 0 22px rgba(212, 175, 55, 0.28) !important;
   }
@@ -536,13 +561,9 @@ header#mainNav::after {
 
 /* Barra Superior Institucional (Top Bar) */
 .top-bar {
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(251, 251, 253, 0.96);
   border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.top-bar.top-bar-hidden {
-  transform: translateY(-100%);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 [data-theme="dark"] .top-bar {
@@ -574,7 +595,7 @@ header#mainNav::after {
 
 /* Menú Móvil en Tema Claro */
 [data-theme="light"] .mobile-menu {
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(251, 251, 253, 0.98);
 }
 
 [data-theme="light"] .mobile-menu a {
@@ -595,13 +616,13 @@ header#mainNav::after {
 }
 
 [data-theme="light"] .service-card .card-number {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(251, 251, 253, 0.9);
   color: #0f172a;
   border-color: rgba(15, 23, 42, 0.1);
 }
 
 [data-theme="light"] .telemetry-dashboard {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(251, 251, 253, 0.95);
   border-color: rgba(15, 23, 42, 0.09);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06);
 }
@@ -611,23 +632,19 @@ header#mainNav::after {
 }
 
 [data-theme="light"] .telemetry-dashboard .text-white\/40,
-[data-theme="light"] .telemetry-dashboard .text-white\/50,
-[data-theme="light"] .telemetry-dashboard .text-white\/60,
-[data-theme="light"] .telemetry-dashboard .text-white\/70 {
+[data-theme="light"] .telemetry-dashboard .text-slate-400 {
   color: #64748b;
 }
 
-[data-theme="light"] .telemetry-dashboard .bg-\[\#0b0f15\]\/50,
-[data-theme="light"] .telemetry-dashboard .bg-\[\#0b0f15\]\/60,
-[data-theme="light"] .telemetry-dashboard .bg-\[\#0b0f15\]\/80 {
-  background: #f1f5f9;
-  border-color: rgba(15, 23, 42, 0.08);
+[data-theme="light"] .telemetry-btn {
+  background: var(--surface-subtle);
+  border-color: rgba(15, 23, 42, 0.12);
+  color: #334155;
 }
 
-[data-theme="light"] .telemetry-btn {
-  background: #f1f5f9;
-  border-color: rgba(15, 23, 42, 0.1);
-  color: #475569;
+[data-theme="light"] .telemetry-btn:hover {
+  background: var(--surface-card-hover);
+  color: #0f172a;
 }
 
 [data-theme="light"] .telemetry-btn.active {
@@ -637,7 +654,7 @@ header#mainNav::after {
 }
 
 [data-theme="light"] .form-input {
-  background: #f8fafc;
+  background: #f5f6f9;
   border-color: rgba(15, 23, 42, 0.12);
   color: #0f172a;
 }
@@ -665,6 +682,31 @@ header#mainNav::after {
 
 [data-theme="light"] footer a:hover {
   color: var(--brand);
+}
+
+[data-theme="dark"] footer,
+html.dark footer {
+  background: #080c12;
+  border-top-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] footer h5,
+html.dark footer h5 {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+[data-theme="dark"] footer p,
+[data-theme="dark"] footer a,
+[data-theme="dark"] footer span,
+html.dark footer p,
+html.dark footer a,
+html.dark footer span {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="dark"] footer a:hover,
+html.dark footer a:hover {
+  color: #34d399;
 }
 
 /* Mobile Menu */
@@ -745,7 +787,7 @@ header#mainNav::after {
 
 .btn-outline:hover {
   border-color: var(--brand);
-  background: #f8fafc;
+  background: #f5f6f9;
   color: var(--brand);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
@@ -823,7 +865,7 @@ header#mainNav::after {
   min-height: 100dvh;
   display: flex;
   overflow: hidden;
-  background: #f8fafc;
+  background: #fbfbfd;
 }
 
 [data-theme="dark"] .hero-hybrid-section {
@@ -866,8 +908,8 @@ header#mainNav::after {
   position: absolute;
   inset: 0;
   background: 
-    linear-gradient(90deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.82) 42%, rgba(255, 255, 255, 0.28) 72%, rgba(255, 255, 255, 0.05) 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.65) 0%, transparent 20%, transparent 80%, rgba(255, 255, 255, 0.85) 100%);
+    linear-gradient(90deg, rgba(251, 251, 253, 0.96) 0%, rgba(251, 251, 253, 0.85) 42%, rgba(251, 251, 253, 0.28) 72%, rgba(251, 251, 253, 0.05) 100%),
+    linear-gradient(180deg, rgba(251, 251, 253, 0.65) 0%, transparent 20%, transparent 80%, rgba(251, 251, 253, 0.88) 100%);
   pointer-events: none;
 }
 
@@ -918,7 +960,7 @@ header#mainNav::after {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(251, 251, 253, 0.96);
   border: 2px solid var(--brand);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -1005,7 +1047,7 @@ header#mainNav::after {
   left: calc(100% + 16px);
   transform: translateY(-50%) translateX(10px);
   width: 280px;
-  background: rgba(255, 255, 255, 0.97);
+  background: rgba(251, 251, 253, 0.97);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(15, 23, 42, 0.12);
@@ -1100,7 +1142,7 @@ header#mainNav::after {
 /* --- Calibre Vertical de Sarta y Broca PDC (Opción B) --- */
 .drill-string-gauge {
   width: 96px;
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(251, 251, 253, 0.94);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(15, 23, 42, 0.12);
@@ -1341,7 +1383,7 @@ header#mainNav::after {
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
   width: 100%;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(251, 251, 253, 0.95);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(15, 23, 42, 0.1);
@@ -1627,7 +1669,7 @@ header#mainNav::after {
 
 /* Apple Keynote Floating Dock / Segmented Controller */
 .apple-hero-dock {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(251, 251, 253, 0.92);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(15, 23, 42, 0.09);
@@ -1765,7 +1807,7 @@ header#mainNav::after {
 
 /* Apple Pro Floating Spec Card */
 .apple-spec-card {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(251, 251, 253, 0.92);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(15, 23, 42, 0.09);
@@ -1951,7 +1993,7 @@ header#mainNav::after {
 .dossier-card {
   position: relative;
   padding: 1.15rem 1.35rem;
-  background: #ffffff;
+  background: #fbfbfd;
   border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 14px;
   cursor: pointer;
@@ -2093,7 +2135,7 @@ header#mainNav::after {
   font-family: var(--font-mono);
   font-size: 0.65rem;
   padding: 0.25rem 0.6rem;
-  background: #f8fafc;
+  background: #f5f6f9;
   border: 1px solid rgba(15, 23, 42, 0.06);
   border-radius: 8px;
   color: #475569;
@@ -2300,7 +2342,7 @@ header#mainNav::after {
 
 /* --- Botones de Subsistemas SCADA 3D --- */
 .scada-part-btn {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(251, 251, 253, 0.92);
   border: 1px solid rgba(15, 23, 42, 0.14);
   color: #334155;
   font-family: var(--font-mono);
@@ -2510,7 +2552,7 @@ header#mainNav::after {
   left: 28px;
   top: 50%;
   transform: translateY(-50%) translateX(-6px);
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(251, 251, 253, 0.98);
   border: 1px solid rgba(226, 232, 240, 0.9);
   padding: 4px 9px;
   border-radius: 6px;
@@ -2685,7 +2727,7 @@ header#mainNav::after {
   padding: 12px 8px;
   border-radius: 12px;
   border: 1.5px solid rgba(15, 23, 42, 0.1);
-  background: #f8fafc;
+  background: #f5f6f9;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   outline: none;
@@ -2694,6 +2736,7 @@ header#mainNav::after {
 [data-theme="dark"] .cotiz-service-card {
   background: #0f1623;
   border-color: rgba(255, 255, 255, 0.08);
+  color: #f3f4f6;
 }
 
 .cotiz-service-card:hover {
@@ -2725,7 +2768,7 @@ header#mainNav::after {
   padding: 8px 6px;
   border-radius: 8px;
   border: 1px solid rgba(15, 23, 42, 0.1);
-  background: #f8fafc;
+  background: #f5f6f9;
   cursor: pointer;
   text-align: center;
   transition: all 0.2s ease;
@@ -2735,6 +2778,7 @@ header#mainNav::after {
 [data-theme="dark"] .cotiz-power-chip {
   background: #0f1623;
   border-color: rgba(255, 255, 255, 0.08);
+  color: #f3f4f6;
 }
 
 .cotiz-power-chip:hover {
@@ -2763,7 +2807,7 @@ header#mainNav::after {
   padding: 8px 10px;
   border-radius: 8px;
   border: 1px solid rgba(15, 23, 42, 0.08);
-  background: #f8fafc;
+  background: #f5f6f9;
   cursor: pointer;
   font-size: 11px;
   font-weight: 500;
@@ -2773,6 +2817,7 @@ header#mainNav::after {
 [data-theme="dark"] .cotiz-check-label {
   background: #0f1623;
   border-color: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .cotiz-check-label:hover {
