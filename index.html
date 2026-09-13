@@ -23,6 +23,7 @@
 
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -171,24 +172,27 @@
     </header>
 
     <!-- Mobile Menu Drawer -->
-    <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu bg-white/98 dark:bg-[#0b0f15]/98 text-slate-900 dark:text-white" id="mobileMenu">
         <div class="w-full max-w-sm mx-auto flex flex-col justify-between h-full">
             <div class="mb-8">
-                <img src="assets/logoWhite.png" alt="TribOil" class="h-8 w-auto opacity-80 mb-8">
+                <div class="flex items-center justify-between mb-8">
+                    <img src="assets/logoWhite.png" alt="TribOil" class="h-8 w-auto opacity-90 dark-logo">
+                    <img src="assets/logoGreen.png" alt="TribOil" class="h-8 w-auto light-logo">
+                </div>
                 <nav class="flex flex-col gap-4">
-                    <a href="#nosotros" class="py-2.5 border-b border-white/5 text-xl font-medium text-white/80 hover:text-white">Nosotros</a>
-                    <a href="#clientes" class="py-2.5 border-b border-white/5 text-xl font-medium text-white/80 hover:text-white">Clientes</a>
-                    <a href="#soluciones" class="py-2.5 border-b border-white/5 text-xl font-medium text-white/80 hover:text-white">Soluciones</a>
-                    <a href="#operaciones" class="py-2.5 border-b border-white/5 text-xl font-medium text-white/80 hover:text-white">Operaciones</a>
-                    <a href="#tecnologia" class="py-2.5 border-b border-white/5 text-xl font-medium text-white/80 hover:text-white">Tecnología SCADA</a>
-                    <a href="#sostenibilidad" class="py-2.5 border-b border-white/5 text-xl font-medium text-white/80 hover:text-white">Sostenibilidad</a>
-                    <a href="#contacto" class="py-2.5 border-b border-white/5 text-xl font-medium text-white/80 hover:text-white">Contacto</a>
+                    <a href="#nosotros" class="py-2.5 border-b border-slate-200 dark:border-white/5 text-xl font-medium text-slate-800 dark:text-white/80 hover:text-brand dark:hover:text-white">Nosotros</a>
+                    <a href="#clientes" class="py-2.5 border-b border-slate-200 dark:border-white/5 text-xl font-medium text-slate-800 dark:text-white/80 hover:text-brand dark:hover:text-white">Clientes</a>
+                    <a href="#soluciones" class="py-2.5 border-b border-slate-200 dark:border-white/5 text-xl font-medium text-slate-800 dark:text-white/80 hover:text-brand dark:hover:text-white">Soluciones</a>
+                    <a href="#operaciones" class="py-2.5 border-b border-slate-200 dark:border-white/5 text-xl font-medium text-slate-800 dark:text-white/80 hover:text-brand dark:hover:text-white">Operaciones</a>
+                    <a href="#tecnologia" class="py-2.5 border-b border-slate-200 dark:border-white/5 text-xl font-medium text-slate-800 dark:text-white/80 hover:text-brand dark:hover:text-white">Tecnología SCADA</a>
+                    <a href="#sostenibilidad" class="py-2.5 border-b border-slate-200 dark:border-white/5 text-xl font-medium text-slate-800 dark:text-white/80 hover:text-brand dark:hover:text-white">Sostenibilidad</a>
+                    <a href="#contacto" class="py-2.5 border-b border-slate-200 dark:border-white/5 text-xl font-medium text-slate-800 dark:text-white/80 hover:text-brand dark:hover:text-white">Contacto</a>
                 </nav>
             </div>
 
-            <div class="pt-6 border-t border-white/10">
-                <span class="text-[10px] font-mono tracking-widest uppercase text-white/40 block mb-3">Intranet Corporativa</span>
-                <div class="grid grid-cols-2 gap-2 text-xs text-white/60 mb-6">
+            <div class="pt-6 border-t border-slate-200 dark:border-white/10">
+                <span class="text-[10px] font-mono tracking-widest uppercase text-slate-400 dark:text-white/40 block mb-3">Intranet Corporativa</span>
+                <div class="grid grid-cols-2 gap-2 text-xs text-slate-600 dark:text-white/60 mb-6">
                     <a href="https://forms.office.com/pages/responsepage.aspx?id=oneFCI-_SEekK--m01noB_FftykoV9ZPjdq-xEBrY_dUM1ozNTFLREVSMVFQOE81OTNGNTM4OVJWMy4u" target="_blank" class="hover:text-brand-light">Encuesta Médica</a>
                     <a href="https://www.triboilgas.com/hesk/" target="_blank" class="hover:text-brand-light">Ticket Soporte</a>
                     <a href="http://64.190.27.46:8040/jde/E1Menu.maf?" target="_blank" class="hover:text-brand-light">JD Edwards</a>
@@ -335,7 +339,7 @@
                     Confianza de las Principales Operadoras en Ecuador y la Región
                 </span>
             </div>
-            <span class="text-[11px] font-mono text-white/40 tracking-wider hidden md:inline">
+            <span class="text-[11px] font-mono text-slate-400 dark:text-white/40 tracking-wider hidden md:inline">
                 Homologación Técnica · Flota Certificada Upstream
             </span>
         </div>
@@ -388,31 +392,31 @@
                 <div class="lg:col-span-7">
                     <div class="reveal-up">
                         <span class="text-xs font-mono font-semibold tracking-widest uppercase text-brand-light mb-3 block">Compromiso Corporativo</span>
-                        <h2 class="text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-6">
-                            Liderando la optimización energética con <span class="text-white/40">rigor técnico y sostenibilidad</span>
+                        <h2 class="text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-6 text-slate-900 dark:text-white">
+                            Liderando la optimización energética con <span class="text-slate-400 dark:text-white/40">rigor técnico y sostenibilidad</span>
                         </h2>
-                        <p class="text-white/70 text-base font-normal leading-relaxed mb-6">
-                            En <strong class="text-white font-medium">TribOil</strong>, combinamos experiencia de campo con ingeniería avanzada para operar activos petroleros con máxima eficiencia. Gestionamos proyectos upstream desde la perforación inicial hasta el mantenimiento mayor de pozos maduros.
+                        <p class="text-slate-600 dark:text-white/70 text-base font-normal leading-relaxed mb-6">
+                            En <strong class="text-slate-900 dark:text-white font-semibold">TribOil</strong>, combinamos experiencia de campo con ingeniería avanzada para operar activos petroleros con máxima eficiencia. Gestionamos proyectos upstream desde la perforación inicial hasta el mantenimiento mayor de pozos maduros.
                         </p>
-                        <p class="text-white/60 text-sm font-normal leading-relaxed mb-8">
+                        <p class="text-slate-500 dark:text-white/60 text-sm font-normal leading-relaxed mb-8">
                             Nuestras bases de operación en El Coca y oficinas centrales en Quito aseguran respuesta inmediata a los requerimientos logísticos y operativos de la industria energética ecuatoriana.
                         </p>
                     </div>
 
-                    <div class="reveal-up grid sm:grid-cols-2 gap-6 pt-4 border-t border-white/5">
-                        <div class="p-4 rounded bg-[#121824] border border-white/5">
-                            <div class="text-base font-bold text-white mb-1 flex items-center gap-2">
+                    <div class="reveal-up grid sm:grid-cols-2 gap-6 pt-6 border-t border-slate-200 dark:border-white/5">
+                        <div class="p-5 rounded-lg bg-white dark:bg-[#121824] border border-slate-200 dark:border-white/5 shadow-sm">
+                            <div class="text-base font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
                                 <i data-lucide="target" class="w-4 h-4 text-brand-light"></i> Misión
                             </div>
-                            <p class="text-white/50 text-xs leading-relaxed">
+                            <p class="text-slate-500 dark:text-white/50 text-xs leading-relaxed">
                                 Transformar la industria de hidrocarburos elevando la eficiencia operativa, maximizando la vida útil de los pozos y preservando el entorno natural.
                             </p>
                         </div>
-                        <div class="p-4 rounded bg-[#121824] border border-white/5">
-                            <div class="text-base font-bold text-white mb-1 flex items-center gap-2">
+                        <div class="p-5 rounded-lg bg-white dark:bg-[#121824] border border-slate-200 dark:border-white/5 shadow-sm">
+                            <div class="text-base font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
                                 <i data-lucide="eye" class="w-4 h-4 text-brand-light"></i> Visión
                             </div>
-                            <p class="text-white/50 text-xs leading-relaxed">
+                            <p class="text-slate-500 dark:text-white/50 text-xs leading-relaxed">
                                 Ser el socio estratégico predilecto en servicios petroleros y gerenciamiento de campos, reconocido por su excelencia en seguridad y tecnología.
                             </p>
                         </div>
@@ -421,22 +425,22 @@
 
                 <!-- Columna Derecha: Imagen con Badge Técnico -->
                 <div class="lg:col-span-5 reveal-scale">
-                    <div class="relative rounded-lg overflow-hidden border border-white/10 shadow-2xl">
+                    <div class="relative rounded-lg overflow-hidden border border-slate-200 dark:border-white/10 shadow-2xl">
                         <img src="https://i.postimg.cc/W4rBp1kf/001.png" alt="Personal de TribOil en campo petrolero" class="w-full h-[460px] object-cover filter brightness-90">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                         
                         <!-- Floating Card de Seguridad -->
-                        <div class="absolute bottom-6 left-6 right-6 p-4 rounded bg-[#0e131c]/90 backdrop-blur-md border border-white/10">
+                        <div class="absolute bottom-6 left-6 right-6 p-4 rounded-lg bg-white/95 dark:bg-[#0e131c]/90 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-lg">
                             <div class="flex items-center gap-3 mb-2">
                                 <div class="w-8 h-8 rounded bg-brand/20 flex items-center justify-center text-brand-light">
                                     <i data-lucide="award" class="w-4 h-4"></i>
                                 </div>
                                 <div>
-                                    <h4 class="text-xs font-bold uppercase tracking-wider text-white">Estándares Internacionales</h4>
-                                    <span class="text-[10px] font-mono text-white/40">API Spec · ISO 9001 / 14001 / 45001</span>
+                                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">Estándares Internacionales</h4>
+                                    <span class="text-[10px] font-mono text-slate-500 dark:text-white/40">API Spec · ISO 9001 / 14001 / 45001</span>
                                 </div>
                             </div>
-                            <p class="text-white/50 text-xs leading-relaxed">
+                            <p class="text-slate-600 dark:text-white/50 text-xs leading-relaxed">
                                 Operaciones reguladas bajo estrictos protocolos de protección al personal, comunidades y ecosistemas circundantes.
                             </p>
                         </div>
@@ -455,11 +459,11 @@
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
                 <div>
                     <span class="text-xs font-mono font-semibold tracking-widest uppercase text-brand-light mb-3 block">Servicios de Ingeniería Upstream</span>
-                    <h2 class="text-3xl md:text-5xl font-bold tracking-tight leading-tight">
-                        Soluciones especializadas para <br><span class="text-white/40">la industria de hidrocarburos</span>
+                    <h2 class="text-3xl md:text-5xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white">
+                        Soluciones especializadas para <br><span class="text-slate-400 dark:text-white/40">la industria de hidrocarburos</span>
                     </h2>
                 </div>
-                <p class="text-white/50 text-sm max-w-md font-normal leading-relaxed">
+                <p class="text-slate-500 dark:text-white/50 text-sm max-w-md font-normal leading-relaxed">
                     Aportamos equipos de vanguardia, cuadrillas altamente certificadas y metodologías de gestión para optimizar cada etapa productiva del pozo.
                 </p>
             </div>
@@ -467,35 +471,35 @@
             <!-- Grid Asimétrico: 1 Bloque Destacado + 2 Columnas Técnicas -->
             <div class="space-y-6">
                 <!-- Bloque Destacado: Gerenciamiento Integral -->
-                <div class="service-feature-box p-8 md:p-12 reveal-up">
+                <div class="service-feature-box p-8 md:p-12 reveal-up bg-white dark:bg-[#121824] border border-slate-200 dark:border-white/10 shadow-sm">
                     <div class="grid lg:grid-cols-12 gap-8 items-center">
                         <div class="lg:col-span-7">
                             <div class="flex items-center gap-3 mb-4">
-                                <span class="px-2.5 py-1 rounded bg-brand/20 border border-brand/40 text-brand-light font-mono text-[10px] uppercase tracking-wider font-semibold">Servicio Insignia</span>
-                                <span class="text-xs font-mono text-white/40">01 // Field Management</span>
+                                <span class="px-2.5 py-1 rounded bg-brand/15 border border-brand/30 text-brand-light font-mono text-[10px] uppercase tracking-wider font-semibold">Servicio Insignia</span>
+                                <span class="text-xs font-mono text-slate-400 dark:text-white/40">01 // Field Management</span>
                             </div>
-                            <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">Gerenciamiento Integral de Campos Petroleros</h3>
-                            <p class="text-white/70 text-sm md:text-base leading-relaxed mb-6">
+                            <h3 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">Gerenciamiento Integral de Campos Petroleros</h3>
+                            <p class="text-slate-600 dark:text-white/70 text-sm md:text-base leading-relaxed mb-6">
                                 Gestión técnica, administrativa y ambiental integral de yacimientos. Implementamos ingeniería de yacimientos, optimización de sistemas de levantamiento artificial (BES, PCP, Gas Lift), aseguramiento de flujo y mantenimiento de facilidades de producción en superficie.
                             </p>
-                            <div class="grid sm:grid-cols-3 gap-4 pt-4 border-t border-white/5">
+                            <div class="grid sm:grid-cols-3 gap-4 pt-5 border-t border-slate-200 dark:border-white/5">
                                 <div>
-                                    <span class="text-[10px] font-mono text-white/40 uppercase block mb-1">Enfoque Operativo</span>
-                                    <span class="text-xs font-semibold text-white">Maximización de Factor de Recobro</span>
+                                    <span class="text-[10px] font-mono text-slate-400 dark:text-white/40 uppercase block mb-1">Enfoque Operativo</span>
+                                    <span class="text-xs font-semibold text-slate-900 dark:text-white">Maximización de Factor de Recobro</span>
                                 </div>
                                 <div>
-                                    <span class="text-[10px] font-mono text-white/40 uppercase block mb-1">Optimización</span>
-                                    <span class="text-xs font-semibold text-white">Reducción de OPEX & Tiempos No Productivos</span>
+                                    <span class="text-[10px] font-mono text-slate-400 dark:text-white/40 uppercase block mb-1">Optimización</span>
+                                    <span class="text-xs font-semibold text-slate-900 dark:text-white">Reducción de OPEX & Tiempos No Productivos</span>
                                 </div>
                                 <div>
-                                    <span class="text-[10px] font-mono text-white/40 uppercase block mb-1">Sostenibilidad</span>
-                                    <span class="text-xs font-semibold text-white">Gestión Hídrica & Control de Emisiones</span>
+                                    <span class="text-[10px] font-mono text-slate-400 dark:text-white/40 uppercase block mb-1">Sostenibilidad</span>
+                                    <span class="text-xs font-semibold text-slate-900 dark:text-white">Gestión Hídrica & Control de Emisiones</span>
                                 </div>
                             </div>
                         </div>
                         <div class="lg:col-span-5">
-                            <div class="rounded overflow-hidden border border-white/10 h-64 md:h-72">
-                                <img src="https://i.postimg.cc/s2WHrHhz/10.jpg" alt="Gerenciamiento de campos" class="w-full h-full object-cover filter brightness-90">
+                            <div class="rounded-lg overflow-hidden border border-slate-200 dark:border-white/10 h-64 md:h-72 shadow-sm">
+                                <img src="https://i.postimg.cc/s2WHrHhz/10.jpg" alt="Gerenciamiento de campos" class="w-full h-full object-cover filter brightness-95">
                             </div>
                         </div>
                     </div>
@@ -504,56 +508,56 @@
                 <!-- 2 Columnas Técnicas: Perforación y Workover -->
                 <div class="grid md:grid-cols-2 gap-6">
                     <!-- Taladros de Perforación -->
-                    <div class="service-card reveal-up">
+                    <div class="service-card reveal-up bg-white dark:bg-[#121824] border border-slate-200 dark:border-white/10 shadow-sm">
                         <div class="card-image">
                             <img src="https://i.postimg.cc/fbMSzJ3B/7.jpg" alt="Taladro de perforación de pozos">
                         </div>
-                        <div class="card-number">02 // DRILLING</div>
+                        <div class="card-number bg-white/90 dark:bg-[#0e131c]/85 text-slate-800 dark:text-white/80 border border-slate-200 dark:border-white/10">02 // DRILLING</div>
                         <div class="p-8">
-                            <h3 class="text-xl font-bold text-white mb-3">Taladros de Perforación</h3>
-                            <p class="text-white/60 text-sm leading-relaxed mb-6">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Taladros de Perforación</h3>
+                            <p class="text-slate-600 dark:text-white/60 text-sm leading-relaxed mb-6">
                                 Flota moderna de taladros mecánicos y electromecánicos equipados para perforación direccional y vertical de nuevos pozos con máxima precisión geológica y seguridad en fondo.
                             </p>
-                            <div class="space-y-2 py-3 border-t border-white/5 text-xs font-mono text-white/70">
+                            <div class="space-y-2.5 py-3 border-t border-slate-100 dark:border-white/5 text-xs font-mono text-slate-700 dark:text-white/70">
                                 <div class="flex justify-between">
-                                    <span class="text-white/40">Capacidad de Mástil:</span>
-                                    <span>Hasta 500,000 lbs</span>
+                                    <span class="text-slate-400 dark:text-white/40">Capacidad de Mástil:</span>
+                                    <span class="font-medium text-slate-900 dark:text-white">Hasta 500,000 lbs</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span class="text-white/40">Profundidad Operativa:</span>
-                                    <span>Hasta 12,000+ ft</span>
+                                    <span class="text-slate-400 dark:text-white/40">Profundidad Operativa:</span>
+                                    <span class="font-medium text-slate-900 dark:text-white">Hasta 12,000+ ft</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span class="text-white/40">Sistema de Lodos:</span>
-                                    <span>Bombas triples de alta presión</span>
+                                    <span class="text-slate-400 dark:text-white/40">Sistema de Lodos:</span>
+                                    <span class="font-medium text-slate-900 dark:text-white">Bombas triples de alta presión</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Taladros de Workover -->
-                    <div class="service-card reveal-up">
+                    <div class="service-card reveal-up bg-white dark:bg-[#121824] border border-slate-200 dark:border-white/10 shadow-sm">
                         <div class="card-image">
                             <img src="https://i.postimg.cc/sxhm7wpP/38.jpg" alt="Taladro de workover y reacondicionamiento">
                         </div>
-                        <div class="card-number">03 // WORKOVER</div>
+                        <div class="card-number bg-white/90 dark:bg-[#0e131c]/85 text-slate-800 dark:text-white/80 border border-slate-200 dark:border-white/10">03 // WORKOVER</div>
                         <div class="p-8">
-                            <h3 class="text-xl font-bold text-white mb-3">Taladros de Workover & Reacondicionamiento</h3>
-                            <p class="text-white/60 text-sm leading-relaxed mb-6">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Taladros de Workover & Reacondicionamiento</h3>
+                            <p class="text-slate-600 dark:text-white/60 text-sm leading-relaxed mb-6">
                                 Unidades móviles ágiles para intervención mayor de pozos: limpieza de fondo, cambio de bombas electrosumergibles (BES), cañoneo, aislamiento de zonas acuíferas y reacondicionamiento.
                             </p>
-                            <div class="space-y-2 py-3 border-t border-white/5 text-xs font-mono text-white/70">
+                            <div class="space-y-2.5 py-3 border-t border-slate-100 dark:border-white/5 text-xs font-mono text-slate-700 dark:text-white/70">
                                 <div class="flex justify-between">
-                                    <span class="text-white/40">Potencia de Cuadro:</span>
-                                    <span>450 HP - 650 HP</span>
+                                    <span class="text-slate-400 dark:text-white/40">Potencia de Cuadro:</span>
+                                    <span class="font-medium text-slate-900 dark:text-white">450 HP - 650 HP</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span class="text-white/40">Manejo de Tubería:</span>
-                                    <span>Tubing 2-7/8" a 3-1/2"</span>
+                                    <span class="text-slate-400 dark:text-white/40">Manejo de Tubería:</span>
+                                    <span class="font-medium text-slate-900 dark:text-white">Tubing 2-7/8" a 3-1/2"</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span class="text-white/40">Seguridad de Pozo:</span>
-                                    <span>BOP Stack Certificado Clase III</span>
+                                    <span class="text-slate-400 dark:text-white/40">Seguridad de Pozo:</span>
+                                    <span class="font-medium text-slate-900 dark:text-white">BOP Stack Certificado Clase III</span>
                                 </div>
                             </div>
                         </div>
@@ -573,48 +577,48 @@
                 <!-- Info Técnica -->
                 <div class="lg:col-span-5 reveal-up">
                     <span class="text-xs font-mono font-semibold tracking-widest uppercase text-brand-light mb-3 block">Instrumentación & Control</span>
-                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight leading-tight mb-6">
-                        Monitoreo y telemetría <br><span class="text-white/40">operativa en tiempo real</span>
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight leading-tight mb-6 text-slate-900 dark:text-white">
+                        Monitoreo y telemetría <br><span class="text-slate-400 dark:text-white/40">operativa en tiempo real</span>
                     </h2>
-                    <p class="text-white/70 text-sm leading-relaxed mb-6">
+                    <p class="text-slate-600 dark:text-white/70 text-sm leading-relaxed mb-6">
                         Supervisión continua de variables críticas de pozo mediante sensores certificados en superficie y fondo. La telemetría en tiempo real previene incidentes, optimiza la tasa de penetración y asegura la integridad del yacimiento.
                     </p>
 
                     <div class="space-y-4 mb-8">
-                        <div class="tech-item">
-                            <h4 class="text-sm font-bold text-white">Monitoreo de Presiones & Retorno de Lodos</h4>
-                            <p class="text-white/50 text-xs mt-1">Detección temprana de influjos de gas o pérdidas de circulación.</p>
+                        <div class="tech-item border-l-2 border-slate-200 dark:border-white/10 pl-5">
+                            <h4 class="text-sm font-bold text-slate-900 dark:text-white">Monitoreo de Presiones & Retorno de Lodos</h4>
+                            <p class="text-slate-500 dark:text-white/50 text-xs mt-1">Detección temprana de influjos de gas o pérdidas de circulación.</p>
                         </div>
-                        <div class="tech-item">
-                            <h4 class="text-sm font-bold text-white">Registro de Torque & Peso sobre la Barrena (WOB)</h4>
-                            <p class="text-white/50 text-xs mt-1">Control del desgaste de componentes y maximización de ROP.</p>
+                        <div class="tech-item border-l-2 border-slate-200 dark:border-white/10 pl-5">
+                            <h4 class="text-sm font-bold text-slate-900 dark:text-white">Registro de Torque & Peso sobre la Barrena (WOB)</h4>
+                            <p class="text-slate-500 dark:text-white/50 text-xs mt-1">Control del desgaste de componentes y maximización de ROP.</p>
                         </div>
-                        <div class="tech-item">
-                            <h4 class="text-sm font-bold text-white">Supervisión Hidráulica de Preventores (BOP)</h4>
-                            <p class="text-white/50 text-xs mt-1">Cierre automático ante variaciones de presión fuera de norma.</p>
+                        <div class="tech-item border-l-2 border-slate-200 dark:border-white/10 pl-5">
+                            <h4 class="text-sm font-bold text-slate-900 dark:text-white">Supervisión Hidráulica de Preventores (BOP)</h4>
+                            <p class="text-slate-500 dark:text-white/50 text-xs mt-1">Cierre automático ante variaciones de presión fuera de norma.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Consola Interactiva SCADA -->
                 <div class="lg:col-span-7 reveal-scale">
-                    <div class="telemetry-dashboard p-6 md:p-8 relative">
+                    <div class="telemetry-dashboard p-6 md:p-8 relative bg-white dark:bg-[#0e131c]/95 border border-slate-200 dark:border-white/10 shadow-xl rounded-lg">
                         <div class="telemetry-grid-bg"></div>
 
                         <!-- Panel Header -->
-                        <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-6 relative z-10">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-white/10 pb-4 mb-6 relative z-10">
                             <div class="flex items-center gap-3">
                                 <span class="telemetry-led active" id="statusLed"></span>
                                 <span class="text-xs font-mono font-bold tracking-wider text-brand-light" id="statusLabel">ESTADO: OPERACIÓN NOMINAL</span>
                             </div>
-                            <span class="text-[10px] font-mono text-white/40 tracking-widest">NODE-04 // CAMPO BLANCA VINITA</span>
+                            <span class="text-[10px] font-mono text-slate-400 dark:text-white/40 tracking-widest">NODE-04 // CAMPO BLANCA VINITA</span>
                         </div>
 
                         <!-- Cuerpo Principal: Plano SVG + Indicadores -->
                         <div class="grid md:grid-cols-2 gap-6 relative z-10">
                             <!-- Left: Blueprint interactivo del taladro -->
-                            <div class="bg-[#0b0f15]/80 border border-white/5 rounded p-4 flex flex-col items-center justify-center min-h-[290px] relative">
-                                <span class="text-[9px] font-mono uppercase tracking-widest text-white/30 absolute top-2 left-3">Esquema Operativo API</span>
+                            <div class="bg-slate-50 dark:bg-[#0b0f15]/80 border border-slate-200 dark:border-white/5 rounded-lg p-4 flex flex-col items-center justify-center min-h-[290px] relative">
+                                <span class="text-[9px] font-mono uppercase tracking-widest text-slate-400 dark:text-white/30 absolute top-2 left-3">Esquema Operativo API</span>
 
                                 <svg class="w-24 h-52 text-brand transition-colors duration-300" viewBox="0 0 100 200" fill="none" stroke="currentColor" stroke-width="1.5" id="rigSvg">
                                     <line x1="10" y1="190" x2="90" y2="190" />
@@ -639,48 +643,48 @@
                             <!-- Right: Lecturas de Instrumentación -->
                             <div class="flex flex-col justify-between">
                                 <div class="grid grid-cols-2 gap-4">
-                                    <div class="bg-[#0b0f15]/50 border border-white/5 rounded p-3">
-                                        <div class="text-[9px] font-mono uppercase tracking-wider text-white/40 mb-0.5">Profundidad MD</div>
-                                        <div class="text-2xl font-bold font-mono text-white tracking-tight flex items-baseline gap-1">
+                                    <div class="bg-slate-50 dark:bg-[#0b0f15]/50 border border-slate-200 dark:border-white/5 rounded-lg p-3">
+                                        <div class="text-[9px] font-mono uppercase tracking-wider text-slate-400 dark:text-white/40 mb-0.5">Profundidad MD</div>
+                                        <div class="text-2xl font-bold font-mono text-slate-900 dark:text-white tracking-tight flex items-baseline gap-1">
                                             <span id="telemetryDepth">8452.4</span>
-                                            <span class="text-[10px] text-white/40">ft</span>
+                                            <span class="text-[10px] text-slate-400 dark:text-white/40">ft</span>
                                         </div>
                                     </div>
-                                    <div class="bg-[#0b0f15]/50 border border-white/5 rounded p-3">
-                                        <div class="text-[9px] font-mono uppercase tracking-wider text-white/40 mb-0.5">Presión Pozo</div>
+                                    <div class="bg-slate-50 dark:bg-[#0b0f15]/50 border border-slate-200 dark:border-white/5 rounded-lg p-3">
+                                        <div class="text-[9px] font-mono uppercase tracking-wider text-slate-400 dark:text-white/40 mb-0.5">Presión Pozo</div>
                                         <div class="text-2xl font-bold font-mono text-brand-light tracking-tight flex items-baseline gap-1">
                                             <span id="telemetryPressure">2410</span>
-                                            <span class="text-[10px] text-white/40">PSI</span>
+                                            <span class="text-[10px] text-slate-400 dark:text-white/40">PSI</span>
                                         </div>
                                     </div>
-                                    <div class="bg-[#0b0f15]/50 border border-white/5 rounded p-3">
-                                        <div class="text-[9px] font-mono uppercase tracking-wider text-white/40 mb-0.5">Tasa Caudal</div>
-                                        <div class="text-lg font-bold font-mono text-white tracking-tight flex items-baseline gap-1">
+                                    <div class="bg-slate-50 dark:bg-[#0b0f15]/50 border border-slate-200 dark:border-white/5 rounded-lg p-3">
+                                        <div class="text-[9px] font-mono uppercase tracking-wider text-slate-400 dark:text-white/40 mb-0.5">Tasa Caudal</div>
+                                        <div class="text-lg font-bold font-mono text-slate-900 dark:text-white tracking-tight flex items-baseline gap-1">
                                             <span id="telemetryFlow">480</span>
-                                            <span class="text-[10px] text-white/40">GPM</span>
+                                            <span class="text-[10px] text-slate-400 dark:text-white/40">GPM</span>
                                         </div>
                                     </div>
-                                    <div class="bg-[#0b0f15]/50 border border-white/5 rounded p-3">
-                                        <div class="text-[9px] font-mono uppercase tracking-wider text-white/40 mb-0.5">Penetración ROP</div>
-                                        <div class="text-lg font-bold font-mono text-white tracking-tight flex items-baseline gap-1">
+                                    <div class="bg-slate-50 dark:bg-[#0b0f15]/50 border border-slate-200 dark:border-white/5 rounded-lg p-3">
+                                        <div class="text-[9px] font-mono uppercase tracking-wider text-slate-400 dark:text-white/40 mb-0.5">Penetración ROP</div>
+                                        <div class="text-lg font-bold font-mono text-slate-900 dark:text-white tracking-tight flex items-baseline gap-1">
                                             <span id="telemetryROP">32.5</span>
-                                            <span class="text-[10px] text-white/40">ft/hr</span>
+                                            <span class="text-[10px] text-slate-400 dark:text-white/40">ft/hr</span>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Osciloscopio de Onda -->
-                                <div class="my-3 bg-[#0b0f15]/60 border border-white/5 rounded p-2 relative overflow-hidden flex items-end">
-                                    <span class="text-[8px] font-mono uppercase tracking-widest text-white/30 absolute top-1 left-2">Curva Hidráulica de Lodos</span>
+                                <div class="my-3 bg-slate-50 dark:bg-[#0b0f15]/60 border border-slate-200 dark:border-white/5 rounded-lg p-2 relative overflow-hidden flex items-end">
+                                    <span class="text-[8px] font-mono uppercase tracking-widest text-slate-400 dark:text-white/30 absolute top-1 left-2">Curva Hidráulica de Lodos</span>
                                     <svg class="w-full h-7" viewBox="0 0 200 40" preserveAspectRatio="none">
                                         <path d="M0,20 L200,20" fill="none" stroke="#008a62" stroke-width="1.5" id="telemetryGraphPath"></path>
                                     </svg>
                                 </div>
 
                                 <!-- Cuadro de Información de Componente -->
-                                <div class="bg-brand/10 border border-brand/20 rounded p-3 mb-3 text-xs" id="hotspotInfo">
-                                    <span class="font-bold text-white uppercase block mb-1 font-mono text-[11px]" id="hotspotTitle">Corona de Poleas (Crown Block)</span>
-                                    <p class="text-white/70 text-[11px] leading-relaxed" id="hotspotDesc">Estructura superior con capacidad de carga para soportar hasta 500 toneladas en maniobras pesadas.</p>
+                                <div class="bg-brand/10 border border-brand/20 rounded-lg p-3 mb-3 text-xs" id="hotspotInfo">
+                                    <span class="font-bold text-slate-900 dark:text-white uppercase block mb-1 font-mono text-[11px]" id="hotspotTitle">Corona de Poleas (Crown Block)</span>
+                                    <p class="text-slate-600 dark:text-white/70 text-[11px] leading-relaxed" id="hotspotDesc">Estructura superior con capacidad de carga para soportar hasta 500 toneladas en maniobras pesadas.</p>
                                 </div>
 
                                 <!-- Modos de Simulación -->
@@ -706,23 +710,23 @@
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
                 <div>
                     <span class="text-xs font-mono font-semibold tracking-widest uppercase text-brand-light mb-3 block">Trayectoria Operativa</span>
-                    <h2 class="text-3xl md:text-5xl font-bold tracking-tight leading-tight">
-                        Proyectos destacados <br><span class="text-white/40">en el territorio nacional</span>
+                    <h2 class="text-3xl md:text-5xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white">
+                        Proyectos destacados <br><span class="text-slate-400 dark:text-white/40">en el territorio nacional</span>
                     </h2>
                 </div>
                 <div class="flex items-center gap-3">
-                    <span class="text-xs font-mono text-white/40 mr-2 tabular-nums" id="opsCounter">01 / 04</span>
-                    <button id="prevOpsBtn" aria-label="Anterior" class="w-10 h-10 rounded border border-white/15 flex items-center justify-center text-white/70 hover:text-white hover:border-brand hover:bg-brand/10 transition-colors">
+                    <span class="text-xs font-mono text-slate-500 dark:text-white/40 mr-2 tabular-nums" id="opsCounter">01 / 04</span>
+                    <button id="prevOpsBtn" aria-label="Anterior" class="w-10 h-10 rounded-lg border border-slate-200 dark:border-white/15 bg-white dark:bg-transparent flex items-center justify-center text-slate-700 dark:text-white/70 hover:text-brand dark:hover:text-white hover:border-brand hover:bg-brand/10 shadow-sm dark:shadow-none transition-colors">
                         <i data-lucide="arrow-left" class="w-4 h-4"></i>
                     </button>
-                    <button id="nextOpsBtn" aria-label="Siguiente" class="w-10 h-10 rounded border border-white/15 flex items-center justify-center text-white/70 hover:text-white hover:border-brand hover:bg-brand/10 transition-colors">
+                    <button id="nextOpsBtn" aria-label="Siguiente" class="w-10 h-10 rounded-lg border border-slate-200 dark:border-white/15 bg-white dark:bg-transparent flex items-center justify-center text-slate-700 dark:text-white/70 hover:text-brand dark:hover:text-white hover:border-brand hover:bg-brand/10 shadow-sm dark:shadow-none transition-colors">
                         <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </button>
                 </div>
             </div>
 
             <!-- Slider de Proyectos -->
-            <div class="ops-slider reveal-scale">
+            <div class="ops-slider reveal-scale border border-slate-200 dark:border-white/10 shadow-lg dark:shadow-2xl">
                 <div class="ops-track" id="opsTrack">
                     <!-- Slide 1 -->
                     <div class="ops-slide active">
@@ -797,34 +801,34 @@
             <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
                 <div class="lg:col-span-7 reveal-up">
                     <span class="text-xs font-mono font-semibold tracking-widest uppercase text-brand-light mb-3 block">Compromiso Ambiental & HSE</span>
-                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight leading-tight mb-6">
-                        Impulsando una operación responsable <br><span class="text-white/40">con el medio ambiente</span>
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight leading-tight mb-6 text-slate-900 dark:text-white">
+                        Impulsando una operación responsable <br><span class="text-slate-400 dark:text-white/40">con el medio ambiente</span>
                     </h2>
-                    <p class="text-white/70 text-base leading-relaxed mb-6">
+                    <p class="text-slate-600 dark:text-white/70 text-base leading-relaxed mb-6">
                         En TribOil consideramos la sostenibilidad como un principio de ingeniería no negociable. Implementamos tecnologías de contención secundaria, tratamiento integral de fluidos de perforación y planes rigurosos de prevención de derrames.
                     </p>
-                    <p class="text-white/60 text-sm leading-relaxed mb-8">
+                    <p class="text-slate-500 dark:text-white/60 text-sm leading-relaxed mb-8">
                         Nos enfocamos en reducir la huella de carbono en campamentos y locaciones mediante optimización de generadores diésel e integración de prácticas de eficiencia energética.
                     </p>
 
-                    <div class="grid sm:grid-cols-3 gap-4 pt-4 border-t border-white/5 font-mono text-xs">
-                        <div class="p-3 rounded bg-[#121824] border border-white/5">
-                            <span class="text-brand-light font-bold block mb-1">CERO</span>
-                            <span class="text-white/60">Incidentes Ambientales Reportables</span>
+                    <div class="grid sm:grid-cols-3 gap-4 pt-4 border-t border-slate-200 dark:border-white/5 font-mono text-xs">
+                        <div class="p-4 rounded-lg bg-white dark:bg-[#121824] border border-slate-200 dark:border-white/5 shadow-sm">
+                            <span class="text-brand dark:text-brand-light font-bold block mb-1 text-sm">CERO</span>
+                            <span class="text-slate-600 dark:text-white/60 text-xs">Incidentes Ambientales Reportables</span>
                         </div>
-                        <div class="p-3 rounded bg-[#121824] border border-white/5">
-                            <span class="text-brand-light font-bold block mb-1">100%</span>
-                            <span class="text-white/60">Disposición Certificada de Desechos</span>
+                        <div class="p-4 rounded-lg bg-white dark:bg-[#121824] border border-slate-200 dark:border-white/5 shadow-sm">
+                            <span class="text-brand dark:text-brand-light font-bold block mb-1 text-sm">100%</span>
+                            <span class="text-slate-600 dark:text-white/60 text-xs">Disposición Certificada de Desechos</span>
                         </div>
-                        <div class="p-3 rounded bg-[#121824] border border-white/5">
-                            <span class="text-brand-light font-bold block mb-1">ISO 14001</span>
-                            <span class="text-white/60">Marco de Gestión Ambiental Activo</span>
+                        <div class="p-4 rounded-lg bg-white dark:bg-[#121824] border border-slate-200 dark:border-white/5 shadow-sm">
+                            <span class="text-brand dark:text-brand-light font-bold block mb-1 text-sm">ISO 14001</span>
+                            <span class="text-slate-600 dark:text-white/60 text-xs">Marco de Gestión Ambiental Activo</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="lg:col-span-5 reveal-scale">
-                    <div class="rounded-lg overflow-hidden border border-white/10 shadow-xl">
+                    <div class="rounded-lg overflow-hidden border border-slate-200 dark:border-white/10 shadow-xl">
                         <img src="https://i.postimg.cc/hGKQDfJ9/5.jpg" alt="Preservación ambiental en operaciones de TribOil" class="w-full h-80 object-cover filter brightness-90">
                     </div>
                 </div>
@@ -842,51 +846,51 @@
                 <!-- Info de Contacto -->
                 <div class="lg:col-span-5 reveal-up">
                     <span class="text-xs font-mono font-semibold tracking-widest uppercase text-brand-light mb-3 block">Atención Operativa</span>
-                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight leading-tight mb-6">
-                        Iniciemos una conversación <br><span class="text-white/40">sobre sus requerimientos</span>
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight leading-tight mb-6 text-slate-900 dark:text-white">
+                        Iniciemos una conversación <br><span class="text-slate-400 dark:text-white/40">sobre sus requerimientos</span>
                     </h2>
-                    <p class="text-white/70 text-sm leading-relaxed mb-8">
+                    <p class="text-slate-600 dark:text-white/70 text-sm leading-relaxed mb-8">
                         Nuestro equipo técnico y de operaciones está listo para analizar las especificaciones de sus pozos y formular propuestas comerciales a medida.
                     </p>
 
                     <div class="space-y-6">
                         <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 text-brand-light">
+                            <div class="w-10 h-10 rounded-lg bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center flex-shrink-0 text-brand dark:text-brand-light shadow-sm dark:shadow-none">
                                 <i data-lucide="map-pin" class="w-4 h-4"></i>
                             </div>
                             <div>
-                                <h4 class="text-xs font-bold uppercase tracking-wider text-white">Base Principal Operativa</h4>
-                                <p class="text-white/50 text-xs mt-0.5">Vía a Lago Agrio km 7, El Coca – Orellana, Ecuador</p>
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">Base Principal Operativa</h4>
+                                <p class="text-slate-600 dark:text-white/50 text-xs mt-0.5">Vía a Lago Agrio km 7, El Coca – Orellana, Ecuador</p>
                             </div>
                         </div>
 
                         <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 text-brand-light">
+                            <div class="w-10 h-10 rounded-lg bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center flex-shrink-0 text-brand dark:text-brand-light shadow-sm dark:shadow-none">
                                 <i data-lucide="building" class="w-4 h-4"></i>
                             </div>
                             <div>
-                                <h4 class="text-xs font-bold uppercase tracking-wider text-white">Oficinas Corporativas Quito</h4>
-                                <p class="text-white/50 text-xs mt-0.5">Pedro Ponce Carrasco E8-06 y Diego de Almagro, Edif. Almagro Plaza</p>
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">Oficinas Corporativas Quito</h4>
+                                <p class="text-slate-600 dark:text-white/50 text-xs mt-0.5">Pedro Ponce Carrasco E8-06 y Diego de Almagro, Edif. Almagro Plaza</p>
                             </div>
                         </div>
 
                         <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 text-brand-light">
+                            <div class="w-10 h-10 rounded-lg bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center flex-shrink-0 text-brand dark:text-brand-light shadow-sm dark:shadow-none">
                                 <i data-lucide="mail" class="w-4 h-4"></i>
                             </div>
                             <div>
-                                <h4 class="text-xs font-bold uppercase tracking-wider text-white">Correo Electrónico</h4>
-                                <a href="mailto:triboil@triboil.com" class="text-white/60 hover:text-white text-xs transition-colors">triboil@triboil.com</a>
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">Correo Electrónico</h4>
+                                <a href="mailto:triboil@triboil.com" class="text-slate-600 dark:text-white/60 hover:text-brand dark:hover:text-white text-xs transition-colors">triboil@triboil.com</a>
                             </div>
                         </div>
 
                         <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 text-brand-light">
+                            <div class="w-10 h-10 rounded-lg bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center flex-shrink-0 text-brand dark:text-brand-light shadow-sm dark:shadow-none">
                                 <i data-lucide="phone" class="w-4 h-4"></i>
                             </div>
                             <div>
-                                <h4 class="text-xs font-bold uppercase tracking-wider text-white">Teléfono Central</h4>
-                                <p class="text-white/50 text-xs mt-0.5">+593 (02) 3956540</p>
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">Teléfono Central</h4>
+                                <p class="text-slate-600 dark:text-white/50 text-xs mt-0.5">+593 (02) 3956540</p>
                             </div>
                         </div>
                     </div>
@@ -894,36 +898,36 @@
 
                 <!-- Formulario Profesional -->
                 <div class="lg:col-span-7 reveal-up">
-                    <div class="p-8 md:p-10 rounded-lg bg-[#121824] border border-white/10 shadow-2xl">
-                        <h3 class="text-xl font-bold text-white mb-2">Solicitud de Propuesta Técnica</h3>
-                        <p class="text-white/40 text-xs mb-6">Complete los detalles de su proyecto y nuestro equipo le responderá en menos de 24 horas laborables.</p>
+                    <div class="p-8 md:p-10 rounded-xl bg-white dark:bg-[#121824] border border-slate-200 dark:border-white/10 shadow-xl dark:shadow-2xl">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Solicitud de Propuesta Técnica</h3>
+                        <p class="text-slate-500 dark:text-white/40 text-xs mb-6">Complete los detalles de su proyecto y nuestro equipo le responderá en menos de 24 horas laborables.</p>
 
                         <form id="contactForm" class="space-y-5">
                             <div class="grid md:grid-cols-2 gap-5">
                                 <div>
-                                    <label class="text-[11px] font-mono uppercase tracking-wider text-white/50 mb-1.5 block">Nombre Completo *</label>
+                                    <label class="text-[11px] font-mono uppercase tracking-wider text-slate-600 dark:text-white/50 mb-1.5 block">Nombre Completo *</label>
                                     <input type="text" class="form-input" placeholder="Ej. Ing. Carlos Andrade" required>
                                 </div>
                                 <div>
-                                    <label class="text-[11px] font-mono uppercase tracking-wider text-white/50 mb-1.5 block">Empresa / Operadora *</label>
+                                    <label class="text-[11px] font-mono uppercase tracking-wider text-slate-600 dark:text-white/50 mb-1.5 block">Empresa / Operadora *</label>
                                     <input type="text" class="form-input" placeholder="Nombre de la compañía" required>
                                 </div>
                             </div>
 
                             <div class="grid md:grid-cols-2 gap-5">
                                 <div>
-                                    <label class="text-[11px] font-mono uppercase tracking-wider text-white/50 mb-1.5 block">Correo Electrónico Corporativo *</label>
+                                    <label class="text-[11px] font-mono uppercase tracking-wider text-slate-600 dark:text-white/50 mb-1.5 block">Correo Electrónico Corporativo *</label>
                                     <input type="email" class="form-input" placeholder="carlos.andrade@operadora.com" required>
                                 </div>
                                 <div>
-                                    <label class="text-[11px] font-mono uppercase tracking-wider text-white/50 mb-1.5 block">Teléfono de Contacto</label>
+                                    <label class="text-[11px] font-mono uppercase tracking-wider text-slate-600 dark:text-white/50 mb-1.5 block">Teléfono de Contacto</label>
                                     <input type="tel" class="form-input" placeholder="+593 99 999 9999">
                                 </div>
                             </div>
 
                             <div>
-                                <label class="text-[11px] font-mono uppercase tracking-wider text-white/50 mb-1.5 block">Servicio de Interés *</label>
-                                <select class="form-input bg-[#0e131c] cursor-pointer" required>
+                                <label class="text-[11px] font-mono uppercase tracking-wider text-slate-600 dark:text-white/50 mb-1.5 block">Servicio de Interés *</label>
+                                <select class="form-input bg-slate-50 dark:bg-[#0e131c] text-slate-900 dark:text-white border-slate-200 dark:border-white/10 cursor-pointer" required>
                                     <option value="" disabled selected>Seleccione el servicio requerido...</option>
                                     <option value="gerenciamiento">Gerenciamiento Integral de Campos</option>
                                     <option value="perforacion">Servicios de Taladro de Perforación (Drilling)</option>
@@ -935,7 +939,7 @@
                             </div>
 
                             <div>
-                                <label class="text-[11px] font-mono uppercase tracking-wider text-white/50 mb-1.5 block">Descripción del Requerimiento *</label>
+                                <label class="text-[11px] font-mono uppercase tracking-wider text-slate-600 dark:text-white/50 mb-1.5 block">Descripción del Requerimiento *</label>
                                 <textarea class="form-input resize-none" rows="4" placeholder="Indique tipo de pozo, profundidad estimada, ubicación del bloque o detalles técnicos..." required></textarea>
                             </div>
 
@@ -951,74 +955,75 @@
     </section>
 
     <!-- Footer Institucional -->
-    <footer class="border-t border-white/5 bg-[#080c12] py-16">
+    <footer class="border-t border-slate-200 dark:border-white/5 bg-slate-100 dark:bg-[#080c12] py-16 transition-colors duration-300">
         <div class="max-w-[1500px] mx-auto px-6 md:px-10">
             <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
                 <!-- Brand Info -->
                 <div class="lg:col-span-2">
-                    <img src="assets/logoWhite.png" alt="TribOil" class="h-9 w-auto object-contain mb-4">
-                    <p class="text-white/50 text-xs leading-relaxed max-w-sm mb-4">
+                    <img src="assets/logoWhite.png" alt="TribOil" class="h-9 w-auto object-contain mb-4 dark-logo">
+                    <img src="assets/logoGreen.png" alt="TribOil" class="h-9 w-auto object-contain mb-4 light-logo">
+                    <p class="text-slate-600 dark:text-white/50 text-xs leading-relaxed max-w-sm mb-4">
                         Compañía de servicios petroleros enfocada en la excelencia operativa, el gerenciamiento integral de activos hidrocarburíferos y la seguridad industrial en el Ecuador.
                     </p>
-                    <span class="text-[10px] font-mono text-white/30 uppercase tracking-widest block">TribOil S.A. · RUC: Registro Corporativo Oficial</span>
+                    <span class="text-[10px] font-mono text-slate-500 dark:text-white/30 uppercase tracking-widest block">TribOil S.A. · RUC: Registro Corporativo Oficial</span>
                 </div>
 
                 <!-- Soluciones Links -->
                 <div>
-                    <h5 class="text-xs font-mono font-bold uppercase tracking-widest text-white/60 mb-4">Soluciones</h5>
-                    <ul class="space-y-2 text-xs text-white/50">
-                        <li><a href="#soluciones" class="hover:text-white transition-colors">Gerenciamiento de Campos</a></li>
-                        <li><a href="#soluciones" class="hover:text-white transition-colors">Taladros de Perforación</a></li>
-                        <li><a href="#soluciones" class="hover:text-white transition-colors">Taladros de Workover</a></li>
-                        <li><a href="#operaciones" class="hover:text-white transition-colors">Campo Blanca Vinita</a></li>
+                    <h5 class="text-xs font-mono font-bold uppercase tracking-widest text-slate-900 dark:text-white/60 mb-4">Soluciones</h5>
+                    <ul class="space-y-2 text-xs text-slate-600 dark:text-white/50">
+                        <li><a href="#soluciones" class="hover:text-brand dark:hover:text-white transition-colors">Gerenciamiento de Campos</a></li>
+                        <li><a href="#soluciones" class="hover:text-brand dark:hover:text-white transition-colors">Taladros de Perforación</a></li>
+                        <li><a href="#soluciones" class="hover:text-brand dark:hover:text-white transition-colors">Taladros de Workover</a></li>
+                        <li><a href="#operaciones" class="hover:text-brand dark:hover:text-white transition-colors">Campo Blanca Vinita</a></li>
                     </ul>
                 </div>
 
                 <!-- Empresa & Gobierno Corporativo -->
                 <div>
-                    <h5 class="text-xs font-mono font-bold uppercase tracking-widest text-white/60 mb-4">Empresa</h5>
-                    <ul class="space-y-2 text-xs text-white/50">
-                        <li><a href="#nosotros" class="hover:text-white transition-colors">Sobre Nosotros</a></li>
-                        <li><a href="#clientes" class="hover:text-white transition-colors">Clientes Destacados</a></li>
-                        <li><a href="https://proveedores.triboil.com/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-1">Portal Proveedores <i data-lucide="external-link" class="w-3 h-3"></i></a></li>
-                        <li><a href="https://triboilgas.typeform.com/to/OKUP0n?typeform-source=www.triboilgas.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-1">Canal de Denuncias <i data-lucide="external-link" class="w-3 h-3"></i></a></li>
-                        <li><a href="https://triboil.com/equipo-humano/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-1">Equipo Humano <i data-lucide="external-link" class="w-3 h-3"></i></a></li>
+                    <h5 class="text-xs font-mono font-bold uppercase tracking-widest text-slate-900 dark:text-white/60 mb-4">Empresa</h5>
+                    <ul class="space-y-2 text-xs text-slate-600 dark:text-white/50">
+                        <li><a href="#nosotros" class="hover:text-brand dark:hover:text-white transition-colors">Sobre Nosotros</a></li>
+                        <li><a href="#clientes" class="hover:text-brand dark:hover:text-white transition-colors">Clientes Destacados</a></li>
+                        <li><a href="https://proveedores.triboil.com/" target="_blank" rel="noopener noreferrer" class="hover:text-brand dark:hover:text-white transition-colors flex items-center gap-1">Portal Proveedores <i data-lucide="external-link" class="w-3 h-3"></i></a></li>
+                        <li><a href="https://triboilgas.typeform.com/to/OKUP0n?typeform-source=www.triboilgas.com" target="_blank" rel="noopener noreferrer" class="hover:text-brand dark:hover:text-white transition-colors flex items-center gap-1">Canal de Denuncias <i data-lucide="external-link" class="w-3 h-3"></i></a></li>
+                        <li><a href="https://triboil.com/equipo-humano/" target="_blank" rel="noopener noreferrer" class="hover:text-brand dark:hover:text-white transition-colors flex items-center gap-1">Equipo Humano <i data-lucide="external-link" class="w-3 h-3"></i></a></li>
                     </ul>
                 </div>
 
                 <!-- Enlaces Rápidos Intranet -->
                 <div>
-                    <h5 class="text-xs font-mono font-bold uppercase tracking-widest text-white/60 mb-4">Intranet</h5>
-                    <ul class="space-y-2 text-xs text-white/50">
-                        <li><a href="https://forms.office.com/pages/responsepage.aspx?id=oneFCI-_SEekK--m01noB_FftykoV9ZPjdq-xEBrY_dUM1ozNTFLREVSMVFQOE81OTNGNTM4OVJWMy4u" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-1">Encuesta Médica <i data-lucide="external-link" class="w-2.5 h-2.5"></i></a></li>
-                        <li><a href="https://triboilgas.typeform.com/to/C9u7aE?typeform-source=www.triboilgas.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-1">Solicitud TTHH <i data-lucide="external-link" class="w-2.5 h-2.5"></i></a></li>
-                        <li><a href="https://www.triboilgas.com/hesk/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-1">Ticket Soporte <i data-lucide="external-link" class="w-2.5 h-2.5"></i></a></li>
-                        <li><a href="http://64.190.27.46:8040/jde/E1Menu.maf?" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-1">JD Edwards <i data-lucide="external-link" class="w-2.5 h-2.5"></i></a></li>
-                        <li><a href="https://compers.online" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-1">Compers TTHH <i data-lucide="external-link" class="w-2.5 h-2.5"></i></a></li>
-                        <li><a href="https://forms.office.com/pages/responsepage.aspx?id=oneFCI-_SEekK--m01noB_FftykoV9ZPjdq-xEBrY_dUNFU4TEhXQ0dQTzBMSDIwVDVMNThIRUNERy4u" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-1">Tarjeta Cero <i data-lucide="external-link" class="w-2.5 h-2.5"></i></a></li>
+                    <h5 class="text-xs font-mono font-bold uppercase tracking-widest text-slate-900 dark:text-white/60 mb-4">Intranet</h5>
+                    <ul class="space-y-2 text-xs text-slate-600 dark:text-white/50">
+                        <li><a href="https://forms.office.com/pages/responsepage.aspx?id=oneFCI-_SEekK--m01noB_FftykoV9ZPjdq-xEBrY_dUM1ozNTFLREVSMVFQOE81OTNGNTM4OVJWMy4u" target="_blank" rel="noopener noreferrer" class="hover:text-brand dark:hover:text-white transition-colors flex items-center gap-1">Encuesta Médica <i data-lucide="external-link" class="w-2.5 h-2.5"></i></a></li>
+                        <li><a href="https://triboilgas.typeform.com/to/C9u7aE?typeform-source=www.triboilgas.com" target="_blank" rel="noopener noreferrer" class="hover:text-brand dark:hover:text-white transition-colors flex items-center gap-1">Solicitud TTHH <i data-lucide="external-link" class="w-2.5 h-2.5"></i></a></li>
+                        <li><a href="https://www.triboilgas.com/hesk/" target="_blank" rel="noopener noreferrer" class="hover:text-brand dark:hover:text-white transition-colors flex items-center gap-1">Ticket Soporte <i data-lucide="external-link" class="w-2.5 h-2.5"></i></a></li>
+                        <li><a href="http://64.190.27.46:8040/jde/E1Menu.maf?" target="_blank" rel="noopener noreferrer" class="hover:text-brand dark:hover:text-white transition-colors flex items-center gap-1">JD Edwards <i data-lucide="external-link" class="w-2.5 h-2.5"></i></a></li>
+                        <li><a href="https://compers.online" target="_blank" rel="noopener noreferrer" class="hover:text-brand dark:hover:text-white transition-colors flex items-center gap-1">Compers TTHH <i data-lucide="external-link" class="w-2.5 h-2.5"></i></a></li>
+                        <li><a href="https://forms.office.com/pages/responsepage.aspx?id=oneFCI-_SEekK--m01noB_FftykoV9ZPjdq-xEBrY_dUNFU4TEhXQ0dQTzBMSDIwVDVMNThIRUNERy4u" target="_blank" rel="noopener noreferrer" class="hover:text-brand dark:hover:text-white transition-colors flex items-center gap-1">Tarjeta Cero <i data-lucide="external-link" class="w-2.5 h-2.5"></i></a></li>
                     </ul>
                 </div>
             </div>
 
-            <div class="border-t border-white/5 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="border-t border-slate-200 dark:border-white/5 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
-                    <p class="text-white/40 text-xs">
-                        &copy; 2026 <span class="text-white/60 font-medium">TribOil</span>. Todos los derechos reservados.
+                    <p class="text-slate-500 dark:text-white/40 text-xs">
+                        &copy; 2026 <span class="text-slate-900 dark:text-white/60 font-medium">TribOil</span>. Todos los derechos reservados.
                     </p>
-                    <span class="hidden sm:inline text-white/20">|</span>
-                    <button id="dev-signature" class="text-white/30 hover:text-brand-light text-xs font-mono transition-colors">
+                    <span class="hidden sm:inline text-slate-300 dark:text-white/20">|</span>
+                    <button id="dev-signature" class="text-slate-500 dark:text-white/30 hover:text-brand dark:hover:text-brand-light text-xs font-mono transition-colors">
                         Sistemas & Desarrollo
                     </button>
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <a href="https://ec.linkedin.com/company/triboil" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-brand hover:bg-brand/10 transition-colors" aria-label="LinkedIn">
+                    <a href="https://ec.linkedin.com/company/triboil" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-transparent flex items-center justify-center text-slate-600 dark:text-white/60 hover:text-brand dark:hover:text-white hover:border-brand hover:bg-brand/10 shadow-sm dark:shadow-none transition-colors" aria-label="LinkedIn">
                         <i class="fab fa-linkedin-in text-xs"></i>
                     </a>
-                    <a href="https://www.instagram.com/triboilgas/" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-brand hover:bg-brand/10 transition-colors" aria-label="Instagram">
+                    <a href="https://www.instagram.com/triboilgas/" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-transparent flex items-center justify-center text-slate-600 dark:text-white/60 hover:text-brand dark:hover:text-white hover:border-brand hover:bg-brand/10 shadow-sm dark:shadow-none transition-colors" aria-label="Instagram">
                         <i class="fab fa-instagram text-xs"></i>
                     </a>
-                    <a href="https://www.facebook.com/triboilgas" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-brand hover:bg-brand/10 transition-colors" aria-label="Facebook">
+                    <a href="https://www.facebook.com/triboilgas" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-transparent flex items-center justify-center text-slate-600 dark:text-white/60 hover:text-brand dark:hover:text-white hover:border-brand hover:bg-brand/10 shadow-sm dark:shadow-none transition-colors" aria-label="Facebook">
                         <i class="fab fa-facebook-f text-xs"></i>
                     </a>
                 </div>
