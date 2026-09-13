@@ -40,22 +40,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================
-  // GESTOR DE TEMA (CLARO / OSCURO POR SEPARADO)
+  // GESTOR DE TEMA MINIMALISTA (SWITCH TOGGLE)
   // ==========================================
+  const themeSwitches = document.querySelectorAll(".theme-minimal-switch");
   const lightButtons = document.querySelectorAll(".btn-theme-light");
   const darkButtons = document.querySelectorAll(".btn-theme-dark");
 
   function applyTheme(theme) {
+    const isDark = theme === "dark";
     document.documentElement.setAttribute("data-theme", theme);
-    if (theme === "dark") {
+
+    if (isDark) {
       document.documentElement.classList.add("dark");
-      darkButtons.forEach((btn) => btn.classList.add("active"));
-      lightButtons.forEach((btn) => btn.classList.remove("active"));
     } else {
       document.documentElement.classList.remove("dark");
-      lightButtons.forEach((btn) => btn.classList.add("active"));
-      darkButtons.forEach((btn) => btn.classList.remove("active"));
     }
+
+    // Actualizar switches minimalistas
+    themeSwitches.forEach((sw) => {
+      sw.setAttribute("aria-checked", isDark ? "true" : "false");
+      sw.classList.toggle("is-dark", isDark);
+    });
+
+    // Retrocompatibilidad con botones legacy
+    darkButtons.forEach((btn) => btn.classList.toggle("active", isDark));
+    lightButtons.forEach((btn) => btn.classList.toggle("active", !isDark));
+
     localStorage.setItem("triboil_theme", theme);
 
     if (typeof lucide !== "undefined") {
@@ -70,6 +80,14 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     applyTheme("light");
   }
+
+  // Alternar tema en 1 solo clic con el switch minimalista
+  themeSwitches.forEach((sw) => {
+    sw.addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme") || "light";
+      applyTheme(current === "dark" ? "light" : "dark");
+    });
+  });
 
   lightButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -347,70 +365,252 @@ document.addEventListener("DOMContentLoaded", () => {
   startSlider();
 
   // ==========================================
-  // OPERACIONES / PROYECTOS SLIDER
+  // OPERACIONES / DOSSIER COMMAND CENTER (AWWWARDS EDITION)
   // ==========================================
-  let currentOps = 0;
-  const opsTrack = document.getElementById("opsTrack");
-  const opsSlides = document.querySelectorAll(".ops-slide");
-  const prevOpsBtn = document.getElementById("prevOpsBtn");
-  const nextOpsBtn = document.getElementById("nextOpsBtn");
-  const opsCounter = document.getElementById("opsCounter");
+  const dossierCards = document.querySelectorAll(".dossier-card");
+  const dossierSlides = document.querySelectorAll(".dossier-img-slide");
+  const dossierPrevBtn = document.getElementById("dossierPrevBtn");
+  const dossierNextBtn = document.getElementById("dossierNextBtn");
+  const dossierCurrentNum = document.getElementById("dossierCurrentNum");
 
-  function goToOps(index) {
-    if (!opsTrack || opsSlides.length === 0) return;
+  const dossierGpsText = document.getElementById("dossierGpsText");
+  const dossierStatusText = document.getElementById("dossierStatusText");
+  const dossierOverlayCategory = document.getElementById("dossierOverlayCategory");
+  const dossierOverlayTitle = document.getElementById("dossierOverlayTitle");
+  const dossierOverlayDesc = document.getElementById("dossierOverlayDesc");
 
-    if (index < 0) index = opsSlides.length - 1;
-    if (index >= opsSlides.length) index = 0;
+  const dossierData = [
+    {
+      index: "01",
+      category: "Proyecto Insignia Upstream · Bloque 57",
+      title: "Desarrollo Integral del Campo Blanca Vinita",
+      desc: "Planificación de desarrollo, perforación guiada por MWD/LWD, completación y producción con estándares de excelencia API.",
+      gps: "Bloque 57 · Orellana, Ecuador",
+      status: "OPERACIÓN ACTIVA · TALADRO 1500 HP",
+    },
+    {
+      index: "02",
+      category: "Campaña de Perforación · Cuenca Oriente",
+      title: "Perforación de Nuevos Pozos de Desarrollo",
+      desc: "Ejecución de pozos direccionales y de alto ángulo con control geomecánico de trayectoria para maximizar contacto con el yacimiento.",
+      gps: "Cuenca Oriente · Formaciones Profundas",
+      status: "PERFORACIÓN DIRECCIONAL · RIG PESADO",
+    },
+    {
+      index: "03",
+      category: "Well Intervention · Campos Maduros",
+      title: "Campañas de Workover y Reactivación",
+      desc: "Reacondicionamiento de pozos cerrados, cambio de sartas y optimización de levantamiento electrosumergible (BES) para recuperar rentabilidad operativa.",
+      gps: "Distrito Operativo · Base El Coca",
+      status: "WORKOVER EN CURSO · RIG 750 HP",
+    },
+    {
+      index: "04",
+      category: "Gestión HSE & Social · Región Amazónica",
+      title: "Vinculación Comunitaria & Preservación",
+      desc: "Fomento del empleo local, desarrollo de capacidades técnicas y relación transparente y colaborativa con las comunidades amazónicas vecinas.",
+      gps: "Comunidades Amazónicas · Área de Influencia",
+      status: "GESTIÓN SOSTENIBLE · CERO INCIDENTES",
+    },
+  ];
 
-    currentOps = index;
-    opsTrack.style.transform = `translateX(-${currentOps * 100}%)`;
+  let currentDossierIdx = 0;
+  let dossierAutoplayTimer = null;
+  const DOSSIER_INTERVAL = 6500;
 
-    opsSlides.forEach((slide, idx) => {
-      slide.classList.toggle("active", idx === currentOps);
+  function setDossierSlide(idx) {
+    if (dossierCards.length === 0) return;
+    if (idx < 0) idx = dossierData.length - 1;
+    if (idx >= dossierData.length) idx = 0;
+    currentDossierIdx = idx;
+
+    dossierCards.forEach((card, i) => {
+      card.classList.toggle("active", i === currentDossierIdx);
     });
 
-    if (opsCounter) {
-      opsCounter.textContent = `0${currentOps + 1} / 0${opsSlides.length}`;
+    dossierSlides.forEach((slide, i) => {
+      slide.classList.toggle("active", i === currentDossierIdx);
+    });
+
+    const d = dossierData[currentDossierIdx];
+    if (d) {
+      if (dossierCurrentNum) dossierCurrentNum.textContent = d.index;
+      if (dossierGpsText) dossierGpsText.textContent = d.gps;
+      if (dossierStatusText) dossierStatusText.textContent = d.status;
+      if (dossierOverlayCategory) dossierOverlayCategory.textContent = d.category;
+      if (dossierOverlayTitle) dossierOverlayTitle.textContent = d.title;
+      if (dossierOverlayDesc) dossierOverlayDesc.textContent = d.desc;
     }
   }
 
-  if (prevOpsBtn) prevOpsBtn.addEventListener("click", () => goToOps(currentOps - 1));
-  if (nextOpsBtn) nextOpsBtn.addEventListener("click", () => goToOps(currentOps + 1));
+  function startDossierAutoplay() {
+    stopDossierAutoplay();
+    dossierAutoplayTimer = setInterval(() => {
+      setDossierSlide(currentDossierIdx + 1);
+    }, DOSSIER_INTERVAL);
+  }
+
+  function stopDossierAutoplay() {
+    if (dossierAutoplayTimer) {
+      clearInterval(dossierAutoplayTimer);
+      dossierAutoplayTimer = null;
+    }
+  }
+
+  dossierCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      const idx = parseInt(card.dataset.index, 10);
+      setDossierSlide(idx);
+      startDossierAutoplay();
+    });
+    card.addEventListener("mouseenter", stopDossierAutoplay);
+    card.addEventListener("mouseleave", startDossierAutoplay);
+  });
+
+  if (dossierPrevBtn) {
+    dossierPrevBtn.addEventListener("click", () => {
+      setDossierSlide(currentDossierIdx - 1);
+      startDossierAutoplay();
+    });
+  }
+
+  if (dossierNextBtn) {
+    dossierNextBtn.addEventListener("click", () => {
+      setDossierSlide(currentDossierIdx + 1);
+      startDossierAutoplay();
+    });
+  }
+
+  startDossierAutoplay();
 
   // ==========================================
-  // REVELADO CON GSAP EN SCROLL
+  // REVELADO CINEMATOGRÁFICO "STRATA DIVE & ESCANEO SÍSMICO 3D" (BIDIRECCIONAL CONTINUO)
   // ==========================================
-  const revealElements = document.querySelectorAll(".reveal-up, .reveal-scale");
-  revealElements.forEach((el) => {
+  const deepSections = document.querySelectorAll(
+    "section:not(#heroSlider), #clientes, #nosotros, #soluciones, #tecnologia, #operaciones, #sostenibilidad, #contacto"
+  );
+  const uniqueSections = Array.from(new Set(deepSections));
+
+  const triggerLaserSweep = (sec) => {
+    let prev = sec.previousElementSibling;
+    while (prev) {
+      const hr = prev.querySelector
+        ? prev.querySelector(".hr-brand") || (prev.classList.contains("hr-brand") ? prev : null)
+        : null;
+      if (hr) {
+        hr.classList.remove("laser-active");
+        void hr.offsetWidth;
+        hr.classList.add("laser-active");
+        break;
+      }
+      prev = prev.previousElementSibling;
+    }
+  };
+
+  const playSectionIn = (sec, direction = "down") => {
+    const isMobile = window.innerWidth < 768;
+    const yOffset = direction === "down" ? (isMobile ? 22 : 45) : (isMobile ? -18 : -40);
+    const rotX = isMobile ? 0 : (direction === "down" ? 3.5 : -3.0);
+
+    // 1. Inmersión Volumétrica 3D (en desktop) / Entrada 2D fluida y ligera (en mobile)
     gsap.fromTo(
-      el,
-      { opacity: 0, y: 30 },
+      sec,
+      {
+        opacity: 0,
+        y: yOffset,
+        scale: isMobile ? 1 : 0.965,
+        rotateX: rotX,
+        transformPerspective: isMobile ? 0 : 1200,
+        filter: isMobile ? "none" : "blur(6px)",
+      },
       {
         opacity: 1,
         y: 0,
-        duration: 0.8,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 88%",
-          toggleActions: "play none none none",
-        },
+        scale: 1,
+        rotateX: 0,
+        filter: "none",
+        duration: isMobile ? 0.7 : 1.1,
+        ease: "power3.out",
+        overwrite: "auto",
+        clearProps: "all",
       }
     );
+
+    triggerLaserSweep(sec);
+
+    // 2. Despliegue en Cascada Escalonada (Stagger) de los Componentes Internos
+    const innerStaggers = sec.querySelectorAll(
+      ".reveal-up, .reveal-scale, h2, .service-feature-box, .service-card, .metric-item, .tech-item, .telemetry-dashboard, .op-card"
+    );
+
+    if (innerStaggers.length > 0) {
+      gsap.fromTo(
+        innerStaggers,
+        {
+          opacity: 0,
+          y: direction === "down" ? (isMobile ? 16 : 26) : (isMobile ? -12 : -20),
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: isMobile ? 0.55 : 0.85,
+          stagger: isMobile ? 0.04 : 0.07,
+          ease: "power2.out",
+          overwrite: "auto",
+          clearProps: "all",
+        }
+      );
+    }
+  };
+
+  const resetSectionOffscreen = (sec) => {
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      gsap.set(sec, { opacity: 0, y: 20, clearProps: "filter,transform" });
+    } else {
+      gsap.set(sec, {
+        opacity: 0,
+        y: 45,
+        scale: 0.965,
+        rotateX: 3.5,
+        filter: "blur(6px)",
+      });
+    }
+    const innerStaggers = sec.querySelectorAll(
+      ".reveal-up, .reveal-scale, h2, .service-feature-box, .service-card, .metric-item, .tech-item, .telemetry-dashboard, .op-card"
+    );
+    if (innerStaggers.length > 0) {
+      gsap.set(innerStaggers, { opacity: 0, y: isMobile ? 14 : 26 });
+    }
+  };
+
+  uniqueSections.forEach((sec) => {
+    ScrollTrigger.create({
+      trigger: sec,
+      start: "top 86%",
+      end: "bottom top",
+      onEnter: () => playSectionIn(sec, "down"),
+      onEnterBack: () => playSectionIn(sec, "up"),
+      onLeave: () => resetSectionOffscreen(sec),
+      onLeaveBack: () => resetSectionOffscreen(sec),
+    });
   });
 
   // ==========================================
   // NAVEGACIÓN PRINCIPAL
   // ==========================================
   const mainNav = document.getElementById("mainNav");
+  const topBarEl = document.querySelector(".top-bar");
   if (mainNav) {
     ScrollTrigger.create({
-      start: "top -60",
+      start: "top -40",
       onUpdate: (self) => {
-        if (self.scroll() > 80) {
+        if (self.scroll() > 40) {
           mainNav.classList.add("scrolled");
+          if (topBarEl) topBarEl.classList.add("top-bar-hidden");
         } else {
           mainNav.classList.remove("scrolled");
+          if (topBarEl) topBarEl.classList.remove("top-bar-hidden");
         }
       },
     });
@@ -476,15 +676,19 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("#mobileMenu a").forEach((a) => a.addEventListener("click", closeMobile));
 
   // ==========================================
-  // CONSOLA SCADA DE TELEMETRÍA INDUSTRIAL
+  // CONSOLA SCADA DE TELEMETRÍA & GEMELO DIGITAL 3D
   // ==========================================
+  const scada3DCanvas = document.getElementById("scada3DCanvas");
+  const scada3DContainer = document.getElementById("scada3DContainer");
+  const scadaPartBtns = document.querySelectorAll(".scada-part-btn");
+  const hotspotTitle = document.getElementById("hotspotTitle");
+  const hotspotDesc = document.getElementById("hotspotDesc");
+
   const telemetryDepth = document.getElementById("telemetryDepth");
   const telemetryPressure = document.getElementById("telemetryPressure");
   const telemetryFlow = document.getElementById("telemetryFlow");
   const telemetryROP = document.getElementById("telemetryROP");
-  const telemetryTorque = document.getElementById("telemetryTorque");
-  const rigSvg = document.getElementById("rigSvg");
-  const drillString = document.getElementById("drillString");
+  const telemetryGraphPath = document.getElementById("telemetryGraphPath");
   const statusLed = document.getElementById("statusLed");
   const statusLabel = document.getElementById("statusLabel");
 
@@ -492,164 +696,389 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnDrill = document.getElementById("btnDrillMode");
   const btnTest = document.getElementById("btnTestMode");
 
-  const hotspots = document.querySelectorAll(".rig-hotspot");
-  const hotspotTitle = document.getElementById("hotspotTitle");
-  const hotspotDesc = document.getElementById("hotspotDesc");
-
-  const hotspotData = {
+  // Definición técnica de los subsistemas del taladro
+  const scadaSubsystems = {
     crown: {
-      title: "Corona de Poleas (Crown Block)",
-      desc: "Estructura superior de soporte con capacidad de carga para soportar hasta 500 toneladas en maniobras de sarta de tubería pesada.",
+      title: "Corona de Poleas & Top Drive (Crown Block)",
+      desc: "Estructura superior de carga estática de 750,000 LBS (API 4F). Monitoreo de tensión continua de cable de perforación y torque de rotación.",
+      targetY: 0.85,
+      targetZ: 4.0,
+      camY: 0.85,
     },
     string: {
-      title: "Sarta de Perforación (Drill String)",
-      desc: "Tubería drill pipe de grado API S-135 con rotación activa para transmisión continua de energía hidráulica y mecánica hacia la barrena.",
+      title: "Mesa Rotaria & Sarta de Perforación (Drill String)",
+      desc: "Tubería API S-135 con transmisión activa de potencia mecánica e hidráulica. Sensores MWD/LWD registran temperatura, azimut e inclinación.",
+      targetY: 0.05,
+      targetZ: 4.6,
+      camY: 0.1,
     },
     bop: {
-      title: "Conjunto Preventor de Reventones (BOP Stack)",
-      desc: "Línea de defensa primaria de seguridad de pozo con arietes anulares y de corte certificados para contención de presiones hasta 5,000 PSI.",
+      title: "Conjunto Preventor de Reventones (BOP Stack 10K)",
+      desc: "Sistema de barrera primaria con arietes anulares y de corte ciego certificados para contención inmediata hasta 10,000 PSI de presión de fondo.",
+      targetY: -0.75,
+      targetZ: 3.8,
+      camY: -0.7,
     },
   };
 
-  if (hotspots.length > 0) {
-    hotspots.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        hotspots.forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        const key = btn.dataset.hotspot;
-        if (hotspotData[key]) {
-          if (hotspotTitle) hotspotTitle.textContent = hotspotData[key].title;
-          if (hotspotDesc) hotspotDesc.textContent = hotspotData[key].desc;
-        }
-      });
-    });
-  }
+  let activeSubsystem = "crown";
+  let scadaMode = "normal"; // normal, drill, test
 
-  let telemetryMode = "normal"; // normal, drill, test
-  let currentDepthVal = 8452.4;
-  let currentPressureVal = 2410;
-  let currentFlowVal = 480;
-  let currentROPVal = 32.5;
-  let currentTorqueVal = 1420;
-  let drillTween = null;
+  // Datos dinámicos de telemetría
+  let scadaDepth = 8452.4;
+  let scadaPressure = 2410;
+  let scadaFlow = 480;
+  let scadaROP = 32.5;
 
-  const updateTelemetry = () => {
-    if (telemetryMode === "normal") {
-      currentDepthVal += 0.02 * Math.random();
-      currentPressureVal = Math.round(2410 + (Math.random() - 0.5) * 15);
-      currentFlowVal = Math.round(480 + (Math.random() - 0.5) * 8);
-      currentROPVal = (32.5 + (Math.random() - 0.5) * 1.5).toFixed(1);
-      currentTorqueVal = Math.round(1420 + (Math.random() - 0.5) * 20);
-    } else if (telemetryMode === "drill") {
-      currentDepthVal += 0.15 * Math.random();
-      currentPressureVal = Math.round(2680 + (Math.random() - 0.5) * 35);
-      currentFlowVal = Math.round(540 + (Math.random() - 0.5) * 15);
-      currentROPVal = (48.0 + (Math.random() - 0.5) * 3.0).toFixed(1);
-      currentTorqueVal = Math.round(1850 + (Math.random() - 0.5) * 45);
-    } else if (telemetryMode === "test") {
-      currentDepthVal += 0.005 * Math.random();
-      currentPressureVal = Math.round(2920 + Math.sin(Date.now() / 500) * 80);
-      currentFlowVal = Math.round(260 + Math.cos(Date.now() / 500) * 20);
-      currentROPVal = "0.0";
-      currentTorqueVal = Math.round(620 + (Math.random() - 0.5) * 15);
+  // Actualizador periódico de telemetría industrial
+  const updateScadaTelemetry = () => {
+    if (scadaMode === "normal") {
+      scadaDepth += 0.02 * Math.random();
+      scadaPressure = Math.round(2410 + (Math.random() - 0.5) * 18);
+      scadaFlow = Math.round(480 + (Math.random() - 0.5) * 12);
+      scadaROP = (32.5 + (Math.random() - 0.5) * 1.8).toFixed(1);
+    } else if (scadaMode === "drill") {
+      scadaDepth += 0.12 * Math.random();
+      scadaPressure = Math.round(3680 + (Math.random() - 0.5) * 45);
+      scadaFlow = Math.round(720 + (Math.random() - 0.5) * 20);
+      scadaROP = (54.2 + (Math.random() - 0.5) * 3.5).toFixed(1);
+    } else if (scadaMode === "test") {
+      // Prueba de presión escalonada
+      const t = Date.now() / 1500;
+      const stepPhase = Math.floor((t % 4));
+      const testPressures = [3500, 6200, 8500, 9850];
+      scadaPressure = Math.round(testPressures[stepPhase] + (Math.random() - 0.5) * 30);
+      scadaFlow = 0;
+      scadaROP = "0.0";
     }
 
-    if (telemetryDepth) telemetryDepth.textContent = currentDepthVal.toFixed(1);
-    if (telemetryPressure) telemetryPressure.textContent = currentPressureVal;
-    if (telemetryFlow) telemetryFlow.textContent = currentFlowVal;
-    if (telemetryROP) telemetryROP.textContent = currentROPVal;
-    if (telemetryTorque) telemetryTorque.textContent = currentTorqueVal;
+    if (telemetryDepth) telemetryDepth.textContent = scadaDepth.toFixed(1);
+    if (telemetryPressure) telemetryPressure.textContent = scadaPressure;
+    if (telemetryFlow) telemetryFlow.textContent = scadaFlow;
+    if (telemetryROP) telemetryROP.textContent = scadaROP;
   };
 
-  setInterval(updateTelemetry, 500);
+  setInterval(updateScadaTelemetry, 500);
 
-  // --- Osciloscopio de Presión de Lodos ---
-  const telemetryGraphPath = document.getElementById("telemetryGraphPath");
-  let waveTime = 0;
-
-  function animateOscilloscope() {
+  // Osciloscopio de Onda Hidráulica
+  let scadaWaveTime = 0;
+  function animateScadaOscilloscope() {
     if (!telemetryGraphPath) return;
 
-    waveTime += telemetryMode === "drill" ? 0.2 : telemetryMode === "test" ? 0.12 : 0.06;
-
+    scadaWaveTime += scadaMode === "drill" ? 0.22 : scadaMode === "test" ? 0.14 : 0.07;
     let points = [];
     const step = 4;
     const width = 200;
 
     for (let x = 0; x <= width; x += step) {
       let y = 20;
-
-      if (telemetryMode === "normal") {
-        y = 20 + Math.sin(x * 0.08 - waveTime) * 4 + Math.sin(x * 0.03 - waveTime * 0.5) * 2;
-      } else if (telemetryMode === "drill") {
-        y = 20 + Math.sin(x * 0.16 - waveTime * 2) * 9 + Math.sin(x * 0.05 - waveTime) * 3;
-        y += (Math.random() - 0.5) * 1.5;
-      } else if (telemetryMode === "test") {
-        y = 20 + Math.sign(Math.sin(x * 0.08 - waveTime * 1.5)) * 8;
+      if (scadaMode === "normal") {
+        y = 20 + Math.sin(x * 0.08 - scadaWaveTime) * 4.5 + Math.sin(x * 0.03 - scadaWaveTime * 0.5) * 2;
+      } else if (scadaMode === "drill") {
+        y = 20 + Math.sin(x * 0.16 - scadaWaveTime * 2.2) * 8.5 + Math.sin(x * 0.06 - scadaWaveTime) * 3.5;
+        y += (Math.random() - 0.5) * 2.0;
+      } else if (scadaMode === "test") {
+        // Onda de prueba escalonada / square wave
+        y = 20 + Math.sign(Math.sin(x * 0.07 - scadaWaveTime * 1.6)) * 9.5;
       }
-
-      y = Math.max(4, Math.min(36, y));
+      y = Math.max(3, Math.min(37, y));
       points.push(`${x},${y.toFixed(2)}`);
     }
 
     telemetryGraphPath.setAttribute("d", "M " + points.join(" L "));
-    requestAnimationFrame(animateOscilloscope);
+    requestAnimationFrame(animateScadaOscilloscope);
   }
 
   if (telemetryGraphPath) {
-    animateOscilloscope();
+    animateScadaOscilloscope();
   }
 
-  const setTelemetryMode = (mode) => {
-    telemetryMode = mode;
+  // Modos de Simulación SCADA
+  const setScadaMode = (mode) => {
+    scadaMode = mode;
     if (btnNormal) btnNormal.classList.toggle("active", mode === "normal");
     if (btnDrill) btnDrill.classList.toggle("active", mode === "drill");
     if (btnTest) btnTest.classList.toggle("active", mode === "test");
 
-    if (drillTween) {
-      drillTween.kill();
-      drillTween = null;
-    }
-
     if (mode === "normal") {
       if (statusLed) statusLed.className = "telemetry-led active";
       if (statusLabel) {
-        statusLabel.textContent = "ESTADO: OPERACIÓN NOMINAL";
+        statusLabel.textContent = "ESTADO: OPERACIÓN NOMINAL (POZO ACTIVO)";
         statusLabel.style.color = "#008a62";
       }
-      if (rigSvg) rigSvg.style.color = "rgba(0, 104, 73, 0.45)";
       if (telemetryGraphPath) telemetryGraphPath.setAttribute("stroke", "#008a62");
     } else if (mode === "drill") {
       if (statusLed) statusLed.className = "telemetry-led active";
       if (statusLabel) {
-        statusLabel.textContent = "ESTADO: PERFORACIÓN ACTIVA";
+        statusLabel.textContent = "ESTADO: PERFORACIÓN ACTIVA EN FM. NAPO";
         statusLabel.style.color = "#059669";
       }
-      if (rigSvg) rigSvg.style.color = "rgba(0, 104, 73, 0.85)";
       if (telemetryGraphPath) telemetryGraphPath.setAttribute("stroke", "#059669");
-
-      if (drillString) {
-        drillTween = gsap.to(drillString, {
-          strokeDashoffset: 24,
-          duration: 0.8,
-          repeat: -1,
-          ease: "none",
-        });
-      }
     } else if (mode === "test") {
       if (statusLed) statusLed.className = "telemetry-led warning";
       if (statusLabel) {
-        statusLabel.textContent = "ESTADO: PRUEBA DE PRESIÓN BOP";
+        statusLabel.textContent = "ESTADO: PRUEBA HIDROSTÁTICA BOP 10,000 PSI";
         statusLabel.style.color = "#f59e0b";
       }
-      if (rigSvg) rigSvg.style.color = "rgba(245, 158, 11, 0.7)";
       if (telemetryGraphPath) telemetryGraphPath.setAttribute("stroke", "#f59e0b");
     }
   };
 
-  if (btnNormal) btnNormal.addEventListener("click", () => setTelemetryMode("normal"));
-  if (btnDrill) btnDrill.addEventListener("click", () => setTelemetryMode("drill"));
-  if (btnTest) btnTest.addEventListener("click", () => setTelemetryMode("test"));
+  if (btnNormal) btnNormal.addEventListener("click", () => setScadaMode("normal"));
+  if (btnDrill) btnDrill.addEventListener("click", () => setScadaMode("drill"));
+  if (btnTest) btnTest.addEventListener("click", () => setScadaMode("test"));
+
+  // Selección de subsistemas en HUD
+  scadaPartBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      scadaPartBtns.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      const partKey = btn.getAttribute("data-part");
+      if (scadaSubsystems[partKey]) {
+        activeSubsystem = partKey;
+        if (hotspotTitle) hotspotTitle.textContent = scadaSubsystems[partKey].title;
+        if (hotspotDesc) hotspotDesc.textContent = scadaSubsystems[partKey].desc;
+      }
+    });
+  });
+
+  // --- MOTOR THREE.JS DEL GEMELO DIGITAL SCADA (POZO3.GLB HD) ---
+  if (scada3DCanvas && window.THREE) {
+    const scadaScene = new THREE.Scene();
+    const scadaCamera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+    scadaCamera.position.set(0, 0.2, 5.4);
+
+    let scadaRenderer = null;
+    try {
+      scadaRenderer = new THREE.WebGLRenderer({
+        canvas: scada3DCanvas,
+        alpha: true,
+        antialias: true,
+        powerPreference: "high-performance",
+      });
+      scadaRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      if (THREE.sRGBEncoding) {
+        scadaRenderer.outputEncoding = THREE.sRGBEncoding;
+      }
+      scadaRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+      scadaRenderer.toneMappingExposure = 1.45;
+    } catch (e) {
+      console.warn("WebGL no disponible para SCADA 3D:", e);
+    }
+
+    if (scadaRenderer) {
+      // Iluminación industrial brillante y volumétrica
+      const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+      scadaScene.add(ambientLight);
+
+      const hemiLight = new THREE.HemisphereLight(0xffffff, 0x334155, 1.2);
+      hemiLight.position.set(0, 10, 0);
+      scadaScene.add(hemiLight);
+
+      const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
+      keyLight.position.set(5, 9, 6);
+      scadaScene.add(keyLight);
+
+      const fillLight = new THREE.DirectionalLight(0xffffff, 1.4);
+      fillLight.position.set(-5, 4, -3);
+      scadaScene.add(fillLight);
+
+      const rimLight = new THREE.DirectionalLight(0x00e599, 0.7);
+      rimLight.position.set(0, -5, 4);
+      scadaScene.add(rimLight);
+
+      // Grupo giratorio principal
+      const scadaRigGroup = new THREE.Group();
+      scadaScene.add(scadaRigGroup);
+
+      // Cargar modelo 3D GLB texturizado de alta definición (pozo3.glb)
+      let isModelLoaded = false;
+      if (THREE.GLTFLoader) {
+        const loader = new THREE.GLTFLoader();
+        loader.load(
+          "assets/pozo_3d/pozo3.glb",
+          (gltf) => {
+            const root = gltf.scene;
+
+            // Centrar geométricamente el modelo en el origen exacto
+            const box = new THREE.Box3().setFromObject(root);
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
+            root.position.sub(center);
+
+            // Escala regulada para que el taladro completo quepa con margen elegante (~70-75% del viewport)
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const targetScale = 2.6 / (maxDim || 1);
+            root.scale.set(targetScale, targetScale, targetScale);
+
+            // Conservar y optimizar texturas y materiales PBR originales del GLB
+            root.traverse((child) => {
+              if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+                if (child.material) {
+                  child.material.side = THREE.DoubleSide;
+                  child.material.needsUpdate = true;
+                  // Calibrar para evitar oscuridad sin mapa de entorno HDRI
+                  if (child.material.metalness !== undefined && child.material.metalness > 0.5) {
+                    child.material.metalness = 0.3;
+                  }
+                  if (child.material.roughness !== undefined && child.material.roughness < 0.4) {
+                    child.material.roughness = 0.55;
+                  }
+                }
+              }
+            });
+
+            scadaRigGroup.add(root);
+            isModelLoaded = true;
+          },
+          undefined,
+          (err) => {
+            console.warn("No se pudo cargar el GLB para el SCADA:", err);
+          }
+        );
+      }
+
+      // Dimensionado dinámico responsivo
+      let scadaResizeTimer = null;
+      let lastScadaW = 0;
+      let lastScadaH = 0;
+
+      const resizeScadaCanvas = () => {
+        if (!scada3DContainer) return;
+        const rect = scada3DContainer.getBoundingClientRect();
+        const width = Math.max(rect.width, 240);
+        const height = Math.max(rect.height, 320);
+
+        if (Math.abs(width - lastScadaW) < 2 && Math.abs(height - lastScadaH) < 10) return;
+        lastScadaW = width;
+        lastScadaH = height;
+
+        scadaCamera.aspect = width / height;
+        scadaCamera.updateProjectionMatrix();
+        scadaRenderer.setSize(width, height, false);
+      };
+
+      resizeScadaCanvas();
+      window.addEventListener("resize", () => {
+        clearTimeout(scadaResizeTimer);
+        scadaResizeTimer = setTimeout(resizeScadaCanvas, 120);
+      });
+
+      // --- Interacción Táctil y Ratón (Orbit 360° fluido, sin bloquear scroll vertical en móviles) ---
+      let isDragging = false;
+      let isTouchPointer = false;
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let prevMouseX = 0;
+      let prevMouseY = 0;
+      let targetRotY = 0.4;
+      let targetRotX = 0.08;
+      let currentRotY = 0.4;
+      let currentRotX = 0.08;
+
+      // Variables de interpolación de cámara hacia el subsistema activo
+      let camLookAtY = 0;
+      let targetCamLookAtY = 0;
+      let targetCamDist = 5.4;
+      let targetCamHeight = 0.2;
+
+      scada3DCanvas.addEventListener("pointerdown", (e) => {
+        isTouchPointer = e.pointerType === "touch";
+        prevMouseX = e.clientX;
+        prevMouseY = e.clientY;
+        touchStartX = e.clientX;
+        touchStartY = e.clientY;
+
+        // En ratón capturamos inmediatamente. En táctil no capturamos para permitir scroll natural de página
+        if (!isTouchPointer) {
+          isDragging = true;
+          try {
+            scada3DCanvas.setPointerCapture(e.pointerId);
+          } catch (_) {}
+        }
+      });
+
+      window.addEventListener("pointermove", (e) => {
+        if (isTouchPointer && !isDragging) {
+          const totalDx = Math.abs(e.clientX - touchStartX);
+          const totalDy = Math.abs(e.clientY - touchStartY);
+          // Si el usuario arrastra horizontalmente de forma intencional en móvil, activamos rotación
+          if (totalDx > 12 && totalDx > totalDy * 1.3) {
+            isDragging = true;
+            prevMouseX = e.clientX;
+            prevMouseY = e.clientY;
+          } else {
+            return; // Permite el scroll vertical de la página sin "colgar" el viewport
+          }
+        }
+
+        if (!isDragging) return;
+        const deltaX = e.clientX - prevMouseX;
+        const deltaY = e.clientY - prevMouseY;
+        prevMouseX = e.clientX;
+        prevMouseY = e.clientY;
+
+        targetRotY += deltaX * 0.012;
+        targetRotX += deltaY * 0.008;
+        targetRotX = Math.max(-0.6, Math.min(0.6, targetRotX));
+      });
+
+      const stopDrag = (e) => {
+        if (isDragging) {
+          isDragging = false;
+          try {
+            if (e && e.pointerId && scada3DCanvas.hasPointerCapture && scada3DCanvas.hasPointerCapture(e.pointerId)) {
+              scada3DCanvas.releasePointerCapture(e.pointerId);
+            }
+          } catch (_) {}
+        }
+        isTouchPointer = false;
+      };
+      window.addEventListener("pointerup", stopDrag);
+      window.addEventListener("pointercancel", stopDrag);
+
+      // Zoom con rueda sobre el canvas 3D
+      scada3DCanvas.addEventListener("wheel", (e) => {
+        e.preventDefault();
+        targetCamDist += e.deltaY * 0.005;
+        targetCamDist = Math.max(3.0, Math.min(8.0, targetCamDist));
+      }, { passive: false });
+
+      // Render Loop continuo con lerp y amortiguación física
+      function renderScadaLoop() {
+        requestAnimationFrame(renderScadaLoop);
+
+        // Auto-rotación suave cuando no hay arrastre
+        if (!isDragging) {
+          const autoSpeed = scadaMode === "drill" ? 0.007 : 0.0022;
+          targetRotY += autoSpeed;
+        }
+
+        // Lerp de rotación del modelo
+        currentRotY += (targetRotY - currentRotY) * 0.08;
+        currentRotX += (targetRotX - currentRotX) * 0.08;
+        scadaRigGroup.rotation.y = currentRotY;
+        scadaRigGroup.rotation.x = currentRotX;
+
+        // Lerp de cámara según subsistema seleccionado
+        const curSub = scadaSubsystems[activeSubsystem] || scadaSubsystems.crown;
+        targetCamLookAtY = curSub.targetY;
+        targetCamHeight = curSub.camY;
+        const subZ = curSub.targetZ;
+
+        camLookAtY += (targetCamLookAtY - camLookAtY) * 0.06;
+        scadaCamera.position.y += (targetCamHeight - scadaCamera.position.y) * 0.06;
+        scadaCamera.position.z += (subZ - scadaCamera.position.z) * 0.06;
+        scadaCamera.lookAt(0, camLookAtY, 0);
+
+        scadaRenderer.render(scadaScene, scadaCamera);
+      }
+
+      renderScadaLoop();
+    }
+  }
 
   // ==========================================
   // FORMULARIO DE CONTACTO & SOLICITUD
@@ -688,9 +1117,80 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================================
   // SCROLL PROGRESS LINE & SARTA DE PERFORACIÓN GIRATORIA
   // ==========================================
+  // SARTA DE PERFORACIÓN & NAVEGADOR GEOLÓGICO DE PROFUNDIDAD
+  // ==========================================
   const scrollProgressLine = document.getElementById("scrollProgressLine");
   const scrollDrillBitHead = document.getElementById("scrollDrillBitHead");
   const scrollDepthPct = document.getElementById("scrollDepthPct");
+  const scrollHorizonName = document.getElementById("scrollHorizonName");
+  const scrollHorizonDepth = document.getElementById("scrollHorizonDepth");
+  const scrollDrillTrack = document.getElementById("scrollDrillTrack");
+  const drillWaypoints = document.querySelectorAll(".drill-waypoint");
+
+  const horizons = [
+    { target: "#heroSlider", threshold: 0.12, name: "Superficie", depth: "0 FT · MESA ROTARIA" },
+    { target: "#clientes", threshold: 0.28, name: "Operadoras", depth: "2,500 FT · HOMOLOGACIÓN" },
+    { target: "#nosotros", threshold: 0.48, name: "Nosotros", depth: "5,800 FT · GESTIÓN HSE" },
+    { target: "#soluciones", threshold: 0.68, name: "Soluciones", depth: "9,200 FT · FLOTA UPSTREAM" },
+    { target: "#tecnologia", threshold: 0.88, name: "SCADA", depth: "12,450 FT · FM. NAPO" },
+    { target: "#contacto", threshold: 1.01, name: "Contacto", depth: "16,500 FT · BASE EL COCA" },
+  ];
+
+  const updateActiveHorizon = (p) => {
+    let activeIdx = 0;
+    for (let i = 0; i < horizons.length; i++) {
+      if (p < horizons[i].threshold) {
+        activeIdx = i;
+        break;
+      }
+    }
+    const cur = horizons[activeIdx];
+    if (scrollHorizonName && cur) scrollHorizonName.textContent = cur.name;
+    if (scrollHorizonDepth && cur) scrollHorizonDepth.textContent = cur.depth;
+
+    drillWaypoints.forEach((wp) => {
+      const target = wp.getAttribute("data-target");
+      if (target === cur.target) {
+        wp.classList.add("active");
+      } else {
+        wp.classList.remove("active");
+      }
+    });
+  };
+
+  // Clic directo en cualquiera de los hitos geológicos para navegación suave asistida
+  drillWaypoints.forEach((wp) => {
+    wp.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const targetSelector = wp.getAttribute("data-target");
+      const targetElement = document.querySelector(targetSelector);
+      if (targetElement) {
+        const navOffset = 70;
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - navOffset;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+      }
+    });
+  });
+
+  // Clic en el riel para viajar directamente a esa profundidad
+  if (scrollDrillTrack) {
+    scrollDrillTrack.addEventListener("click", (e) => {
+      if (e.target.closest(".drill-waypoint")) return;
+      const rect = scrollDrillTrack.getBoundingClientRect();
+      const clickY = e.clientY - rect.top;
+      const ratio = Math.max(0, Math.min(1, clickY / rect.height));
+      const totalScrollable = document.documentElement.scrollHeight - window.innerHeight;
+      window.scrollTo({
+        top: ratio * totalScrollable,
+        behavior: "smooth",
+      });
+    });
+  }
 
   if (scrollProgressLine) {
     let scrollStopTimer = null;
@@ -698,7 +1198,8 @@ document.addEventListener("DOMContentLoaded", () => {
       start: "top top",
       end: "bottom bottom",
       onUpdate: (self) => {
-        const pct = (self.progress * 100).toFixed(1);
+        const p = self.progress;
+        const pct = (p * 100).toFixed(1);
         scrollProgressLine.style.height = `${pct}%`;
         if (scrollDrillBitHead) {
           scrollDrillBitHead.style.top = `${pct}%`;
@@ -712,24 +1213,19 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
         if (scrollDepthPct) {
-          scrollDepthPct.textContent = `${Math.round(self.progress * 100)}%`;
+          scrollDepthPct.textContent = `${Math.round(p * 100)}%`;
         }
+        updateActiveHorizon(p);
       },
     });
   }
 
   // ==========================================
-  // TORRE MONUMENTAL DE FONDO LATERAL: TRILOGÍA 3D FOTORREALISTA
+  // TORRE MONUMENTAL DE FONDO LATERAL: WEBGL 3D EN TIEMPO REAL (THREE.JS)
   // ==========================================
-  const lateralRig3DWrapper = document.getElementById("lateralRig3DWrapper");
-  const lateralRigLightSweep = document.getElementById("lateralRigLightSweep");
+  const lateralRigCanvas = document.getElementById("lateralRigCanvas");
+  const lateralRigBackdrop = document.getElementById("lateralRigBackdrop");
   const rigCameraAngle = document.getElementById("rigCameraAngle");
-
-  const rigLayers = {
-    frontal: document.getElementById("lateralRigImgFrontal"),
-    lateral: document.getElementById("lateralRigImgLateral"),
-    posterior: document.getElementById("lateralRigImgPosterior"),
-  };
 
   const elevTicks = {
     crown: document.getElementById("tickCrown"),
@@ -757,62 +1253,166 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  const setActiveRigCamera = (camKey, angleText) => {
-    Object.keys(rigLayers).forEach((key) => {
-      const img = rigLayers[key];
-      if (!img) return;
-      if (key === camKey) {
-        img.classList.add("active");
-      } else {
-        img.classList.remove("active");
-      }
-    });
-    if (rigCameraAngle && angleText) {
-      rigCameraAngle.textContent = angleText;
-    }
-  };
+  if (lateralRigCanvas && window.THREE) {
+    const parent = lateralRigCanvas.parentElement;
+    let width = parent.clientWidth || Math.min(window.innerWidth * 0.3, 490) || 400;
+    let height = parent.clientHeight || window.innerHeight || 800;
 
-  if (lateralRig3DWrapper && (rigLayers.frontal || rigLayers.lateral || rigLayers.posterior)) {
+    // Escena, Cámara y Renderizador WebGL
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
+    camera.position.set(0, 0, 3.25);
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas: lateralRigCanvas,
+      alpha: true,
+      antialias: true,
+      powerPreference: "high-performance",
+    });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    if (THREE.ACESFilmicToneMapping) {
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.15;
+    }
+
+    // Luces industriales de alta definición
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
+    scene.add(ambientLight);
+
+    const keyLight = new THREE.DirectionalLight(0xfff5ea, 1.4);
+    keyLight.position.set(3, 4, 3.5);
+    scene.add(keyLight);
+
+    const emeraldRimLight = new THREE.DirectionalLight(0x00e599, 1.9);
+    emeraldRimLight.position.set(-3.2, 1.8, -2.5);
+    scene.add(emeraldRimLight);
+
+    const fillLight = new THREE.DirectionalLight(0x38bdf8, 0.7);
+    fillLight.position.set(0, -3, 2);
+    scene.add(fillLight);
+
+    // Pivot principal del modelo
+    const rigPivot = new THREE.Group();
+    scene.add(rigPivot);
+
+    let rigMesh = null;
+    let wireframeMesh = null;
+
+    const getThemeColors = () => {
+      const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+      return {
+        isDark,
+        metalColor: isDark ? 0x222d3f : 0x3b4a5d,
+        metalness: isDark ? 0.85 : 0.75,
+        roughness: isDark ? 0.25 : 0.32,
+        wireColor: isDark ? 0x00e599 : 0x008a62,
+        wireOpacity: isDark ? 0.15 : 0.08,
+        ambientIntensity: isDark ? 0.65 : 0.85,
+        rimIntensity: isDark ? 2.0 : 1.3,
+      };
+    };
+
+    const applyThemeColors = () => {
+      const tc = getThemeColors();
+      if (rigMesh && rigMesh.material) {
+        rigMesh.material.color.setHex(tc.metalColor);
+        rigMesh.material.metalness = tc.metalness;
+        rigMesh.material.roughness = tc.roughness;
+      }
+      if (wireframeMesh && wireframeMesh.material) {
+        wireframeMesh.material.color.setHex(tc.wireColor);
+        wireframeMesh.material.opacity = tc.wireOpacity;
+      }
+      ambientLight.intensity = tc.ambientIntensity;
+      emeraldRimLight.intensity = tc.rimIntensity;
+    };
+
+    // Carga de la geometría 3D optimizada
+    if (THREE.GLTFLoader) {
+      const loader = new THREE.GLTFLoader();
+      loader.load(
+        "assets/pozo_3d/pozo1.glb",
+        (gltf) => {
+          const model = gltf.scene;
+
+          // Computar normales y crear material PBR
+          const tc = getThemeColors();
+          model.traverse((child) => {
+            if (child.isMesh) {
+              child.geometry.computeVertexNormals();
+              child.material = new THREE.MeshStandardMaterial({
+                color: tc.metalColor,
+                metalness: tc.metalness,
+                roughness: tc.roughness,
+                flatShading: false,
+              });
+              rigMesh = child;
+
+              // Líneas estructurales sutiles para realce arquitectónico
+              const wireGeo = new THREE.WireframeGeometry(child.geometry);
+              const wireMat = new THREE.LineBasicMaterial({
+                color: tc.wireColor,
+                transparent: true,
+                opacity: tc.wireOpacity,
+                depthWrite: false,
+              });
+              wireframeMesh = new THREE.LineSegments(wireGeo, wireMat);
+              child.add(wireframeMesh);
+            }
+          });
+
+          // Centrado exacto del modelo en el origen
+          const bbox = new THREE.Box3().setFromObject(model);
+          const center = bbox.getCenter(new THREE.Vector3());
+          model.position.set(-center.x, -center.y, -center.z);
+
+          // Escala armónica para el viewport lateral
+          rigPivot.scale.set(1.42, 1.42, 1.42);
+          rigPivot.add(model);
+        },
+        undefined,
+        (err) => {
+          console.warn("No se pudo cargar el modelo 3D:", err);
+        }
+      );
+    }
+
+    // Observador de cambio de tema (Claro / Oscuro)
+    const themeObserver = new MutationObserver(() => applyThemeColors());
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
+    // Control de rotación e interpolación suave (Lerp continuo)
+    let targetScrollProgress = 0;
+    let currentScrollProgress = 0;
+    let targetMouseX = 0, currentMouseX = 0;
+    let targetMouseY = 0, currentMouseY = 0;
+
+    // Control de visibilidad: Oculto en el Hero inicial, emerge con fade-in al salir del Hero
+    const updateRigVisibility = () => {
+      const hero = document.getElementById("heroSlider");
+      if (!hero || !lateralRigBackdrop) return;
+      const heroRect = hero.getBoundingClientRect();
+      if (heroRect.bottom <= window.innerHeight * 0.82) {
+        lateralRigBackdrop.classList.add("visible");
+      } else {
+        lateralRigBackdrop.classList.remove("visible");
+      }
+    };
+    updateRigVisibility();
+
     ScrollTrigger.create({
       start: "top top",
       end: "bottom bottom",
       onUpdate: (self) => {
-        const p = self.progress; // 0.0 a 1.0
+        targetScrollProgress = self.progress;
+        updateRigVisibility();
 
-        // 1. Descenso vertical Parallax a lo largo de toda la página
-        // La altura de cualquiera de las capas 3D (todas miden 1344 x 3172 px)
-        const refImg = rigLayers.frontal || rigLayers.lateral || rigLayers.posterior;
-        const imgHeight = (refImg && refImg.offsetHeight) || 2600;
-        const windowHeight = window.innerHeight;
-        const maxTravel = Math.max(0, imgHeight - windowHeight);
-        const yOffset = -p * maxTravel;
-
-        // Desplazamos las tres capas sincronizadas verticalmente
-        Object.values(rigLayers).forEach((img) => {
-          if (img) img.style.transform = `translate3d(0, ${yOffset.toFixed(1)}px, 0)`;
-        });
-
-        // 2. Giro axial tridimensional (rotateY) continuo en 3D
-        const rotationY = Math.sin(p * Math.PI * 2.5) * 18;
-        const tiltZ = Math.sin(p * Math.PI * 1.5) * 1.4;
-        lateralRig3DWrapper.style.transform = `perspective(1400px) rotateY(${rotationY.toFixed(2)}deg) rotateZ(${tiltZ.toFixed(2)}deg)`;
-
-        // 3. Haz de luz especular dinámico que viaja sobre las vigas de acero
-        if (lateralRigLightSweep) {
-          const sweepX = -rotationY * 3.6;
-          lateralRigLightSweep.style.transform = `translate3d(${sweepX.toFixed(1)}%, ${yOffset.toFixed(1)}px, 0)`;
-        }
-
-        // 4. Conmutación de Ángulo de Cámara 3D (Frontal Oblicua -> Lateral Frontal -> Posterior Oblicua)
-        if (p < 0.38) {
-          setActiveRigCamera("frontal", "CAM 315° NW");
-        } else if (p < 0.72) {
-          setActiveRigCamera("lateral", "CAM 000° N");
-        } else {
-          setActiveRigCamera("posterior", "CAM 045° NE");
-        }
-
-        // 5. Sincronización de Cotas de Elevación HUD según profundidad en pozo
+        // Sincronización HUD de Cotas
+        const p = self.progress;
         if (p < 0.22) {
           setActiveElevTick("crown");
         } else if (p < 0.48) {
@@ -826,6 +1426,61 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       },
     });
+
+    window.addEventListener("mousemove", (e) => {
+      targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    });
+
+    const cardinalDirections = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+
+    // Bucle de animación a 60 FPS
+    const animate = () => {
+      requestAnimationFrame(animate);
+
+      // Desactivar render WebGL en pantallas < 1280px (donde el rig está oculto) para no saturar GPU en móviles/tablets
+      if (window.innerWidth < 1280) return;
+
+      // Lerp orgánico sin cortes
+      currentScrollProgress += (targetScrollProgress - currentScrollProgress) * 0.075;
+      currentMouseX += (targetMouseX - currentMouseX) * 0.05;
+      currentMouseY += (targetMouseY - currentMouseY) * 0.05;
+
+      if (rigPivot) {
+        // Rotación continua 360° orgánica según el scroll
+        const baseAngle = currentScrollProgress * Math.PI * 2.0;
+        rigPivot.rotation.y = baseAngle + currentMouseX * 0.25;
+        rigPivot.rotation.x = currentMouseY * 0.12;
+
+        // Descenso fluido: desde la corona (+145 FT) hasta la base y estratos
+        rigPivot.position.y = (currentScrollProgress - 0.38) * 1.55;
+
+        // Actualización numérica en tiempo real del HUD
+        if (rigCameraAngle) {
+          const rawDeg = Math.round(((rigPivot.rotation.y * 180) / Math.PI) % 360 + 360) % 360;
+          const cardIdx = Math.round(rawDeg / 45) % 8;
+          rigCameraAngle.textContent = `ROT ${String(rawDeg).padStart(3, "0")}° ${cardinalDirections[cardIdx]}`;
+        }
+      }
+
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    // Redimensionamiento responsivo debounced
+    let lateralResizeTimer = null;
+    const handleResize = () => {
+      clearTimeout(lateralResizeTimer);
+      lateralResizeTimer = setTimeout(() => {
+        if (window.innerWidth < 1280) return;
+        width = parent.clientWidth || 400;
+        height = parent.clientHeight || window.innerHeight;
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+      }, 150);
+    };
+    window.addEventListener("resize", handleResize);
   }
 
   // ==========================================
@@ -870,4 +1525,307 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // ==========================================
+  // CONFIGURADOR UPSTREAM & COTIZADOR TÉCNICO (WELLSPEC 2.0)
+  // ==========================================
+  const cotizadorModal = document.getElementById("cotizadorModal");
+  const btnCloseCotizador = document.getElementById("btnCloseCotizador");
+  const cotizadorBackdrop = document.getElementById("cotizadorBackdrop");
+  const btnsOpenCotizador = document.querySelectorAll(".btn-open-cotizador");
+
+  const cotizDepthSlider = document.getElementById("cotizDepthSlider");
+  const cotizDepthDisplay = document.getElementById("cotizDepthDisplay");
+  const cotizFormationTag = document.getElementById("cotizFormationTag");
+
+  const dossierRigTitle = document.getElementById("dossierRigTitle");
+  const dossierRigClass = document.getElementById("dossierRigClass");
+  const dossierHookload = document.getElementById("dossierHookload");
+  const dossierDepthRange = document.getElementById("dossierDepthRange");
+  const dossierBOP = document.getElementById("dossierBOP");
+  const dossierMudPumps = document.getElementById("dossierMudPumps");
+
+  const btnSendCotizWhatsApp = document.getElementById("btnSendCotizWhatsApp");
+  const btnSendCotizEmail = document.getElementById("btnSendCotizEmail");
+
+  const rigCatalog = {
+    1500: {
+      title: "TRIBOIL RIG TB-1500 HP",
+      classDesc: "Mástil Telescópico Heavy Duty · Certificación API 4F",
+      hookload: "750,000 LBS (340 TON)",
+      depthRange: "Hasta 16,500+ FT",
+      bop: "BOP 10,000 PSI Clase IV",
+      pumps: "2x Triplex 1,600 HP (5,000 PSI)",
+    },
+    1000: {
+      title: "TRIBOIL RIG TB-1000 HP",
+      classDesc: "Mástil Convencional de Perforación · API Spec 4F",
+      hookload: "500,000 LBS (227 TON)",
+      depthRange: "Hasta 13,000 FT",
+      bop: "BOP 5,000 / 10,000 PSI Clase III",
+      pumps: "2x Triplex 1,000 HP (4,500 PSI)",
+    },
+    750: {
+      title: "TRIBOIL MOBILE RIG TB-750 HP",
+      classDesc: "Unidad Autopropulsada de Workover Pesado",
+      hookload: "350,000 LBS (159 TON)",
+      depthRange: "Hasta 10,000 FT (Tubing 3-1/2\")",
+      bop: "BOP 5,000 PSI Clase III",
+      pumps: "1x Triplex 800 HP + Tanque 300 bbl",
+    },
+    550: {
+      title: "TRIBOIL MOBILE RIG TB-550 HP",
+      classDesc: "Unidad Ágil de Reacondicionamiento & Cambio BES",
+      hookload: "250,000 LBS (113 TON)",
+      depthRange: "Hasta 8,000 FT (Tubing 2-7/8\")",
+      bop: "BOP 3,000 / 5,000 PSI Clase II",
+      pumps: "1x Triplex 600 HP + Mud System",
+    },
+  };
+
+  let currentConfig = {
+    service: "perforacion",
+    serviceLabel: "Perforación Profunda",
+    depth: 12500,
+    formation: "FM. NAPO (U/T)",
+    hp: 1500,
+    block: "Bloque 56 · Base El Coca",
+    timeline: "Inmediato (< 30 días)",
+  };
+
+  const updateDossierView = () => {
+    const spec = rigCatalog[currentConfig.hp] || rigCatalog[1500];
+    if (dossierRigTitle) dossierRigTitle.textContent = spec.title;
+    if (dossierRigClass) dossierRigClass.textContent = spec.classDesc;
+    if (dossierHookload) dossierHookload.textContent = spec.hookload;
+    if (dossierDepthRange) dossierDepthRange.textContent = spec.depthRange;
+    if (dossierBOP) dossierBOP.textContent = spec.bop;
+    if (dossierMudPumps) dossierMudPumps.textContent = spec.pumps;
+  };
+
+  // Abrir y Cerrar Modal
+  const openCotizador = () => {
+    if (!cotizadorModal) return;
+    const dp = document.getElementById("dispatchPanel");
+    if (dp) dp.classList.add("hidden");
+    cotizadorModal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    if (window.lucide) window.lucide.createIcons();
+  };
+
+  const closeCotizador = () => {
+    if (!cotizadorModal) return;
+    cotizadorModal.classList.add("hidden");
+    document.body.style.overflow = "";
+  };
+
+  btnsOpenCotizador.forEach((btn) => btn.addEventListener("click", openCotizador));
+  if (btnCloseCotizador) btnCloseCotizador.addEventListener("click", closeCotizador);
+  if (cotizadorBackdrop) cotizadorBackdrop.addEventListener("click", closeCotizador);
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && cotizadorModal && !cotizadorModal.classList.contains("hidden")) {
+      closeCotizador();
+    }
+  });
+
+  // Selector de Servicio
+  const serviceCards = document.querySelectorAll(".cotiz-service-card");
+  serviceCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      serviceCards.forEach((c) => c.classList.remove("active"));
+      card.classList.add("active");
+      currentConfig.service = card.getAttribute("data-service");
+      const titleSpan = card.querySelector(".font-bold");
+      currentConfig.serviceLabel = titleSpan ? titleSpan.textContent.trim() : "Servicio Upstream";
+
+      // Sugerencia inteligente de potencia según servicio
+      if (currentConfig.service === "workover" && currentConfig.hp > 750) {
+        selectPowerChip(750);
+      } else if (currentConfig.service === "perforacion" && currentConfig.hp < 1000) {
+        selectPowerChip(1500);
+      }
+      updateDossierView();
+    });
+  });
+
+  // Slider de Profundidad con Detección Geológica de Formaciones en Ecuador
+  if (cotizDepthSlider) {
+    cotizDepthSlider.addEventListener("input", (e) => {
+      const val = parseInt(e.target.value, 10);
+      currentConfig.depth = val;
+      if (cotizDepthDisplay) cotizDepthDisplay.textContent = val.toLocaleString("en-US");
+
+      let formation = "FM. NAPO";
+      if (val < 7200) {
+        formation = "FM. TIYUYACU";
+      } else if (val < 10500) {
+        formation = "FM. TENA SUPERIOR";
+      } else if (val < 14500) {
+        formation = "FM. NAPO (U/T)";
+      } else {
+        formation = "FM. HOLLÍN PROFUNDO";
+      }
+      currentConfig.formation = formation;
+      if (cotizFormationTag) cotizFormationTag.textContent = formation;
+
+      // Sugerencia de potencia por profundidad
+      if (val > 14000 && currentConfig.hp < 1500) {
+        selectPowerChip(1500);
+      } else if (val > 10000 && currentConfig.hp < 1000) {
+        selectPowerChip(1000);
+      }
+      updateDossierView();
+    });
+  }
+
+  // Chips de Potencia de Mástil (Drawworks HP)
+  const powerChips = document.querySelectorAll(".cotiz-power-chip");
+  const selectPowerChip = (hpVal) => {
+    currentConfig.hp = parseInt(hpVal, 10);
+    powerChips.forEach((chip) => {
+      if (parseInt(chip.getAttribute("data-hp"), 10) === currentConfig.hp) {
+        chip.classList.add("active");
+      } else {
+        chip.classList.remove("active");
+      }
+    });
+    updateDossierView();
+  };
+
+  powerChips.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      selectPowerChip(chip.getAttribute("data-hp"));
+    });
+  });
+
+  // Envío por WhatsApp con Dossier Preformateado
+  if (btnSendCotizWhatsApp) {
+    btnSendCotizWhatsApp.addEventListener("click", () => {
+      const nameInput = document.getElementById("cotizNameInput");
+      const companyInput = document.getElementById("cotizCompanyInput");
+      const phoneInput = document.getElementById("cotizPhoneInput");
+      const blockSelect = document.getElementById("cotizBlockSelect");
+      const timelineSelect = document.getElementById("cotizTimelineSelect");
+
+      const clientName = (nameInput && nameInput.value.trim()) || "Superintendente / Ingeniero";
+      const company = (companyInput && companyInput.value.trim()) || "Operadora Upstream";
+      const phone = (phoneInput && phoneInput.value.trim()) || "No indicado";
+      const block = (blockSelect && blockSelect.value) || currentConfig.block;
+      const timeline = (timelineSelect && timelineSelect.value) || currentConfig.timeline;
+
+      const spec = rigCatalog[currentConfig.hp] || rigCatalog[1500];
+
+      const scada = document.getElementById("checkScada")?.checked ? "Sí" : "No";
+      const bop = document.getElementById("checkBop")?.checked ? "Sí (10K)" : "No";
+      const hse = document.getElementById("checkHse")?.checked ? "Sí (WellCAP)" : "No";
+
+      const message = `*SOLICITUD DE DISPONIBILIDAD Y COTIZACIÓN TÉCNICA — TRIBOIL WELLSPEC*
+--------------------------------------------
+📋 *DATOS DE OPERACIÓN:*
+• *Línea:* ${currentConfig.serviceLabel}
+• *Profundidad Objetivo:* ${currentConfig.depth.toLocaleString("en-US")} FT (${currentConfig.formation})
+• *Equipo Requerido:* ${spec.title}
+• *Capacidad Estática:* ${spec.hookload}
+• *Bloque / Cuenca:* ${block}
+• *Plazo de Inicio:* ${timeline}
+
+⚙️ *PAQUETES ADICIONALES:*
+• Telemetría SCADA 24/7: ${scada}
+• Preventores BOP: ${bop}
+• Cuadrilla HSE WellCAP: ${hse}
+
+👤 *SOLICITANTE:*
+• *Nombre / Cargo:* ${clientName}
+• *Empresa / Operadora:* ${company}
+• *Teléfono:* ${phone}
+--------------------------------------------
+*Solicito confirmación de disponibilidad técnica y propuesta económica desde Base El Coca.*`;
+
+      const waUrl = `https://wa.me/593993956540?text=${encodeURIComponent(message)}`;
+      window.open(waUrl, "_blank");
+
+      const toast = document.getElementById("toast");
+      if (toast) {
+        toast.textContent = "✓ Ficha técnica exportada a WhatsApp de Operaciones.";
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 3500);
+      }
+    });
+  }
+
+  // Envío Formal por Correo Electrónico
+  if (btnSendCotizEmail) {
+    btnSendCotizEmail.addEventListener("click", () => {
+      const nameInput = document.getElementById("cotizNameInput");
+      const companyInput = document.getElementById("cotizCompanyInput");
+
+      const clientName = (nameInput && nameInput.value.trim()) || "Ingeniero de Operaciones";
+      const company = (companyInput && companyInput.value.trim()) || "Compañía Operadora";
+
+      const ticketNum = Math.floor(1000 + Math.random() * 9000);
+      const toast = document.getElementById("toast");
+      if (toast) {
+        toast.innerHTML = `<span class="font-bold font-mono">✓ TICKET REQ-TB-2026-${ticketNum} GENERADO</span><br><span class="text-xs">Dossier técnico registrado para ${company}. Un ingeniero de operaciones lo contactará en breve.</span>`;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 4500);
+      }
+
+      setTimeout(() => {
+        closeCotizador();
+      }, 1200);
+    });
+  }
+
+  // ==========================================
+  // CÁPSULA DE DESPACHO & GUARDIA 24/7 (BASE EL COCA)
+  // ==========================================
+  const dispatchWidget = document.getElementById("dispatchWidget");
+  const dispatchPanel = document.getElementById("dispatchPanel");
+  const btnToggleDispatch = document.getElementById("btnToggleDispatch");
+  const btnCloseDispatchPanel = document.getElementById("btnCloseDispatchPanel");
+
+  const openDispatchPanel = () => {
+    if (!dispatchPanel) return;
+    dispatchPanel.classList.remove("hidden");
+    if (window.lucide) window.lucide.createIcons();
+  };
+
+  const closeDispatchPanel = () => {
+    if (!dispatchPanel) return;
+    dispatchPanel.classList.add("hidden");
+  };
+
+  if (btnToggleDispatch) {
+    btnToggleDispatch.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (dispatchPanel && dispatchPanel.classList.contains("hidden")) {
+        openDispatchPanel();
+      } else {
+        closeDispatchPanel();
+      }
+    });
+  }
+
+  if (btnCloseDispatchPanel) {
+    btnCloseDispatchPanel.addEventListener("click", (e) => {
+      e.stopPropagation();
+      closeDispatchPanel();
+    });
+  }
+
+  // Cerrar al hacer clic fuera
+  document.addEventListener("click", (e) => {
+    if (dispatchWidget && !dispatchWidget.contains(e.target)) {
+      closeDispatchPanel();
+    }
+  });
+
+  // Cerrar con tecla Escape
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && dispatchPanel && !dispatchPanel.classList.contains("hidden")) {
+      closeDispatchPanel();
+    }
+  });
+
 });
+

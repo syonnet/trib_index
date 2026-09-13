@@ -138,10 +138,43 @@ img[src*="logoWhite"] {
   mix-blend-mode: screen;
 }
 
-/* Divisores técnicos */
+/* Divisores técnicos con Escaneo Láser Sísmico */
 .hr-brand {
+  position: relative;
   height: 1px;
   background: linear-gradient(to right, transparent, rgba(0, 104, 73, 0.4), transparent);
+  overflow: hidden;
+}
+
+[data-theme="dark"] .hr-brand {
+  background: linear-gradient(to right, transparent, rgba(0, 229, 153, 0.3), transparent);
+}
+
+.hr-brand::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, #00e599 45%, #fbbf24 80%, transparent 100%);
+  filter: drop-shadow(0 0 6px rgba(0, 229, 153, 0.85));
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hr-brand.laser-active::after {
+  opacity: 1;
+  animation: laserSweep 1.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes laserSweep {
+  0% {
+    left: -50%;
+  }
+  100% {
+    left: 150%;
+  }
 }
 
 .hr-subtle {
@@ -205,57 +238,236 @@ img[src*="logoWhite"] {
   width: 100%;
 }
 
-/* Header Flotante Ejecutivo (Apple Pure White en Light Mode) */
+/* Header Ejecutivo Rectangular Flat (Sin Rounded, Ancho Completo) */
 header#mainNav {
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  background: #ffffff;
+  position: fixed !important;
+  top: 0;
+  left: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  transform: none !important;
+  border-radius: 0 !important;
+  z-index: 9999 !important;
+  transition: top 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(15, 23, 42, 0.08);
   box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.05);
+  padding: 0 !important;
+}
+
+/* Halo Dorado Luminoso en el Borde Inferior (Recto y de Ancho Completo) */
+header#mainNav::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.3) 12%, #d4af37 50%, rgba(212, 175, 55, 0.3) 88%, transparent 100%);
+  box-shadow: 0 2px 14px 1px rgba(212, 175, 55, 0.55), 0 0 24px 2px rgba(229, 195, 122, 0.3);
+  pointer-events: none;
+  border-radius: 0 !important;
+  opacity: 0.95;
+  transition: all 0.3s ease;
+  z-index: 50;
 }
 
 [data-theme="dark"] header#mainNav {
-  background: rgba(11, 15, 21, 0.95);
+  background: rgba(11, 15, 21, 0.94);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
 }
 
+[data-theme="dark"] header#mainNav::after {
+  background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.4) 12%, #f3dc9b 50%, rgba(212, 175, 55, 0.4) 88%, transparent 100%);
+  box-shadow: 0 2px 18px 2px rgba(243, 220, 155, 0.75), 0 0 32px 4px rgba(212, 175, 55, 0.45);
+  opacity: 1;
+}
+
 @media (min-width: 1024px) {
+  /* En reposo superior: pegada casi adosada a la intranet (top: 40px), entrecortada a los lados (width 92%), con bordes redondeados (14px) como imagen 1 */
   header#mainNav {
-    top: 50px !important;
+    position: fixed !important;
+    top: 40px !important;
     left: 50% !important;
-    transform: translateX(-50%);
+    transform: translateX(-50%) !important;
     width: 92% !important;
-    max-width: 1440px;
-    border-radius: 14px;
+    max-width: 1400px;
+    border-radius: 14px !important;
     border: 1px solid rgba(15, 23, 42, 0.09) !important;
-    background: #ffffff !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
-    padding: 0.6rem 2rem;
+    padding: 0 !important;
   }
 
   [data-theme="dark"] header#mainNav {
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    background: rgba(14, 19, 28, 0.85) !important;
+    background: rgba(14, 19, 28, 0.90) !important;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
   }
 
+  header#mainNav::after {
+    left: 12px;
+    right: 12px;
+    width: calc(100% - 24px);
+    border-radius: 9999px !important;
+  }
+
+  /* Al hacer scroll: flota a top: 12px con sus bordes redondeados */
   header#mainNav.scrolled {
-    top: 20px !important;
-    background: #ffffff !important;
-    border-color: rgba(0, 104, 73, 0.25) !important;
-    box-shadow: 0 14px 36px -4px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+    top: 12px !important;
+    width: 92% !important;
+    max-width: 1400px;
+    background: rgba(255, 255, 255, 0.98) !important;
+    border-color: rgba(212, 175, 55, 0.35) !important;
+    box-shadow: 0 14px 36px -4px rgba(0, 0, 0, 0.12), 0 0 18px rgba(212, 175, 55, 0.25) !important;
+  }
+
+  header#mainNav.scrolled::after {
+    box-shadow: 0 2px 18px 2px rgba(212, 175, 55, 0.75), 0 0 30px 4px rgba(229, 195, 122, 0.45);
   }
 
   [data-theme="dark"] header#mainNav.scrolled {
-    background: rgba(14, 19, 28, 0.96) !important;
-    border-color: rgba(0, 104, 73, 0.35) !important;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55) !important;
+    background: rgba(11, 15, 22, 0.97) !important;
+    border-color: rgba(212, 175, 55, 0.45) !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), 0 0 22px rgba(212, 175, 55, 0.28) !important;
   }
 }
 
-/* Theme Segmented Switch (Apple Pro Dual Pill: Claro / Oscuro por separado) */
+/* Theme Switch Minimalista (Executive Pill Toggle) */
+.theme-minimal-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.theme-minimal-switch .switch-track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 56px;
+  height: 28px;
+  padding: 3px 5px;
+  border-radius: 9999px;
+  background: #e2e8f0;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="dark"] .theme-minimal-switch .switch-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.theme-minimal-switch .switch-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  transition: all 0.25s ease;
+}
+
+.theme-minimal-switch .switch-icon.icon-sun {
+  color: #d97706;
+}
+
+[data-theme="dark"] .theme-minimal-switch .switch-icon.icon-sun {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.theme-minimal-switch .switch-icon.icon-moon {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .theme-minimal-switch .switch-icon.icon-moon {
+  color: #38bdf8;
+}
+
+.theme-minimal-switch .switch-thumb {
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+  z-index: 1;
+}
+
+[data-theme="dark"] .theme-minimal-switch .switch-thumb,
+.theme-minimal-switch.is-dark .switch-thumb {
+  transform: translateX(26px);
+  background: #008a62;
+  box-shadow: 0 2px 8px rgba(0, 229, 153, 0.45);
+}
+
+/* Botón Cotizar Upstream con Borde Dorado y Radar Telemetría */
+.btn-cotizar-rig {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.25rem;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #0f172a 0%, #004d36 50%, #006849 100%);
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12), 0 0 14px rgba(212, 175, 55, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .btn-cotizar-rig {
+  background: linear-gradient(135deg, #090e15 0%, #003d2b 50%, #005a3e 100%);
+  border-color: rgba(212, 175, 55, 0.7);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45), 0 0 18px rgba(212, 175, 55, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.btn-cotizar-rig:hover {
+  transform: translateY(-1.5px);
+  border-color: #f3dc9b;
+  box-shadow: 0 6px 22px rgba(0, 104, 73, 0.35), 0 0 25px rgba(212, 175, 55, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+}
+
+.btn-cotizar-rig .cotizar-sheen {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), rgba(212, 175, 55, 0.4), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.75s ease;
+  pointer-events: none;
+}
+
+.btn-cotizar-rig:hover .cotizar-sheen {
+  left: 150%;
+}
+
+/* Theme Segmented Switch (Apple Pro Dual Pill - Retrocompatibilidad) */
 .theme-segmented-switch {
   display: inline-flex;
   align-items: center;
@@ -326,7 +538,11 @@ header#mainNav {
 .top-bar {
   background: rgba(255, 255, 255, 0.96);
   border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.top-bar.top-bar-hidden {
+  transform: translateY(-100%);
 }
 
 [data-theme="dark"] .top-bar {
@@ -1729,30 +1945,207 @@ header#mainNav {
   color: rgba(255, 255, 255, 0.75);
 }
 
-/* Operations Slider */
-.ops-slider {
+/* ==========================================
+   DOSSIER TÉCNICO DE OPERACIONES (AWWWARDS EDITION)
+   ========================================== */
+.dossier-card {
   position: relative;
+  padding: 1.15rem 1.35rem;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  user-select: none;
 }
 
-.ops-track {
-  display: flex;
-  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+[data-theme="dark"] .dossier-card {
+  background: #0e131c;
+  border-color: rgba(255, 255, 255, 0.07);
 }
 
-.ops-slide {
-  min-width: 100%;
-  position: relative;
+.dossier-card:hover {
+  border-color: rgba(0, 104, 73, 0.35);
+  transform: translateX(4px);
 }
 
-.ops-slide img {
+[data-theme="dark"] .dossier-card:hover {
+  border-color: rgba(0, 229, 153, 0.35);
+}
+
+.dossier-card.active {
+  background: #ffffff;
+  border-color: rgba(212, 175, 55, 0.7);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.07), 0 0 18px rgba(212, 175, 55, 0.15);
+  transform: translateX(6px);
+}
+
+[data-theme="dark"] .dossier-card.active {
+  background: #121824;
+  border-color: rgba(212, 175, 55, 0.75);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.25);
+}
+
+.dossier-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 2.5px;
+  background: linear-gradient(90deg, #006849, #d4af37, #f3dc9b);
+  transition: width 0.2s linear;
+  border-radius: 14px 14px 0 0;
+}
+
+.dossier-card.active .dossier-progress-bar {
   width: 100%;
-  height: 60vh;
-  min-height: 400px;
+}
+
+.dossier-num {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--brand);
+}
+
+[data-theme="dark"] .dossier-num {
+  color: #00e599;
+}
+
+.dossier-card.active .dossier-num {
+  color: #d4af37;
+}
+
+.dossier-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .dossier-tag {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.dossier-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .dossier-status-dot {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.dossier-card.active .dossier-status-dot {
+  background: #d4af37;
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.9);
+}
+
+.dossier-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.3;
+  margin-bottom: 0.35rem;
+  transition: color 0.3s ease;
+}
+
+[data-theme="dark"] .dossier-title {
+  color: #ffffff;
+}
+
+.dossier-card.active .dossier-title {
+  color: var(--brand);
+}
+
+[data-theme="dark"] .dossier-card.active .dossier-title {
+  color: #f3dc9b;
+}
+
+.dossier-desc {
+  font-size: 0.75rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin-bottom: 0.6rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .dossier-desc {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.dossier-kpis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.dossier-kpi {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 0.25rem 0.6rem;
+  background: #f8fafc;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 8px;
+  color: #475569;
+}
+
+[data-theme="dark"] .dossier-kpi {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dossier-kpi strong {
+  color: var(--brand);
+  font-weight: 700;
+}
+
+[data-theme="dark"] .dossier-kpi strong {
+  color: #00e599;
+}
+
+.dossier-card.active .dossier-kpi strong {
+  color: #d4af37;
+}
+
+/* Dossier Viewport & Slides */
+.dossier-viewport-container {
+  border-radius: 16px;
+}
+
+.dossier-img-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 0.8s ease;
+}
+
+.dossier-img-slide.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dossier-img-slide img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  filter: brightness(0.65) saturate(0.85);
+  transform: scale(1);
+  transition: transform 6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.dossier-img-slide.active img {
+  transform: scale(1.04);
 }
 
 /* Telemetry SCADA Dashboard */
@@ -1837,16 +2230,16 @@ header#mainNav {
 }
 
 .telemetry-btn {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.65);
+  background: var(--surface-subtle);
+  border: 1px solid var(--surface-border-strong);
+  color: var(--text-muted);
   font-family: var(--font-mono);
   font-size: 10px;
-  font-weight: 500;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   padding: 8px 12px;
-  border-radius: 3px;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.25s ease;
   flex: 1;
@@ -1854,15 +2247,109 @@ header#mainNav {
 }
 
 .telemetry-btn:hover {
-  background: rgba(0, 104, 73, 0.15);
-  border-color: rgba(0, 104, 73, 0.4);
-  color: #fff;
+  background: rgba(0, 104, 73, 0.12);
+  border-color: var(--brand);
+  color: var(--brand);
 }
 
 .telemetry-btn.active {
   background: var(--brand);
   border-color: var(--brand);
-  color: #fff;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(0, 104, 73, 0.35);
+}
+
+/* --- Marco Técnico HUD & Contenedor SCADA 3D --- */
+#scada3DCanvas {
+  touch-action: pan-y;
+}
+
+#scada3DContainer {
+  background: radial-gradient(circle at 50% 45%, rgba(0, 104, 73, 0.05) 0%, rgba(248, 250, 252, 0.95) 75%);
+  box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="dark"] #scada3DContainer {
+  background: radial-gradient(circle at 50% 45%, rgba(0, 104, 73, 0.16) 0%, rgba(7, 11, 16, 0.96) 80%);
+  box-shadow: inset 0 0 45px rgba(0, 0, 0, 0.65);
+}
+
+.hud-corner {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  pointer-events: none;
+  z-index: 25;
+  border-color: rgba(0, 104, 73, 0.35);
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .hud-corner {
+  border-color: rgba(0, 229, 153, 0.35);
+}
+
+#scada3DContainer:hover .hud-corner {
+  border-color: #00e599;
+  filter: drop-shadow(0 0 4px rgba(0, 229, 153, 0.6));
+}
+
+.hud-tl { top: 7px; left: 7px; border-top: 2px solid; border-left: 2px solid; }
+.hud-tr { top: 7px; right: 7px; border-top: 2px solid; border-right: 2px solid; }
+.hud-bl { bottom: 7px; left: 7px; border-bottom: 2px solid; border-left: 2px solid; }
+.hud-br { bottom: 7px; right: 7px; border-bottom: 2px solid; border-right: 2px solid; }
+
+/* --- Botones de Subsistemas SCADA 3D --- */
+.scada-part-btn {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  color: #334155;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 5px 9px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .scada-part-btn {
+  background: rgba(14, 19, 28, 0.88);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.scada-part-btn:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+  transform: translateY(-1px);
+}
+
+.scada-part-btn.active {
+  background: var(--brand);
+  border-color: var(--brand-light);
+  color: #fff !important;
+  box-shadow: 0 0 14px rgba(0, 229, 153, 0.45);
+  transform: translateY(-1px);
+}
+
+/* Tarjetas de Métrica SCADA */
+.telemetry-card {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.telemetry-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 104, 73, 0.35);
+  box-shadow: 0 6px 18px rgba(0, 104, 73, 0.08);
+}
+
+[data-theme="dark"] .telemetry-card:hover {
+  border-color: rgba(0, 229, 153, 0.35);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45), 0 0 12px rgba(0, 229, 153, 0.08);
 }
 
 /* Form Styles */
@@ -1949,82 +2436,178 @@ header#mainNav {
 
 .scroll-drill-tip-glow {
   position: absolute;
-  bottom: -2px;
-  width: 6px;
-  height: 6px;
+  bottom: -3px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: #10b981;
-  filter: blur(1.5px);
-  animation: scrollDrillPulse 0.8s ease-in-out infinite alternate;
+  background: radial-gradient(circle, #fde68a 0%, #f59e0b 60%, rgba(217, 119, 6, 0) 100%);
+  filter: blur(1px);
+  animation: scrollDrillPulse 0.9s ease-in-out infinite alternate;
   pointer-events: none;
 }
 
 @keyframes scrollDrillPulse {
   0% {
-    transform: scale(0.7);
-    opacity: 0.5;
+    transform: scale(0.75);
+    opacity: 0.55;
+    box-shadow: 0 0 4px rgba(245, 158, 11, 0.4);
   }
   100% {
-    transform: scale(1.5);
+    transform: scale(1.4);
     opacity: 1;
-    box-shadow: 0 0 8px #10b981;
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.9), 0 0 20px rgba(217, 119, 6, 0.5);
   }
+}
+
+/* --- Hitos Geológicos de Navegación Rápida (Wellbore Waypoints) --- */
+.drill-waypoint {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  outline: none;
+  z-index: 10;
+  transition: transform 0.2s ease;
+}
+
+.drill-waypoint:hover {
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+.drill-waypoint .waypoint-pip {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  border: 1.5px solid #ffffff;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] .drill-waypoint .waypoint-pip {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #0b0f15;
+}
+
+.drill-waypoint:hover .waypoint-pip,
+.drill-waypoint.active .waypoint-pip {
+  background: #00e599;
+  border-color: #006849;
+  transform: scale(1.4);
+  box-shadow: 0 0 10px rgba(0, 229, 153, 0.85);
+}
+
+/* Tooltip emergente de cada hito geológico */
+.drill-waypoint .waypoint-card {
+  position: absolute;
+  left: 28px;
+  top: 50%;
+  transform: translateY(-50%) translateX(-6px);
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5px;
+  z-index: 40;
+}
+
+[data-theme="dark"] .drill-waypoint .waypoint-card {
+  background: rgba(14, 19, 28, 0.96);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+}
+
+.drill-waypoint:hover .waypoint-card {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
+}
+
+.drill-waypoint .waypoint-title {
+  font-weight: 700;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 8.5px;
+}
+
+[data-theme="dark"] .drill-waypoint .waypoint-title {
+  color: #ffffff;
+}
+
+.drill-waypoint .waypoint-meta {
+  color: #008a62;
+  font-size: 7.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+[data-theme="dark"] .drill-waypoint .waypoint-meta {
+  color: #00e599;
 }
 
 /* =========================================================================
    TORRE MONUMENTAL DE FONDO LATERAL DERECHO (PARALLAX, COTAS & GIRO 3D)
    ========================================================================= */
 #lateralRigBackdrop {
-  opacity: 0.36;
-  transition: opacity 0.4s ease;
-  mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 48%, rgba(0, 0, 0, 0.35) 82%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 48%, rgba(0, 0, 0, 0.35) 82%, transparent 100%);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(25px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s ease;
+  mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 55%, rgba(0, 0, 0, 0.45) 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 55%, rgba(0, 0, 0, 0.45) 85%, transparent 100%);
+}
+
+#lateralRigBackdrop.visible {
+  opacity: 0.85;
+  visibility: visible;
+  transform: translateX(0);
 }
 
 #lateralRig3DWrapper {
   position: relative;
   width: 100%;
   height: 100%;
-  will-change: transform;
-  transform-origin: center top;
 }
 
-.lateral-rig-layer {
+#lateralRigCanvas {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  max-width: none !important;
-  height: auto;
-  object-fit: contain;
-  object-position: top center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.45s ease, visibility 0.45s ease;
-  will-change: transform, opacity;
-  transform-origin: center top;
-  filter: contrast(1.08);
+  height: 100%;
   pointer-events: none;
+  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.15));
 }
 
-.lateral-rig-layer.active {
-  opacity: 1;
-  visibility: visible;
+[data-theme="dark"] #lateralRigCanvas {
+  filter: drop-shadow(0 0 35px rgba(0, 229, 153, 0.12));
 }
 
-/* Modo claro: Grabado técnico arquitectónico fotorrealista */
-[data-theme="light"] .lateral-rig-layer {
-  mix-blend-mode: multiply;
+[data-theme="light"] #lateralRigBackdrop.visible {
+  opacity: 0.82;
 }
 
-/* Modo oscuro: Blueprint técnico luminiscente en azul acero y verde esmeralda */
-[data-theme="dark"] #lateralRigBackdrop {
-  opacity: 0.35;
-}
-
-[data-theme="dark"] .lateral-rig-layer {
-  filter: invert(0.92) hue-rotate(160deg) contrast(1.22) brightness(0.95);
-  mix-blend-mode: screen;
+[data-theme="dark"] #lateralRigBackdrop.visible {
+  opacity: 0.90;
 }
 
 /* --- Riel de Cotas de Elevación (HUD Elevation Ticks) --- */
@@ -2090,4 +2673,149 @@ header#mainNav {
   mix-blend-mode: color-dodge;
   opacity: 0.6;
 }
+
+/* =========================================================================
+   CONFIGURADOR UPSTREAM & COTIZADOR TÉCNICO MULTINACIONAL (WELLSPEC 2.0)
+   ========================================================================= */
+.cotiz-service-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 12px 8px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(15, 23, 42, 0.1);
+  background: #f8fafc;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+[data-theme="dark"] .cotiz-service-card {
+  background: #0f1623;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.cotiz-service-card:hover {
+  border-color: var(--brand);
+  transform: translateY(-2px);
+}
+
+.cotiz-service-card.active {
+  border-color: var(--brand);
+  background: rgba(0, 104, 73, 0.08);
+  box-shadow: 0 0 0 1px var(--brand);
+}
+
+[data-theme="dark"] .cotiz-service-card.active {
+  background: rgba(0, 229, 153, 0.1);
+  border-color: #00e599;
+  box-shadow: 0 0 0 1px #00e599;
+}
+
+.cotiz-service-card.active span {
+  color: var(--brand);
+}
+
+[data-theme="dark"] .cotiz-service-card.active span {
+  color: #00e599;
+}
+
+.cotiz-power-chip {
+  padding: 8px 6px;
+  border-radius: 8px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  background: #f8fafc;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+[data-theme="dark"] .cotiz-power-chip {
+  background: #0f1623;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.cotiz-power-chip:hover {
+  border-color: var(--brand);
+}
+
+.cotiz-power-chip.active {
+  border-color: var(--brand);
+  background: var(--brand);
+  color: #ffffff;
+}
+
+.cotiz-power-chip.active span {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .cotiz-power-chip.active {
+  background: #008a62;
+  border-color: #00e599;
+}
+
+.cotiz-check-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: #f8fafc;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+[data-theme="dark"] .cotiz-check-label {
+  background: #0f1623;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.cotiz-check-label:hover {
+  border-color: var(--brand);
+}
+
+/* ==========================================
+   CÁPSULA DE DESPACHO & GUARDIA 24/7 (BASE EL COCA)
+   ========================================== */
+#dispatchWidget {
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.16));
+}
+
+#dispatchPanel.hidden {
+  display: none;
+}
+
+#dispatchPanel:not(.hidden) {
+  display: block;
+  animation: dispatchFadeUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dispatchFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+#btnToggleDispatch {
+  box-shadow: 0 10px 25px -3px rgba(0, 104, 73, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] #btnToggleDispatch {
+  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 229, 153, 0.12);
+}
+
+#btnToggleDispatch:hover {
+  transform: translateY(-2px);
+}
+
 

@@ -20,6 +20,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
     <script>
         tailwind.config = {
@@ -58,80 +60,175 @@
     <canvas id="oil-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-55 dark:opacity-70"></canvas>
 
     <!-- Sarta de Perforación de Avance (Scroll Drill Indicator con Broca Dorada Minimalista) -->
-    <div id="scrollDrillContainer" class="hidden xl:flex fixed left-5 top-1/2 -translate-y-1/2 h-[340px] w-12 z-30 pointer-events-none flex-col items-center">
-        <!-- Mesa Rotaria / Corona Superior (Rig Rotary Table) -->
-        <div class="w-5 h-2.5 rounded-sm bg-slate-300 dark:bg-slate-700 border border-slate-400 dark:border-slate-600 shadow-xs flex items-center justify-center mb-1">
-            <div class="w-2 h-1 bg-brand rounded-xs"></div>
-        </div>
+    <!-- Sarta de Perforación & Navegador Geológico de Avance (Wellbore Depth Navigator) -->
+    <div id="scrollDrillContainer" class="hidden xl:flex fixed left-5 top-1/2 -translate-y-1/2 h-[350px] w-12 z-30 pointer-events-auto flex-col items-center select-none">
+        <!-- Mesa Rotaria / Corona Superior (Rig Rotary Table - Clic a Inicio) -->
+        <button class="w-6 h-3 rounded-xs bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 shadow-xs flex items-center justify-center mb-1 cursor-pointer hover:border-brand transition-colors drill-waypoint" data-target="#heroSlider" data-depth="0 FT" data-label="Superficie & Hero" title="Volver a Superficie">
+            <div class="w-2.5 h-1 bg-brand rounded-xs"></div>
+            <div class="waypoint-card">
+                <span class="waypoint-title">Superficie & Hero</span>
+                <span class="waypoint-meta">0 FT · MESA ROTARIA</span>
+            </div>
+        </button>
         
         <!-- Guía de Pozo Vertical y Tubería de Perforación -->
-        <div class="relative w-full flex-1 flex justify-center">
+        <div class="relative w-full flex-1 flex justify-center" id="scrollDrillTrack">
             <!-- Guía de pozo / Wellbore rail -->
-            <div class="w-[4px] h-full bg-slate-200/90 dark:bg-white/10 rounded-full"></div>
+            <div class="w-[5px] h-full bg-slate-200/90 dark:bg-white/10 rounded-full transition-all"></div>
             
             <!-- Tubería de Perforación en Descenso (Drill Pipe) -->
-            <div id="scrollProgressLine" class="w-[4px] bg-gradient-to-b from-brand-dark via-brand to-brand-light rounded-full absolute top-0 left-1/2 -translate-x-1/2 transition-all duration-75 shadow-xs" style="height: 0%"></div>
+            <div id="scrollProgressLine" class="w-[5px] bg-gradient-to-b from-brand-dark via-brand to-brand-light rounded-full absolute top-0 left-1/2 -translate-x-1/2 transition-all duration-75 shadow-xs pointer-events-none" style="height: 0%"></div>
+
+            <!-- Horizontes Geológicos de Navegación Rápida en 1 Clic -->
+            <div class="absolute inset-0 pointer-events-auto">
+                <!-- Hito 1: Clientes (20%) -->
+                <button class="drill-waypoint" data-target="#clientes" data-depth="2,500 FT" data-label="Operadoras & Clientes" style="top: 18%;" title="Ir a Clientes">
+                    <span class="waypoint-pip"></span>
+                    <div class="waypoint-card">
+                        <span class="waypoint-title">Operadoras & Clientes</span>
+                        <span class="waypoint-meta">2,500 FT · HOMOLOGACIÓN</span>
+                    </div>
+                </button>
+                <!-- Hito 2: Nosotros (38%) -->
+                <button class="drill-waypoint" data-target="#nosotros" data-depth="5,800 FT" data-label="Nosotros & HSE" style="top: 38%;" title="Ir a Nosotros">
+                    <span class="waypoint-pip"></span>
+                    <div class="waypoint-card">
+                        <span class="waypoint-title">Nosotros & Trayectoria</span>
+                        <span class="waypoint-meta">5,800 FT · GESTIÓN HSE</span>
+                    </div>
+                </button>
+                <!-- Hito 3: Soluciones (58%) -->
+                <button class="drill-waypoint" data-target="#soluciones" data-depth="9,200 FT" data-label="Soluciones & Flota" style="top: 58%;" title="Ir a Soluciones">
+                    <span class="waypoint-pip"></span>
+                    <div class="waypoint-card">
+                        <span class="waypoint-title">Soluciones & Taladros</span>
+                        <span class="waypoint-meta">9,200 FT · FLOTA UPSTREAM</span>
+                    </div>
+                </button>
+                <!-- Hito 4: Tecnología SCADA (78%) -->
+                <button class="drill-waypoint" data-target="#tecnologia" data-depth="12,450 FT" data-label="Telemetría SCADA" style="top: 78%;" title="Ir a SCADA">
+                    <span class="waypoint-pip"></span>
+                    <div class="waypoint-card">
+                        <span class="waypoint-title">Telemetría SCADA</span>
+                        <span class="waypoint-meta">12,450 FT · FM. NAPO</span>
+                    </div>
+                </button>
+                <!-- Hito 5: Contacto / Base El Coca (96%) -->
+                <button class="drill-waypoint" data-target="#contacto" data-depth="16,500 FT" data-label="Contacto & Base El Coca" style="top: 96%;" title="Ir a Contacto">
+                    <span class="waypoint-pip"></span>
+                    <div class="waypoint-card">
+                        <span class="waypoint-title">Contacto & Operaciones</span>
+                        <span class="waypoint-meta">16,500 FT · BASE EL COCA</span>
+                    </div>
+                </button>
+            </div>
             
             <!-- Cabezal y Broca de Perforación Giratoria (Drill Bit Head - Dorada Minimalista) -->
             <div id="scrollDrillBitHead" class="absolute left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-auto transition-all duration-75 group cursor-pointer" style="top: 0%;">
-                <!-- Broca Dorada Minimalista con Giro 360° -->
-                <div class="scroll-drill-bit-spinner" title="Broca TribOil de Precisión en Operación">
-                    <svg class="w-7 h-9 drop-shadow-md" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Cuello Superior Roscado Minimalista -->
-                        <rect x="11" y="0" width="6" height="4" rx="1" fill="#8C6527" stroke="#5E4314" stroke-width="0.8"/>
-                        <line x1="11" y1="2" x2="17" y2="2" stroke="#E6CA85" stroke-width="0.6"/>
-
-                        <!-- Cuerpo Esculpido Oro / Titanio de la Broca -->
-                        <path d="M7 4H21L25 12L21 24L14 34L7 24L3 12L7 4Z" fill="url(#goldMinimalBody)" stroke="#5E4314" stroke-width="1"/>
-
-                        <!-- Bisel Central Facetado -->
-                        <path d="M11 4H17L18 24L14 32L10 24L11 4Z" fill="url(#goldMinimalFacet)" opacity="0.9"/>
-
-                        <!-- Canales de Corte Helicoidales Estilizados -->
-                        <path d="M5 12L12 28L14 34L16 28L23 12" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round" opacity="0.9"/>
-                        <path d="M8 8L13 22L14 30L15 22L20 8" stroke="#E6CA85" stroke-width="0.8" stroke-linecap="round"/>
-
-                        <!-- Micro-Insertos de Diamante / Carburo de Precisión -->
-                        <circle cx="5" cy="14" r="0.9" fill="#FFFFFF"/>
-                        <circle cx="8" cy="20" r="0.9" fill="#FFFFFF"/>
-                        <circle cx="11" cy="26" r="0.9" fill="#FFFFFF"/>
-                        
-                        <circle cx="23" cy="14" r="0.9" fill="#FFFFFF"/>
-                        <circle cx="20" cy="20" r="0.9" fill="#FFFFFF"/>
-                        <circle cx="17" cy="26" r="0.9" fill="#FFFFFF"/>
-
-                        <!-- Tobera / Punta Central con Micro-Inserto Esmeralda TribOil -->
-                        <circle cx="14" cy="33" r="1.5" fill="#006849" stroke="#34D399" stroke-width="0.75"/>
-
+                <!-- Broca Tricono de Perforación Dorada de Alta Gama (Roller Cone Bit) -->
+                <div class="scroll-drill-bit-spinner" title="Broca Tricono de Perforación TribOil">
+                    <svg class="w-7 h-9 drop-shadow-md" viewBox="0 0 30 38" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <defs>
-                            <!-- Gradiente Oro Titanio Minimalista -->
-                            <linearGradient id="goldMinimalBody" x1="3" y1="4" x2="25" y2="34" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#E8C682"/>
-                                <stop offset="0.3" stop-color="#D4AF37"/>
-                                <stop offset="0.7" stop-color="#9E7324"/>
-                                <stop offset="1" stop-color="#4A340D"/>
+                            <!-- Gradientes Bronce / Oro de Alta Definición idénticos a punta_taladro.png -->
+                            <linearGradient id="triconeBodyGrad" x1="4" y1="5" x2="26" y2="18" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#E5C37A"/>
+                                <stop offset="0.25" stop-color="#D4AF37"/>
+                                <stop offset="0.65" stop-color="#9E7324"/>
+                                <stop offset="1" stop-color="#4E340E"/>
                             </linearGradient>
-                            <!-- Faceta de Reflejo Luminoso -->
-                            <linearGradient id="goldMinimalFacet" x1="10" y1="4" x2="18" y2="32" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#FFF2CE"/>
-                                <stop offset="0.4" stop-color="#E8C682"/>
-                                <stop offset="1" stop-color="#805C1B"/>
+                            <linearGradient id="triconeConeLeft" x1="3" y1="13" x2="16" y2="28" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#F3DC9B"/>
+                                <stop offset="0.4" stop-color="#C59B3B"/>
+                                <stop offset="0.85" stop-color="#7A5317"/>
+                                <stop offset="1" stop-color="#3D2707"/>
+                            </linearGradient>
+                            <linearGradient id="triconeConeRight" x1="27" y1="13" x2="14" y2="28" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#F3DC9B"/>
+                                <stop offset="0.4" stop-color="#C59B3B"/>
+                                <stop offset="0.85" stop-color="#7A5317"/>
+                                <stop offset="1" stop-color="#3D2707"/>
+                            </linearGradient>
+                            <linearGradient id="triconeConeCenter" x1="9" y1="16" x2="21" y2="35" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#FFF0C2"/>
+                                <stop offset="0.3" stop-color="#E2BD64"/>
+                                <stop offset="0.75" stop-color="#9C6F22"/>
+                                <stop offset="1" stop-color="#4B310A"/>
+                            </linearGradient>
+                            <linearGradient id="triconePinGrad" x1="11" y1="0" x2="19" y2="5" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#A5792F"/>
+                                <stop offset="0.5" stop-color="#5E3F10"/>
+                                <stop offset="1" stop-color="#332107"/>
                             </linearGradient>
                         </defs>
+
+                        <!-- 1. Rosca Superior API (Conexión a la Sarta de Perforación) -->
+                        <rect x="11.5" y="0.5" width="7" height="4.5" rx="1" fill="url(#triconePinGrad)" stroke="#4A310C" stroke-width="0.8"/>
+                        <line x1="12" y1="1.8" x2="18" y2="1.8" stroke="#E6CA85" stroke-width="0.6"/>
+                        <line x1="12" y1="3.2" x2="18" y2="3.2" stroke="#E6CA85" stroke-width="0.6"/>
+
+                        <!-- 2. Hombro / Cuerpo Forjado del Tricono (Bit Body & Legs) -->
+                        <path d="M10 5H20L25 12C25 14 24 16 22 17L15 18L8 17C6 16 5 14 5 12L10 5Z" fill="url(#triconeBodyGrad)" stroke="#52360D" stroke-width="0.8"/>
+                        <path d="M12 5H18L20 14L15 16L10 14L12 5Z" fill="#FFF2CE" opacity="0.25"/>
+
+                        <!-- 3. Cono Izquierdo Angulado (Roller Cone 1) -->
+                        <g id="coneLeft">
+                            <path d="M4 14C3 17 5 21 8 23L13 21L11 15C9 13 6 13 4 14Z" fill="url(#triconeConeLeft)" stroke="#4A2F08" stroke-width="0.7"/>
+                            <path d="M5 16C4 18 6 21 8 22" stroke="#FFE9A8" stroke-width="0.9" stroke-linecap="round"/>
+                            <path d="M7 14L6 15M6 18L5 19M8 21L7 22" stroke="#FFFFFF" stroke-width="1.1" stroke-linecap="round"/>
+                            <circle cx="5" cy="17" r="0.7" fill="#FFFFFF"/>
+                            <circle cx="7" cy="20" r="0.7" fill="#FFFFFF"/>
+                            <circle cx="10" cy="18" r="0.6" fill="#FFEBB0"/>
+                        </g>
+
+                        <!-- 4. Cono Derecho Angulado (Roller Cone 2) -->
+                        <g id="coneRight">
+                            <path d="M26 14C27 17 25 21 22 23L17 21L19 15C21 13 24 13 26 14Z" fill="url(#triconeConeRight)" stroke="#4A2F08" stroke-width="0.7"/>
+                            <path d="M25 16C26 18 24 21 22 22" stroke="#FFE9A8" stroke-width="0.9" stroke-linecap="round"/>
+                            <path d="M23 14L24 15M24 18L25 19M22 21L23 22" stroke="#FFFFFF" stroke-width="1.1" stroke-linecap="round"/>
+                            <circle cx="25" cy="17" r="0.7" fill="#FFFFFF"/>
+                            <circle cx="23" cy="20" r="0.7" fill="#FFFFFF"/>
+                            <circle cx="20" cy="18" r="0.6" fill="#FFEBB0"/>
+                        </g>
+
+                        <!-- 5. Cono Frontal Principal (Roller Cone 3 - Centro) -->
+                        <g id="coneCenter">
+                            <path d="M9 18C9 16 21 16 21 18L18 31C17 34 13 34 12 31L9 18Z" fill="url(#triconeConeCenter)" stroke="#4A2F08" stroke-width="0.8"/>
+                            <ellipse cx="15" cy="20" rx="4.5" ry="1.8" stroke="#4A2F08" stroke-width="0.6" fill="#F8DF9D" fill-opacity="0.3"/>
+                            <ellipse cx="15" cy="25" rx="3.4" ry="1.4" stroke="#5C3B0C" stroke-width="0.6" fill="#E2BD64" fill-opacity="0.4"/>
+                            <ellipse cx="15" cy="29" rx="2.2" ry="1" stroke="#5C3B0C" stroke-width="0.6" fill="#B8860B" fill-opacity="0.5"/>
+                            <path d="M11 19.5L11 20.5M13.5 21L13.5 22M16.5 21L16.5 22M19 19.5L19 20.5" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round"/>
+                            <path d="M12.5 24.8L12.5 25.8M15 26L15 27M17.5 24.8L17.5 25.8" stroke="#FFFFFF" stroke-width="1.1" stroke-linecap="round"/>
+                            <circle cx="15" cy="30" r="0.8" fill="#FFFFFF"/>
+                            <path d="M14 17L14 31" stroke="#FFF7E0" stroke-width="0.8" stroke-linecap="round" opacity="0.8"/>
+                        </g>
+
+                        <!-- 6. Tobera Central con Micro-Inserto Esmeralda TribOil -->
+                        <circle cx="15" cy="34.5" r="1.6" fill="#006849" stroke="#00e599" stroke-width="0.8"/>
+                        <circle cx="15" cy="34.5" r="0.6" fill="#E6FFFA"/>
                     </svg>
                 </div>
                 <!-- Micro-destello de Fricción de Corte en la Punta -->
                 <div class="scroll-drill-tip-glow"></div>
                 <!-- Badge Flotante de Profundidad Operativa -->
-                <div class="absolute left-8 top-1/2 -translate-y-1/2 px-2 py-1 rounded bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-lg font-mono text-[10px] font-bold text-brand dark:text-brand-light whitespace-nowrap opacity-0 group-hover:opacity-100 xl:group-hover:opacity-100 transition-opacity duration-200">
-                    <span id="scrollDepthPct">0%</span>
-                    <span class="text-[8px] text-slate-400 font-normal ml-0.5">AVANCE</span>
+                <div class="absolute left-8 top-1/2 -translate-y-1/2 px-2.5 py-1.5 rounded-md bg-white/95 dark:bg-[#0e131c]/95 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-lg font-mono text-[10px] text-slate-800 dark:text-white whitespace-nowrap opacity-0 group-hover:opacity-100 xl:group-hover:opacity-100 transition-all duration-200 pointer-events-none" id="scrollDrillTooltip">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-light animate-pulse"></span>
+                        <span id="scrollDepthPct" class="font-bold text-brand dark:text-brand-light">0%</span>
+                        <span class="text-slate-300 dark:text-white/20">|</span>
+                        <span id="scrollHorizonName" class="font-semibold uppercase tracking-wider text-[9px]">Superficie</span>
+                    </div>
+                    <div class="text-[8px] text-slate-500 dark:text-white/40 mt-0.5 font-normal" id="scrollHorizonDepth">0 FT · MESA ROTARIA</div>
                 </div>
             </div>
         </div>
         
-        <!-- Base de Fondo de Pozo / Objetivo TD (Total Depth) -->
-        <div class="w-4 h-1 rounded-full bg-slate-300 dark:bg-slate-700 mt-1"></div>
+        <!-- Base de Fondo de Pozo / Objetivo TD (Total Depth - Clic a Contacto) -->
+        <button class="w-5 h-2 rounded-full bg-slate-300 dark:bg-slate-700 mt-1 cursor-pointer hover:bg-brand transition-colors drill-waypoint" data-target="#contacto" data-depth="16,500 FT" data-label="Objetivo TD · Base El Coca" title="Ir a Fondo de Pozo / Contacto">
+            <div class="waypoint-card">
+                <span class="waypoint-title">Objetivo TD</span>
+                <span class="waypoint-meta">16,500 FT · CONTACTO</span>
+            </div>
+        </button>
     </div>
 
     <!-- Torre Monumental de Fondo en el Lateral Derecho con Parallax, Cotas HUD y Giro 3D -->
@@ -186,15 +283,12 @@
             </div>
         </div>
 
-        <!-- Contenedor Tridimensional del Taladro con Reflejo Especular Dinámico -->
-        <div id="lateralRig3DWrapper" class="relative w-full h-full flex justify-center items-start transform-gpu" style="transform-style: preserve-3d;">
-            <!-- Trilogía de Renders 3D Fotorrealistas (Órbita de Barrido Multicámara) -->
-            <img src="assets/pozo_3d/frontal.webp" id="lateralRigImgFrontal" alt="Taladro 3D Vista Oblicua Izquierda" class="lateral-rig-layer active" loading="eager">
-            <img src="assets/pozo_3d/lateral.webp" id="lateralRigImgLateral" alt="Taladro 3D Vista Frontal Simétrica" class="lateral-rig-layer" loading="eager">
-            <img src="assets/pozo_3d/posterior.webp" id="lateralRigImgPosterior" alt="Taladro 3D Vista Oblicua Derecha" class="lateral-rig-layer" loading="eager">
+        <!-- Contenedor Tridimensional del Taladro en Tiempo Real (Three.js WebGL) -->
+        <div id="lateralRig3DWrapper" class="relative w-full h-full flex justify-center items-center">
+            <canvas id="lateralRigCanvas" class="w-full h-full block pointer-events-none"></canvas>
             
-            <!-- Capa de Haz de Luz Especular Dinámico (Light Sweep al rotar) -->
-            <div id="lateralRigLightSweep" class="absolute inset-0 pointer-events-none transition-transform duration-75"></div>
+            <!-- Capa de Haz de Luz Especular Dinámico / Escaneo -->
+            <div id="lateralRigLightSweep" class="absolute inset-0 pointer-events-none opacity-40"></div>
         </div>
 
         <!-- Viñeta de degradado suave hacia la izquierda para que el contenido central se lea impecable -->
@@ -275,43 +369,50 @@
     </div>
 
     <!-- Navigation Header -->
-    <header class="fixed top-0 lg:top-10 left-0 w-full z-40" id="mainNav">
-        <div class="max-w-[1500px] mx-auto px-6 md:px-8 py-3.5 flex items-center justify-between">
+    <header class="fixed top-0 left-0 w-full z-[9999]" id="mainNav">
+        <div class="max-w-[1500px] mx-auto px-6 md:px-10 py-2 flex items-center justify-between">
             <!-- Brand Logo Adaptativo -->
             <a href="#" class="flex items-center group">
-                <img src="assets/logoWhite.png" alt="TribOil Logo" class="h-9 md:h-10 w-auto object-contain dark-logo transition-transform duration-200 group-hover:scale-105">
-                <img src="assets/logoGreen.png" alt="TribOil Logo" class="h-9 md:h-10 w-auto object-contain light-logo transition-transform duration-200 group-hover:scale-105">
+                <img src="assets/logoWhite.png" alt="TribOil Logo" class="h-8 md:h-8.5 w-auto object-contain dark-logo transition-transform duration-200 group-hover:scale-105">
+                <img src="assets/logoGreen.png" alt="TribOil Logo" class="h-8 md:h-8.5 w-auto object-contain light-logo transition-transform duration-200 group-hover:scale-105">
             </a>
 
             <!-- Desktop Navigation -->
-            <nav class="hidden lg:flex items-center gap-7">
-                <a href="#nosotros" class="nav-link">Nosotros</a>
-                <a href="#clientes" class="nav-link">Clientes</a>
-                <a href="#soluciones" class="nav-link">Soluciones</a>
-                <a href="#operaciones" class="nav-link">Operaciones</a>
-                <a href="#tecnologia" class="nav-link">Tecnología SCADA</a>
-                <a href="#sostenibilidad" class="nav-link">Sostenibilidad</a>
-                <a href="#contacto" class="nav-link">Contacto</a>
+            <nav class="hidden lg:flex items-center gap-6 xl:gap-8">
+                <a href="#nosotros" class="nav-link !text-[13px] !font-medium">Nosotros</a>
+                <a href="#clientes" class="nav-link !text-[13px] !font-medium">Clientes</a>
+                <a href="#soluciones" class="nav-link !text-[13px] !font-medium">Soluciones</a>
+                <a href="#operaciones" class="nav-link !text-[13px] !font-medium">Operaciones</a>
+                <a href="#contacto" class="nav-link !text-[13px] !font-medium">Contacto</a>
             </nav>
 
             <!-- Action Button, Theme Toggle & Hamburger -->
             <div class="flex items-center gap-3">
-                <!-- Theme Segmented Switch (Apple Style: Claro / Oscuro por separado) -->
-                <div class="theme-segmented-switch" id="themeSegmentedSwitch" role="group" aria-label="Selector de tema">
-                    <button type="button" class="btn-theme-light active" id="btnThemeLight" title="Modo Claro" aria-label="Activar modo claro">
-                        <i data-lucide="sun" class="w-3.5 h-3.5"></i>
-                        <span class="hidden sm:inline">Claro</span>
-                    </button>
-                    <button type="button" class="btn-theme-dark" id="btnThemeDark" title="Modo Oscuro" aria-label="Activar modo oscuro">
-                        <i data-lucide="moon" class="w-3.5 h-3.5"></i>
-                        <span class="hidden sm:inline">Oscuro</span>
-                    </button>
-                </div>
+                <!-- Theme Switch Minimalista (Executive Pill Toggle) -->
+                <button type="button" class="theme-minimal-switch" id="themeMinimalSwitch" role="switch" aria-checked="false" aria-label="Cambiar tema claro / oscuro" title="Cambiar tema">
+                    <span class="switch-track">
+                        <span class="switch-icon icon-sun">
+                            <i data-lucide="sun" class="w-3.5 h-3.5"></i>
+                        </span>
+                        <span class="switch-icon icon-moon">
+                            <i data-lucide="moon" class="w-3.5 h-3.5"></i>
+                        </span>
+                        <span class="switch-thumb"></span>
+                    </span>
+                </button>
 
-                <a href="#contacto" class="hidden md:inline-flex btn-primary !py-2.5 !px-5 text-xs">
-                    Cotizar
-                    <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-                </a>
+                <!-- Botón Cotizar Upstream con Borde Dorado y Radar Telemetría -->
+                <button type="button" class="hidden md:inline-flex btn-cotizar-rig btn-open-cotizador group !py-2 !px-4" aria-label="Abrir cotizador técnico de pozos">
+                    <span class="cotizar-sheen"></span>
+                    <span class="relative z-10 flex items-center gap-2">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-80"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                        </span>
+                        <span class="font-bold tracking-wider text-[11px] uppercase text-white font-mono">Cotizar</span>
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-amber-300 transition-transform duration-300 group-hover:translate-x-1"></i>
+                    </span>
+                </button>
                 <button class="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 focus:outline-none" id="hamburger" aria-label="Abrir menú">
                     <span class="w-6 h-0.5 bg-slate-900 dark:bg-white transition-all duration-300" id="ham1"></span>
                     <span class="w-4 h-0.5 bg-slate-900 dark:bg-white transition-all duration-300 ml-auto" id="ham2"></span>
@@ -329,24 +430,23 @@
                         <img src="assets/logoWhite.png" alt="TribOil" class="h-8 w-auto opacity-90 dark-logo">
                         <img src="assets/logoGreen.png" alt="TribOil" class="h-8 w-auto light-logo">
                     </div>
-                    <div class="theme-segmented-switch" role="group" aria-label="Selector de tema móvil">
-                        <button type="button" class="btn-theme-light" title="Modo Claro" aria-label="Activar modo claro">
-                            <i data-lucide="sun" class="w-3.5 h-3.5"></i>
-                            <span>Claro</span>
-                        </button>
-                        <button type="button" class="btn-theme-dark" title="Modo Oscuro" aria-label="Activar modo oscuro">
-                            <i data-lucide="moon" class="w-3.5 h-3.5"></i>
-                            <span>Oscuro</span>
-                        </button>
-                    </div>
+                    <button type="button" class="theme-minimal-switch" id="themeMinimalSwitchMobile" role="switch" aria-checked="false" aria-label="Cambiar tema claro / oscuro" title="Cambiar tema">
+                        <span class="switch-track">
+                            <span class="switch-icon icon-sun">
+                                <i data-lucide="sun" class="w-3.5 h-3.5"></i>
+                            </span>
+                            <span class="switch-icon icon-moon">
+                                <i data-lucide="moon" class="w-3.5 h-3.5"></i>
+                            </span>
+                            <span class="switch-thumb"></span>
+                        </span>
+                    </button>
                 </div>
                 <nav class="flex flex-col gap-4">
                     <a href="#nosotros" class="py-2.5 border-b border-slate-200 dark:border-white/5 text-xl font-medium text-slate-800 dark:text-white/80 hover:text-brand dark:hover:text-white">Nosotros</a>
                     <a href="#clientes" class="py-2.5 border-b border-slate-200 dark:border-white/5 text-xl font-medium text-slate-800 dark:text-white/80 hover:text-brand dark:hover:text-white">Clientes</a>
                     <a href="#soluciones" class="py-2.5 border-b border-slate-200 dark:border-white/5 text-xl font-medium text-slate-800 dark:text-white/80 hover:text-brand dark:hover:text-white">Soluciones</a>
                     <a href="#operaciones" class="py-2.5 border-b border-slate-200 dark:border-white/5 text-xl font-medium text-slate-800 dark:text-white/80 hover:text-brand dark:hover:text-white">Operaciones</a>
-                    <a href="#tecnologia" class="py-2.5 border-b border-slate-200 dark:border-white/5 text-xl font-medium text-slate-800 dark:text-white/80 hover:text-brand dark:hover:text-white">Tecnología SCADA</a>
-                    <a href="#sostenibilidad" class="py-2.5 border-b border-slate-200 dark:border-white/5 text-xl font-medium text-slate-800 dark:text-white/80 hover:text-brand dark:hover:text-white">Sostenibilidad</a>
                     <a href="#contacto" class="py-2.5 border-b border-slate-200 dark:border-white/5 text-xl font-medium text-slate-800 dark:text-white/80 hover:text-brand dark:hover:text-white">Contacto</a>
                 </nav>
             </div>
@@ -359,7 +459,17 @@
                     <a href="http://64.190.27.46:8040/jde/E1Menu.maf?" target="_blank" class="hover:text-brand-light">JD Edwards</a>
                     <a href="https://compers.online" target="_blank" class="hover:text-brand-light">Compers TTHH</a>
                 </div>
-                <a href="#contacto" class="btn-primary w-full text-center">Contactar Operaciones</a>
+                <button type="button" class="btn-cotizar-rig w-full text-center btn-open-cotizador justify-center !py-3">
+                    <span class="cotizar-sheen"></span>
+                    <span class="relative z-10 flex items-center justify-center gap-2">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-80"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                        </span>
+                        <span class="font-bold tracking-wider text-xs uppercase text-white font-mono">Cotizar Operaciones</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 text-amber-300"></i>
+                    </span>
+                </button>
             </div>
         </div>
     </div>
@@ -699,21 +809,21 @@
                 <!-- Columna Derecha: Imagen con Badge Técnico -->
                 <div class="lg:col-span-5 reveal-scale">
                     <div class="relative rounded-lg overflow-hidden border border-slate-200 dark:border-white/10 shadow-2xl">
-                        <img src="https://i.postimg.cc/W4rBp1kf/001.png" alt="Personal de TribOil en campo petrolero" class="w-full h-[460px] object-cover filter brightness-90">
+                        <img src="https://i.postimg.cc/W4rBp1kf/001.png" alt="Personal de TribOil en campo petrolero" class="w-full h-72 sm:h-96 md:h-[460px] object-cover filter brightness-90">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                         
                         <!-- Floating Card de Seguridad -->
-                        <div class="absolute bottom-6 left-6 right-6 p-4 rounded-lg bg-white/95 dark:bg-[#0e131c]/90 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-lg">
-                            <div class="flex items-center gap-3 mb-2">
-                                <div class="w-8 h-8 rounded bg-brand/20 flex items-center justify-center text-brand-light">
-                                    <i data-lucide="award" class="w-4 h-4"></i>
+                        <div class="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 right-3 sm:right-6 p-3 sm:p-4 rounded-lg bg-white/95 dark:bg-[#0e131c]/90 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-lg">
+                            <div class="flex items-center gap-2.5 sm:gap-3 mb-1.5 sm:mb-2">
+                                <div class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-brand/20 flex items-center justify-center text-brand-light flex-shrink-0">
+                                    <i data-lucide="award" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
                                 </div>
                                 <div>
-                                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">Estándares Internacionales</h4>
-                                    <span class="text-[10px] font-mono text-slate-500 dark:text-white/40">API Spec · ISO 9001 / 14001 / 45001</span>
+                                    <h4 class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">Estándares Internacionales</h4>
+                                    <span class="text-[9px] sm:text-[10px] font-mono text-slate-500 dark:text-white/40">API Spec · ISO 9001 / 14001 / 45001</span>
                                 </div>
                             </div>
-                            <p class="text-slate-600 dark:text-white/50 text-xs leading-relaxed">
+                            <p class="text-slate-600 dark:text-white/50 text-[11px] sm:text-xs leading-relaxed line-clamp-2 sm:line-clamp-none">
                                 Operaciones reguladas bajo estrictos protocolos de protección al personal, comunidades y ecosistemas circundantes.
                             </p>
                         </div>
@@ -895,55 +1005,67 @@
 
                         <!-- Cuerpo Principal: Plano SVG + Indicadores -->
                         <div class="grid md:grid-cols-2 gap-6 relative z-10">
-                            <!-- Left: Blueprint interactivo del taladro -->
-                            <div class="bg-slate-50 dark:bg-[#0b0f15]/80 border border-slate-200 dark:border-white/5 rounded-lg p-4 flex flex-col items-center justify-center min-h-[290px] relative">
-                                <span class="text-[9px] font-mono uppercase tracking-widest text-slate-400 dark:text-white/30 absolute top-2 left-3">Esquema Operativo API</span>
+                            <!-- Left: Gemelo Digital 3D Interactivo (Three.js WebGL Viewport) -->
+                            <div class="bg-slate-900/5 dark:bg-[#070b10] border border-slate-200 dark:border-white/10 rounded-xl p-3 flex flex-col items-center justify-center min-h-[360px] relative overflow-hidden group select-none" id="scada3DContainer">
+                                <!-- Esquinas HUD de Precisión Técnica -->
+                                <div class="hud-corner hud-tl"></div>
+                                <div class="hud-corner hud-tr"></div>
+                                <div class="hud-corner hud-bl"></div>
+                                <div class="hud-corner hud-br"></div>
 
-                                <svg class="w-24 h-52 text-brand transition-colors duration-300" viewBox="0 0 100 200" fill="none" stroke="currentColor" stroke-width="1.5" id="rigSvg">
-                                    <line x1="10" y1="190" x2="90" y2="190" />
-                                    <path d="M25,190 L35,160 L65,160 L75,190 Z" />
-                                    <line x1="35" y1="160" x2="65" y2="160" />
-                                    <path d="M35,160 L45,20 L55,20 L65,160 Z" />
-                                    <line x1="37" y1="130" x2="63" y2="130" />
-                                    <line x1="39" y1="100" x2="61" y2="100" />
-                                    <line x1="41" y1="70" x2="59" y2="70" />
-                                    <line x1="43" y1="40" x2="57" y2="40" />
-                                    <rect x="44" y="10" width="12" height="10" />
-                                    <line x1="50" y1="20" x2="50" y2="185" stroke-dasharray="3,3" id="drillString" />
-                                    <rect x="42" y="165" width="16" height="15" fill="#121824" />
-                                </svg>
+                                <!-- Overlay HUD Superior -->
+                                <div class="absolute top-3 left-3 right-3 z-20 flex items-center justify-between pointer-events-none">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="w-2 h-2 rounded-full bg-brand-light animate-pulse"></span>
+                                        <span class="text-[9px] font-mono font-bold tracking-widest uppercase text-brand dark:text-brand-light">DIGITAL TWIN 3D</span>
+                                    </div>
+                                    <span class="text-[8px] font-mono px-2 py-0.5 rounded bg-slate-900/70 text-white/80 border border-white/10 backdrop-blur-xs">
+                                        ARRASTRE 360° · ORBIT
+                                    </span>
+                                </div>
 
-                                <!-- Hotspots de interacción -->
-                                <button class="absolute rig-hotspot active" style="top: 24px; left: 50%;" data-hotspot="crown" aria-label="Corona"></button>
-                                <button class="absolute rig-hotspot" style="top: 105px; left: 50%;" data-hotspot="string" aria-label="Sarta"></button>
-                                <button class="absolute rig-hotspot" style="top: 172px; left: 50%;" data-hotspot="bop" aria-label="BOP"></button>
+                                <!-- Canvas WebGL Three.js -->
+                                <canvas id="scada3DCanvas" class="w-full h-full min-h-[340px] block cursor-grab active:cursor-grabbing"></canvas>
+
+                                <!-- Overlay de Selección de Subsistema (Hotspots Rápidos) -->
+                                <div class="absolute bottom-3 left-2 right-2 z-20 flex items-center justify-center gap-1 pointer-events-auto">
+                                    <button type="button" class="scada-part-btn active" data-part="crown" title="Inspeccionar Corona">
+                                        Corona & Top Drive
+                                    </button>
+                                    <button type="button" class="scada-part-btn" data-part="string" title="Inspeccionar Sarta">
+                                        Mesa & Sarta
+                                    </button>
+                                    <button type="button" class="scada-part-btn" data-part="bop" title="Inspeccionar BOP">
+                                        Preventor BOP
+                                    </button>
+                                </div>
                             </div>
 
                             <!-- Right: Lecturas de Instrumentación -->
                             <div class="flex flex-col justify-between">
                                 <div class="grid grid-cols-2 gap-4">
-                                    <div class="bg-slate-50 dark:bg-[#0b0f15]/50 border border-slate-200 dark:border-white/5 rounded-lg p-3">
+                                    <div class="telemetry-card bg-slate-50 dark:bg-[#0b0f15]/50 border border-slate-200 dark:border-white/5 rounded-lg p-3">
                                         <div class="text-[9px] font-mono uppercase tracking-wider text-slate-400 dark:text-white/40 mb-0.5">Profundidad MD</div>
                                         <div class="text-2xl font-bold font-mono text-slate-900 dark:text-white tracking-tight flex items-baseline gap-1">
                                             <span id="telemetryDepth">8452.4</span>
                                             <span class="text-[10px] text-slate-400 dark:text-white/40">ft</span>
                                         </div>
                                     </div>
-                                    <div class="bg-slate-50 dark:bg-[#0b0f15]/50 border border-slate-200 dark:border-white/5 rounded-lg p-3">
+                                    <div class="telemetry-card bg-slate-50 dark:bg-[#0b0f15]/50 border border-slate-200 dark:border-white/5 rounded-lg p-3">
                                         <div class="text-[9px] font-mono uppercase tracking-wider text-slate-400 dark:text-white/40 mb-0.5">Presión Pozo</div>
                                         <div class="text-2xl font-bold font-mono text-brand-light tracking-tight flex items-baseline gap-1">
                                             <span id="telemetryPressure">2410</span>
                                             <span class="text-[10px] text-slate-400 dark:text-white/40">PSI</span>
                                         </div>
                                     </div>
-                                    <div class="bg-slate-50 dark:bg-[#0b0f15]/50 border border-slate-200 dark:border-white/5 rounded-lg p-3">
+                                    <div class="telemetry-card bg-slate-50 dark:bg-[#0b0f15]/50 border border-slate-200 dark:border-white/5 rounded-lg p-3">
                                         <div class="text-[9px] font-mono uppercase tracking-wider text-slate-400 dark:text-white/40 mb-0.5">Tasa Caudal</div>
                                         <div class="text-lg font-bold font-mono text-slate-900 dark:text-white tracking-tight flex items-baseline gap-1">
                                             <span id="telemetryFlow">480</span>
                                             <span class="text-[10px] text-slate-400 dark:text-white/40">GPM</span>
                                         </div>
                                     </div>
-                                    <div class="bg-slate-50 dark:bg-[#0b0f15]/50 border border-slate-200 dark:border-white/5 rounded-lg p-3">
+                                    <div class="telemetry-card bg-slate-50 dark:bg-[#0b0f15]/50 border border-slate-200 dark:border-white/5 rounded-lg p-3">
                                         <div class="text-[9px] font-mono uppercase tracking-wider text-slate-400 dark:text-white/40 mb-0.5">Penetración ROP</div>
                                         <div class="text-lg font-bold font-mono text-slate-900 dark:text-white tracking-tight flex items-baseline gap-1">
                                             <span id="telemetryROP">32.5</span>
@@ -983,86 +1105,196 @@
     <!-- Divisor -->
     <div class="max-w-[1500px] mx-auto px-6 md:px-10"><div class="hr-brand"></div></div>
 
-    <!-- Sección Operaciones & Proyectos -->
-    <section id="operaciones" class="py-24 md:py-32">
-        <div class="max-w-[1500px] mx-auto px-6 md:px-10">
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+    <!-- Sección Operaciones & Proyectos (The Upstream Dossier & Cinematic Command Center) -->
+    <section id="operaciones" class="py-24 md:py-32 relative overflow-hidden">
+        <div class="max-w-[1500px] mx-auto px-6 md:px-10 relative z-10">
+            <!-- Header de Sección con Retícula y Badges de Ingeniería -->
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
                 <div>
-                    <span class="text-xs font-mono font-semibold tracking-widest uppercase text-brand-light mb-3 block">Trayectoria Operativa</span>
-                    <h2 class="text-3xl md:text-5xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white">
-                        Proyectos destacados <br><span class="text-slate-400 dark:text-white/40">en el territorio nacional</span>
+                    <div class="flex items-center gap-2.5 mb-3">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/40 text-brand dark:text-brand-light font-mono text-[10px] uppercase tracking-wider font-semibold">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand dark:bg-brand-light animate-pulse"></span>
+                            Dossier Operativo Upstream
+                        </span>
+                        <span class="text-[11px] font-mono text-slate-400 dark:text-white/40 tracking-widest uppercase">
+                            · Trayectoria 1996 - 2026
+                        </span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-[1.08] text-slate-900 dark:text-white">
+                        Proyectos destacados <br>
+                        <span class="font-light italic text-slate-400 dark:text-white/40">en el territorio nacional</span>
                     </h2>
                 </div>
-                <div class="flex items-center gap-3">
-                    <span class="text-xs font-mono text-slate-500 dark:text-white/40 mr-2 tabular-nums" id="opsCounter">01 / 04</span>
-                    <button id="prevOpsBtn" aria-label="Anterior" class="w-10 h-10 rounded-lg border border-slate-200 dark:border-white/15 bg-white dark:bg-transparent flex items-center justify-center text-slate-700 dark:text-white/70 hover:text-brand dark:hover:text-white hover:border-brand hover:bg-brand/10 shadow-sm dark:shadow-none transition-colors">
-                        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                    </button>
-                    <button id="nextOpsBtn" aria-label="Siguiente" class="w-10 h-10 rounded-lg border border-slate-200 dark:border-white/15 bg-white dark:bg-transparent flex items-center justify-center text-slate-700 dark:text-white/70 hover:text-brand dark:hover:text-white hover:border-brand hover:bg-brand/10 shadow-sm dark:shadow-none transition-colors">
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
+
+                <!-- Controles Globales del Showcase (Contador y Botones) -->
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3.5 py-1.5 rounded-lg font-mono text-xs">
+                        <span class="text-brand dark:text-brand-light font-bold" id="dossierCurrentNum">01</span>
+                        <span class="text-slate-300 dark:text-white/20">/</span>
+                        <span class="text-slate-500 dark:text-white/40">04</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button id="dossierPrevBtn" aria-label="Proyecto anterior" class="w-10 h-10 rounded-lg border border-slate-200 dark:border-white/15 bg-white dark:bg-[#121824] flex items-center justify-center text-slate-700 dark:text-white/80 hover:text-brand dark:hover:text-white hover:border-brand transition-all shadow-xs active:scale-95">
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                        </button>
+                        <button id="dossierNextBtn" aria-label="Siguiente proyecto" class="w-10 h-10 rounded-lg border border-slate-200 dark:border-white/15 bg-white dark:bg-[#121824] flex items-center justify-center text-slate-700 dark:text-white/80 hover:text-brand dark:hover:text-white hover:border-brand transition-all shadow-xs active:scale-95">
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Slider de Proyectos -->
-            <div class="ops-slider reveal-scale border border-slate-200 dark:border-white/10 shadow-lg dark:shadow-2xl">
-                <div class="ops-track" id="opsTrack">
-                    <!-- Slide 1 -->
-                    <div class="ops-slide active">
-                        <div class="relative">
-                            <img src="https://i.postimg.cc/MZLB76Lg/23.jpg" alt="Campo Blanca Vinita" loading="lazy">
-                            <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
-                            <div class="absolute bottom-0 left-0 p-8 md:p-14 max-w-xl">
-                                <span class="text-xs font-mono text-brand-light uppercase tracking-widest block mb-2 font-semibold">Proyecto Upstream Insignia</span>
-                                <h3 class="text-2xl md:text-3xl font-bold text-white mb-3">Desarrollo Integral del Campo Blanca Vinita</h3>
-                                <p class="text-white/70 text-sm leading-relaxed">
-                                    Proyecto insignia de TribOil que abarca la planificación de desarrollo, perforación, gerenciamiento operativo y producción con los más altos estándares técnicos y ambientales.
-                                </p>
+            <!-- Main Showcase Grid (Dossier Split Screen: 5 Cols Index + 7 Cols Viewport) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                <!-- Columna Izquierda: Índice de Dossiers Interactivos (5 Columnas) -->
+                <div class="lg:col-span-5 flex flex-col justify-between gap-3.5" id="dossierTabsContainer">
+                    <!-- Tab 1: Blanca Vinita -->
+                    <div class="dossier-card active" data-index="0" role="button" tabindex="0">
+                        <div class="dossier-progress-bar"></div>
+                        <div class="flex items-start justify-between gap-3 mb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="dossier-num">01</span>
+                                <span class="dossier-tag">Proyecto Insignia · Bloque 57</span>
                             </div>
+                            <span class="dossier-status-dot"></span>
+                        </div>
+                        <h3 class="dossier-title">Desarrollo Integral del Campo Blanca Vinita</h3>
+                        <p class="dossier-desc">
+                            Planificación geológica, perforación direccional con telemetría MWD/LWD y gerenciamiento integral de producción continua bajo certificación internacional.
+                        </p>
+                        <!-- KPI Pills del Proyecto -->
+                        <div class="dossier-kpis">
+                            <span class="dossier-kpi"><strong>Operación Integral</strong></span>
+                            <span class="dossier-kpi"><strong>Taladro Pesado 1,500 HP</strong></span>
+                            <span class="dossier-kpi"><strong>Producción Continua</strong></span>
                         </div>
                     </div>
 
-                    <!-- Slide 2 -->
-                    <div class="ops-slide">
-                        <div class="relative">
-                            <img src="https://i.postimg.cc/63xD84JN/PAP.jpg" alt="Perforación de pozos" loading="lazy">
-                            <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
-                            <div class="absolute bottom-0 left-0 p-8 md:p-14 max-w-xl">
-                                <span class="text-xs font-mono text-brand-light uppercase tracking-widest block mb-2 font-semibold">Campaña de Perforación</span>
-                                <h3 class="text-2xl md:text-3xl font-bold text-white mb-3">Perforación de Nuevos Pozos de Desarrollo</h3>
-                                <p class="text-white/70 text-sm leading-relaxed">
-                                    Ejecución de pozos con control geológico preciso y optimización de curvas de penetración para minimizar tiempos no productivos en cuenca sedimentaria.
-                                </p>
+                    <!-- Tab 2: Perforación de Pozos -->
+                    <div class="dossier-card" data-index="1" role="button" tabindex="0">
+                        <div class="dossier-progress-bar"></div>
+                        <div class="flex items-start justify-between gap-3 mb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="dossier-num">02</span>
+                                <span class="dossier-tag">Campaña de Perforación · Cuenca Oriente</span>
                             </div>
+                            <span class="dossier-status-dot"></span>
+                        </div>
+                        <h3 class="dossier-title">Perforación de Nuevos Pozos de Desarrollo</h3>
+                        <p class="dossier-desc">
+                            Ejecución de pozos de alto ángulo con control geomecánico en formaciones Napo y Hollín para maximizar contacto con el yacimiento y reducir tiempos no productivos.
+                        </p>
+                        <div class="dossier-kpis">
+                            <span class="dossier-kpi"><strong>Perforación Direccional</strong></span>
+                            <span class="dossier-kpi"><strong>Formaciones Profundas</strong></span>
+                            <span class="dossier-kpi"><strong>Alta Eficiencia ROP</strong></span>
                         </div>
                     </div>
 
-                    <!-- Slide 3 -->
-                    <div class="ops-slide">
-                        <div class="relative">
-                            <img src="https://i.postimg.cc/yNpPDkJ3/COCA-00151-2.jpg" alt="Intervención de pozos" loading="lazy">
-                            <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
-                            <div class="absolute bottom-0 left-0 p-8 md:p-14 max-w-xl">
-                                <span class="text-xs font-mono text-brand-light uppercase tracking-widest block mb-2 font-semibold">Well Intervention</span>
-                                <h3 class="text-2xl md:text-3xl font-bold text-white mb-3">Campañas de Workover y Reactivación</h3>
-                                <p class="text-white/70 text-sm leading-relaxed">
-                                    Reacondicionamiento de pozos cerrados y optimización de sistemas de levantamiento para restablecer producción económica en campos maduros.
-                                </p>
+                    <!-- Tab 3: Workover -->
+                    <div class="dossier-card" data-index="2" role="button" tabindex="0">
+                        <div class="dossier-progress-bar"></div>
+                        <div class="flex items-start justify-between gap-3 mb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="dossier-num">03</span>
+                                <span class="dossier-tag">Well Intervention · Campos Maduros</span>
                             </div>
+                            <span class="dossier-status-dot"></span>
+                        </div>
+                        <h3 class="dossier-title">Campañas de Workover y Reactivación</h3>
+                        <p class="dossier-desc">
+                            Intervención y reacondicionamiento rápido de pozos cerrados, cambio de sartas y optimización de levantamiento electrosumergible (BES).
+                        </p>
+                        <div class="dossier-kpis">
+                            <span class="dossier-kpi"><strong>Workover Especializado</strong></span>
+                            <span class="dossier-kpi"><strong>Torres Móviles 750 HP</strong></span>
+                            <span class="dossier-kpi"><strong>Reactivación de Pozos</strong></span>
                         </div>
                     </div>
 
-                    <!-- Slide 4 -->
-                    <div class="ops-slide">
-                        <div class="relative">
-                            <img src="https://i.postimg.cc/hGKQDfJ9/5.jpg" alt="Gestión comunitaria" loading="lazy">
-                            <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
-                            <div class="absolute bottom-0 left-0 p-8 md:p-14 max-w-xl">
-                                <span class="text-xs font-mono text-brand-light uppercase tracking-widest block mb-2 font-semibold">Responsabilidad Social</span>
-                                <h3 class="text-2xl md:text-3xl font-bold text-white mb-3">Vinculación Comunitaria en la Región Amazónica</h3>
-                                <p class="text-white/70 text-sm leading-relaxed">
-                                    Fomento del empleo local, desarrollo de capacidades técnicas y relación transparente y colaborativa con las comunidades vecinas a nuestras operaciones.
-                                </p>
+                    <!-- Tab 4: Responsabilidad Social -->
+                    <div class="dossier-card" data-index="3" role="button" tabindex="0">
+                        <div class="dossier-progress-bar"></div>
+                        <div class="flex items-start justify-between gap-3 mb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="dossier-num">04</span>
+                                <span class="dossier-tag">Gestión HSE & Social · Región Amazónica</span>
+                            </div>
+                            <span class="dossier-status-dot"></span>
+                        </div>
+                        <h3 class="dossier-title">Vinculación Comunitaria & Preservación</h3>
+                        <p class="dossier-desc">
+                            Contratación preferente de mano de obra local, inversión en infraestructura comunitaria y protocolos estrictos de cero derrames en ecosistemas amazónicos.
+                        </p>
+                        <div class="dossier-kpis">
+                            <span class="dossier-kpi"><strong>Gestión Comunitaria</strong></span>
+                            <span class="dossier-kpi"><strong>Compromiso Ambiental</strong></span>
+                            <span class="dossier-kpi"><strong>Normas ISO & OHSAS</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Viewport Monumental y HUD Telemetría (7 Columnas) -->
+                <div class="lg:col-span-7">
+                    <div class="dossier-viewport-container relative overflow-hidden border border-slate-200 dark:border-white/10 shadow-2xl h-[460px] sm:h-[520px] lg:h-[620px] bg-slate-950">
+                        <!-- HUD Corner Brackets -->
+                        <div class="hud-corner hud-tl"></div>
+                        <div class="hud-corner hud-tr"></div>
+                        <div class="hud-corner hud-bl"></div>
+                        <div class="hud-corner hud-br"></div>
+
+                        <!-- HUD Header Superior Flotante -->
+                        <div class="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none">
+                            <div class="flex items-center gap-2 px-3 py-1 bg-black/60 backdrop-blur-md border border-white/10 rounded-full font-mono text-[10px] text-white/80">
+                                <i data-lucide="map-pin" class="w-3 h-3 text-amber-400"></i>
+                                <span id="dossierGpsText">Bloque 57 · Orellana, Ecuador</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 px-3 py-1 bg-black/60 backdrop-blur-md border border-white/10 rounded-full font-mono text-[10px] text-emerald-400">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                                <span id="dossierStatusText">OPERACIÓN ACTIVA</span>
+                            </div>
+                        </div>
+
+                        <!-- Slides de Imágenes con Ken-Burns Cinemático -->
+                        <div class="dossier-viewport-slides absolute inset-0">
+                            <div class="dossier-img-slide active" data-index="0">
+                                <img src="https://i.postimg.cc/MZLB76Lg/23.jpg" alt="Campo Blanca Vinita - Operación Upstream" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+                            </div>
+                            <div class="dossier-img-slide" data-index="1">
+                                <img src="https://i.postimg.cc/63xD84JN/PAP.jpg" alt="Perforación de Nuevos Pozos" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+                            </div>
+                            <div class="dossier-img-slide" data-index="2">
+                                <img src="https://i.postimg.cc/yNpPDkJ3/COCA-00151-2.jpg" alt="Campañas de Workover y Reactivación" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+                            </div>
+                            <div class="dossier-img-slide" data-index="3">
+                                <img src="https://i.postimg.cc/hGKQDfJ9/5.jpg" alt="Vinculación Comunitaria en la Amazonía" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+                            </div>
+                        </div>
+
+                        <!-- Card Flotante Inferior de Información Ejecutiva (Bordes redondeados como Imagen 1) -->
+                        <div class="absolute bottom-4 left-4 right-4 z-20 p-5 sm:p-6 bg-slate-900/85 dark:bg-black/85 backdrop-blur-xl border border-white/15 rounded-2xl text-white">
+                            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                                <div class="max-w-xl">
+                                    <span class="text-[10px] font-mono font-semibold uppercase tracking-widest text-amber-300 block mb-1.5" id="dossierOverlayCategory">
+                                        Proyecto Insignia Upstream · Bloque 57
+                                    </span>
+                                    <h4 class="text-lg sm:text-xl font-bold tracking-tight text-white mb-2" id="dossierOverlayTitle">
+                                        Desarrollo Integral del Campo Blanca Vinita
+                                    </h4>
+                                    <p class="text-xs sm:text-sm text-white/70 leading-relaxed" id="dossierOverlayDesc">
+                                        Planificación de desarrollo, perforación guiada por MWD/LWD, completación y producción con estándares de excelencia API.
+                                    </p>
+                                </div>
+                                <div class="flex items-center gap-2 self-start sm:self-end flex-shrink-0">
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 border border-white/15 text-white/90 text-xs font-mono font-medium">
+                                        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-amber-400"></i>
+                                        <span>Estándares API & ISO</span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1180,6 +1412,25 @@
                     <div class="p-8 md:p-10 rounded-xl bg-white dark:bg-[#121824] border border-slate-200 dark:border-white/10 shadow-xl dark:shadow-2xl">
                         <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Solicitud de Propuesta Técnica</h3>
                         <p class="text-slate-500 dark:text-white/40 text-xs mb-6">Complete los detalles de su proyecto y nuestro equipo le responderá en menos de 24 horas laborables.</p>
+
+                        <!-- Banner de Acceso al Configurador Upstream Inteligente -->
+                        <div class="mb-6 p-4 rounded-xl bg-gradient-to-r from-brand/15 via-brand/5 to-transparent border border-brand/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-brand/20 border border-brand/30 flex items-center justify-center text-brand-light flex-shrink-0">
+                                    <i data-lucide="cpu" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-1.5">
+                                        Configurador Upstream en Tiempo Real
+                                        <span class="text-[8px] font-mono px-1.5 py-0.2 rounded bg-brand/20 text-brand-light font-semibold">API SPEC</span>
+                                    </h4>
+                                    <p class="text-[11px] text-slate-500 dark:text-white/50">Dimensione taladro, profundidad de formación y potencia requerida.</p>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-primary !py-2 !px-4 text-xs whitespace-nowrap btn-open-cotizador">
+                                Abrir Cotizador <i data-lucide="sliders" class="w-3.5 h-3.5 ml-1"></i>
+                            </button>
+                        </div>
 
                         <form id="contactForm" class="space-y-5">
                             <div class="grid md:grid-cols-2 gap-5">
@@ -1309,6 +1560,355 @@
             </div>
         </div>
     </footer>
+
+    <!-- =========================================================================
+         MODAL INTERACTIVO: CONFIGURADOR UPSTREAM & COTIZADOR TÉCNICO MULTINACIONAL
+         ========================================================================= -->
+    <div id="cotizadorModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <!-- Backdrop Oscuro Cinemático con Blur -->
+        <div class="fixed inset-0 bg-black/75 backdrop-blur-md transition-opacity" id="cotizadorBackdrop"></div>
+
+        <div class="min-h-screen px-3 sm:px-4 text-center flex items-center justify-center py-6 sm:py-10">
+            <!-- Tarjeta Principal del Configurador -->
+            <div class="w-full max-w-5xl bg-white dark:bg-[#0c1017] rounded-2xl border border-slate-200 dark:border-white/10 shadow-2xl overflow-hidden text-left relative z-10 my-4 transform transition-all">
+                
+                <!-- Borde Superior Láser Esmeralda -->
+                <div class="h-1 bg-gradient-to-r from-brand-dark via-brand to-emerald-400"></div>
+
+                <!-- Cabecera Institucional Estilo Multinacional -->
+                <div class="px-6 py-5 border-b border-slate-200 dark:border-white/10 flex items-center justify-between bg-slate-50/70 dark:bg-[#080c12]/70">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-brand/15 border border-brand/30 flex items-center justify-center text-brand dark:text-brand-light shadow-xs">
+                            <i data-lucide="sliders-horizontal" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[9px] font-mono font-bold tracking-widest uppercase text-brand dark:text-brand-light bg-brand/10 px-2 py-0.5 rounded">TRIBOIL WELLSPEC 2.0</span>
+                                <span class="text-[9px] font-mono text-slate-400 dark:text-white/40 hidden sm:inline">// SISTEMA DE ESPECIFICACIÓN TÉCNICA</span>
+                            </div>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight" id="modal-title">
+                                Configurador de Operaciones Upstream & Ficha Técnica
+                            </h3>
+                        </div>
+                    </div>
+                    <!-- Botón Cerrar -->
+                    <button type="button" class="w-9 h-9 rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors" id="btnCloseCotizador" aria-label="Cerrar modal">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Cuerpo de Configuración de 2 Columnas -->
+                <div class="grid lg:grid-cols-12">
+                    
+                    <!-- Columna Izquierda: Parámetros del Pozo (Inputs & Selectores) -->
+                    <div class="lg:col-span-7 p-6 sm:p-8 space-y-6 border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-white/10">
+                        
+                        <!-- 1. Tipo de Servicio Operativo -->
+                        <div>
+                            <label class="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-white/50 block mb-2 font-semibold">
+                                01 · Tipo de Servicio Upstream
+                            </label>
+                            <div class="grid grid-cols-3 gap-2.5" id="cotizServiceGroup">
+                                <button type="button" class="cotiz-service-card active" data-service="perforacion">
+                                    <i data-lucide="shield" class="w-4 h-4 mb-1.5 text-brand dark:text-brand-light"></i>
+                                    <span class="font-bold block text-xs">Perforación</span>
+                                    <span class="text-[9px] text-slate-400 dark:text-white/40 block">Pozos nuevos</span>
+                                </button>
+                                <button type="button" class="cotiz-service-card" data-service="workover">
+                                    <i data-lucide="wrench" class="w-4 h-4 mb-1.5 text-slate-400 dark:text-white/40"></i>
+                                    <span class="font-bold block text-xs">Workover</span>
+                                    <span class="text-[9px] text-slate-400 dark:text-white/40 block">Intervención</span>
+                                </button>
+                                <button type="button" class="cotiz-service-card" data-service="gerenciamiento">
+                                    <i data-lucide="layers" class="w-4 h-4 mb-1.5 text-slate-400 dark:text-white/40"></i>
+                                    <span class="font-bold block text-xs">Gerenciamiento</span>
+                                    <span class="text-[9px] text-slate-400 dark:text-white/40 block">Campo 360°</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 2. Profundidad Objetivo con Slider & Detección de Formación Geológica -->
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-white/50 font-semibold">
+                                    02 · Profundidad Objetivo (MD / TVD)
+                                </label>
+                                <div class="flex items-center gap-2 font-mono">
+                                    <span id="cotizDepthDisplay" class="text-base font-bold text-brand dark:text-brand-light">12,500</span>
+                                    <span class="text-[10px] text-slate-400">FT</span>
+                                    <span id="cotizFormationTag" class="px-2 py-0.5 rounded bg-brand/10 border border-brand/20 text-brand dark:text-brand-light text-[9px] font-bold">FM. NAPO</span>
+                                </div>
+                            </div>
+                            <!-- Slider Range -->
+                            <input type="range" id="cotizDepthSlider" min="4000" max="18000" step="250" value="12500" class="w-full accent-brand cursor-pointer h-2 bg-slate-200 dark:bg-white/10 rounded-lg">
+                            <div class="flex justify-between text-[9px] font-mono text-slate-400 dark:text-white/40 mt-1.5">
+                                <span>4,000 FT (Superficial)</span>
+                                <span>10,000 FT (Tena)</span>
+                                <span>14,000 FT (Napo)</span>
+                                <span>18,000 FT (Hollín)</span>
+                            </div>
+                        </div>
+
+                        <!-- 3. Potencia Requerida de Mástil / Drawworks -->
+                        <div>
+                            <label class="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-white/50 block mb-2 font-semibold">
+                                03 · Potencia Requerida de Mástil (Drawworks)
+                            </label>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="cotizPowerGroup">
+                                <button type="button" class="cotiz-power-chip" data-hp="550">
+                                    <span class="font-bold text-xs">550 HP</span>
+                                    <span class="text-[8px] text-slate-400 block">Móvil Ligero</span>
+                                </button>
+                                <button type="button" class="cotiz-power-chip" data-hp="750">
+                                    <span class="font-bold text-xs">750 HP</span>
+                                    <span class="text-[8px] text-slate-400 block">Workover Pesado</span>
+                                </button>
+                                <button type="button" class="cotiz-power-chip" data-hp="1000">
+                                    <span class="font-bold text-xs">1,000 HP</span>
+                                    <span class="text-[8px] text-slate-400 block">Perforación Media</span>
+                                </button>
+                                <button type="button" class="cotiz-power-chip active" data-hp="1500">
+                                    <span class="font-bold text-xs">1,500 HP</span>
+                                    <span class="text-[8px] text-slate-400 block">Heavy Rig 750k</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 4. Cuenca y Bloque en Ecuador -->
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-white/50 block mb-1.5 font-semibold">
+                                    04 · Cuenca / Bloque Operativo
+                                </label>
+                                <select id="cotizBlockSelect" class="form-input text-xs bg-slate-50 dark:bg-[#080c12] cursor-pointer">
+                                    <option value="Bloque 56 - Base El Coca">Bloque 56 · Base El Coca (Principal)</option>
+                                    <option value="Bloque 57 - Shushufindi">Bloque 57 · Shushufindi</option>
+                                    <option value="Bloque 60 - Sacha">Bloque 60 · Campo Sacha</option>
+                                    <option value="Bloque 15 - Indillana">Bloque 15 · Indillana</option>
+                                    <option value="Campo Blanca Vinita">Campo Blanca Vinita (TribOil)</option>
+                                    <option value="Otras Locaciones Oriente">Otras Cuencas Oriente</option>
+                                    <option value="Península / Litoral">Península / Litoral</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-white/50 block mb-1.5 font-semibold">
+                                    05 · Plazo Estimado de Inicio
+                                </label>
+                                <select id="cotizTimelineSelect" class="form-input text-xs bg-slate-50 dark:bg-[#080c12] cursor-pointer">
+                                    <option value="Inmediato (< 30 días)">Inmediato (< 30 días)</option>
+                                    <option value="Corto Plazo (1 a 3 meses)">Corto Plazo (1 a 3 meses)</option>
+                                    <option value="Planificación Anual (2026/2027)">Planificación Anual (2026/2027)</option>
+                                    <option value="Licitación / Ronda Oficial">Licitación / Ronda Oficial</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 5. Paquetes Tecnológicos Complementarios -->
+                        <div>
+                            <label class="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-white/50 block mb-2 font-semibold">
+                                06 · Paquetes Tecnológicos Homologados
+                            </label>
+                            <div class="grid sm:grid-cols-3 gap-2 text-xs">
+                                <label class="cotiz-check-label">
+                                    <input type="checkbox" id="checkScada" checked class="accent-brand">
+                                    <span>SCADA 24/7 en Vivo</span>
+                                </label>
+                                <label class="cotiz-check-label">
+                                    <input type="checkbox" id="checkBop" checked class="accent-brand">
+                                    <span>BOP Stack 10K PSI</span>
+                                </label>
+                                <label class="cotiz-check-label">
+                                    <input type="checkbox" id="checkHse" checked class="accent-brand">
+                                    <span>Cuadrilla WellCAP ISO</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Columna Derecha: Ficha Técnica Dinámica & Envío Formal -->
+                    <div class="lg:col-span-5 p-6 sm:p-8 bg-slate-50 dark:bg-[#080c12]/90 flex flex-col justify-between">
+                        
+                        <!-- Dossier de Ingeniería Resumido -->
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-white/10">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    <span class="text-[10px] font-mono uppercase tracking-wider text-slate-500 dark:text-white/50 font-semibold">EQUIPO SUGERIDO DE LA FLOTA</span>
+                                </div>
+                                <span class="text-[9px] font-mono text-brand dark:text-brand-light font-bold">STATUS: DISPONIBLE</span>
+                            </div>
+
+                            <!-- Tarjeta de Especificación del Taladro -->
+                            <div class="p-4 rounded-xl bg-white dark:bg-[#101622] border border-slate-200 dark:border-white/10 shadow-sm">
+                                <h4 class="text-base font-bold font-mono text-slate-900 dark:text-white" id="dossierRigTitle">
+                                    TRIBOIL RIG TB-1500 HP
+                                </h4>
+                                <span class="text-[10px] font-mono text-slate-500 dark:text-white/40 block mb-3" id="dossierRigClass">
+                                    Mástil Telescópico Heavy Duty · Certificación API 4F
+                                </span>
+
+                                <div class="space-y-2 text-xs font-mono">
+                                    <div class="flex justify-between py-1 border-b border-slate-100 dark:border-white/5">
+                                        <span class="text-slate-400">Capacidad Estática:</span>
+                                        <span class="font-bold text-slate-800 dark:text-white" id="dossierHookload">750,000 LBS (340 TON)</span>
+                                    </div>
+                                    <div class="flex justify-between py-1 border-b border-slate-100 dark:border-white/5">
+                                        <span class="text-slate-400">Rango Operativo:</span>
+                                        <span class="font-bold text-slate-800 dark:text-white" id="dossierDepthRange">Hasta 16,500+ FT</span>
+                                    </div>
+                                    <div class="flex justify-between py-1 border-b border-slate-100 dark:border-white/5">
+                                        <span class="text-slate-400">Sistema Preventor:</span>
+                                        <span class="font-bold text-slate-800 dark:text-white" id="dossierBOP">BOP 10,000 PSI Clase IV</span>
+                                    </div>
+                                    <div class="flex justify-between py-1 border-b border-slate-100 dark:border-white/5">
+                                        <span class="text-slate-400">Bombas de Lodo:</span>
+                                        <span class="font-bold text-slate-800 dark:text-white" id="dossierMudPumps">2x Triplex 1,600 HP</span>
+                                    </div>
+                                    <div class="flex justify-between py-1">
+                                        <span class="text-slate-400">Base de Salida:</span>
+                                        <span class="font-bold text-brand dark:text-brand-light">Base El Coca (&lt; 48h)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Campos de Contacto para el Envío -->
+                            <div class="space-y-3 pt-2">
+                                <div>
+                                    <label class="text-[10px] font-mono uppercase tracking-wider text-slate-500 dark:text-white/40 block mb-1">Nombre & Cargo *</label>
+                                    <input type="text" id="cotizNameInput" placeholder="Ej. Ing. Marco Herrera / Superintendente" class="form-input text-xs !py-2" required>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label class="text-[10px] font-mono uppercase tracking-wider text-slate-500 dark:text-white/40 block mb-1">Operadora *</label>
+                                        <input type="text" id="cotizCompanyInput" placeholder="Compañía Operadora" class="form-input text-xs !py-2" required>
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-mono uppercase tracking-wider text-slate-500 dark:text-white/40 block mb-1">Teléfono / WhatsApp *</label>
+                                        <input type="tel" id="cotizPhoneInput" placeholder="+593 99 ..." class="form-input text-xs !py-2" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones de Acción de Envío Formal -->
+                        <div class="space-y-2 pt-6">
+                            <!-- Botón 1: WhatsApp Operaciones 24/7 -->
+                            <button type="button" id="btnSendCotizWhatsApp" class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-mono font-bold text-xs shadow-lg shadow-emerald-900/20 transition-all duration-200 cursor-pointer">
+                                <i class="fab fa-whatsapp text-sm"></i>
+                                Enviar Ficha por WhatsApp Operaciones 24/7
+                            </button>
+
+                            <!-- Botón 2: Email Corporativo -->
+                            <button type="button" id="btnSendCotizEmail" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 hover:border-brand text-slate-700 dark:text-white/80 font-mono text-xs transition-all duration-200 cursor-pointer">
+                                <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+                                Solicitar Dossier Técnico por Correo
+                            </button>
+                            <p class="text-[9px] text-center text-slate-400 dark:text-white/30 font-mono">
+                                Confidencialidad técnica garantizada · Respuesta técnica &lt; 24 hrs
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Cápsula Flotante: Guardia Operativa & Despacho 24/7 (Base El Coca) -->
+    <div id="dispatchWidget" class="fixed bottom-6 right-6 z-40 select-none">
+        
+        <!-- Panel Desplegable de Despacho (Inicialmente oculto con animación) -->
+        <div id="dispatchPanel" class="hidden mb-3 w-[320px] sm:w-[350px] rounded-2xl bg-white/95 dark:bg-[#0c1017]/95 backdrop-blur-xl border border-slate-200/90 dark:border-white/10 shadow-2xl shadow-slate-900/15 overflow-hidden transition-all duration-300">
+            <!-- Header Técnico del Panel -->
+            <div class="p-4 bg-slate-100/80 dark:bg-white/5 border-b border-slate-200 dark:border-white/10 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="relative flex items-center justify-center w-2.5 h-2.5">
+                        <span class="absolute w-full h-full rounded-full bg-emerald-400 animate-ping opacity-75"></span>
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold font-mono uppercase tracking-wider text-slate-900 dark:text-white">Guardia Base El Coca</h4>
+                        <span class="text-[9px] font-mono text-slate-500 dark:text-white/40 block">DESPACHO & OPERACIONES UPSTREAM</span>
+                    </div>
+                </div>
+                <button type="button" id="btnCloseDispatchPanel" class="w-6 h-6 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white flex items-center justify-center hover:bg-slate-200 dark:hover:bg-white/10 transition-colors" title="Cerrar panel">
+                    <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                </button>
+            </div>
+
+            <!-- Cuerpo del Panel: Canales Directos -->
+            <div class="p-4 space-y-3">
+                <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5 text-[11px] font-mono flex items-center justify-between">
+                    <span class="text-slate-500 dark:text-white/50">Estado de Turno:</span>
+                    <span class="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        EN LÍNEA (24/7)
+                    </span>
+                </div>
+
+                <!-- Canal 1: WhatsApp Operativo -->
+                <a href="https://wa.me/593993956540?text=Hola%20TribOil,%20requiero%20asistencia%20operativa%20o%20consulta%20t%C3%A9cnica%20directa%20desde%20Base%20El%20Coca." target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-900/20 transition-all group cursor-pointer">
+                    <div class="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center shrink-0">
+                        <i class="fab fa-whatsapp text-lg"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-xs font-bold leading-tight flex items-center justify-between">
+                            <span>WhatsApp Operaciones 24/7</span>
+                            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 opacity-70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                        </div>
+                        <span class="text-[10px] text-white/80 font-mono mt-0.5 block">Respuesta estimada &lt; 15 min · Base El Coca</span>
+                    </div>
+                </a>
+
+                <!-- Canal 2: Enlace Telefónico / Llamada Directa -->
+                <a href="tel:+593993956540" class="flex items-center gap-3 p-3.5 rounded-xl border border-slate-200 dark:border-white/10 hover:border-brand/40 bg-white dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/10 text-slate-800 dark:text-white transition-all group cursor-pointer">
+                    <div class="w-9 h-9 rounded-lg bg-brand/10 dark:bg-brand/20 text-brand dark:text-brand-light flex items-center justify-center shrink-0">
+                        <i data-lucide="phone-call" class="w-4 h-4"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-xs font-bold leading-tight flex items-center justify-between">
+                            <span>Línea Telefónica de Guardia</span>
+                            <span class="text-[9px] font-mono font-bold text-brand dark:text-brand-light">DIRECTO</span>
+                        </div>
+                        <span class="text-[10px] text-slate-500 dark:text-white/50 font-mono mt-0.5 block">+593 99 395 6540 · Guardia Turno A</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Footer con Ubicación Geográfica -->
+            <div class="px-4 py-2 bg-slate-50 dark:bg-[#070b10] border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-[9px] font-mono text-slate-400 dark:text-white/30">
+                <span>COORD: 0°28'00"S 76°59'00"W</span>
+                <span>BASE COCA · ORELLANA</span>
+            </div>
+        </div>
+
+        <!-- Botón Cápsula Activador (Flotante) -->
+        <button type="button" id="btnToggleDispatch" class="group flex items-center gap-3 py-2.5 px-4 rounded-full bg-white/95 dark:bg-[#0d121c]/95 backdrop-blur-xl border border-slate-300 dark:border-white/15 shadow-xl hover:shadow-2xl hover:border-brand/50 dark:hover:border-brand/60 transition-all duration-300 cursor-pointer active:scale-95" aria-label="Abrir centro de despacho de operaciones 24/7">
+            <!-- Indicador LED con Radar Pulse -->
+            <div class="relative flex items-center justify-center w-3 h-3">
+                <span class="absolute w-full h-full rounded-full bg-emerald-400 animate-ping opacity-75"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50"></span>
+            </div>
+
+            <!-- Textos de la Cápsula -->
+            <div class="text-left hidden sm:block">
+                <div class="text-[11px] font-bold font-mono leading-none text-slate-900 dark:text-white flex items-center gap-1.5">
+                    <span>BASE EL COCA</span>
+                    <span class="text-[8px] font-bold px-1 py-0.2 rounded bg-brand/10 dark:bg-brand/30 text-brand dark:text-brand-light">24/7</span>
+                </div>
+                <span class="text-[8px] font-mono text-slate-500 dark:text-white/40 leading-none block mt-1">Guardia Operativa Activa</span>
+            </div>
+
+            <!-- Icono Radio Despacho -->
+            <div class="w-7 h-7 rounded-full bg-brand/10 dark:bg-white/10 text-brand dark:text-brand-light flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                <i data-lucide="radio" class="w-3.5 h-3.5"></i>
+            </div>
+        </button>
+
+    </div>
 
     <!-- Scripts -->
     <script src="js/main.js" defer></script>

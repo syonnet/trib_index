@@ -123,7 +123,25 @@
     requestAnimationFrame(step);
   }
 
-  window.addEventListener('resize', resize);
+  let resizeTimer = null;
+  let lastW = window.innerWidth;
+  let lastH = window.innerHeight;
+
+  function debouncedResize() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      const curW = window.innerWidth;
+      const curH = window.innerHeight;
+      // Solo regenerar partículas si cambió el ancho o si la altura varió significativamente (>120px)
+      if (curW !== lastW || Math.abs(curH - lastH) > 120) {
+        lastW = curW;
+        lastH = curH;
+        resize();
+      }
+    }, 150);
+  }
+
+  window.addEventListener('resize', debouncedResize);
   window.addEventListener('mousemove', e => {
     mouse.x = e.clientX * dpr;
     mouse.y = e.clientY * dpr;
