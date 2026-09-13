@@ -678,19 +678,29 @@ header#mainNav {
 }
 
 .light-hotspot .hotspot-core {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 104, 73, 0.4);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
 }
 
-.light-hotspot .hotspot-crosshair {
-  position: absolute;
-  font-size: 16px;
-  font-weight: 800;
-  color: #ffffff;
-  line-height: 1;
+.hotspot-cross-icon {
+  width: 10px;
+  height: 10px;
+  stroke: #ffffff;
+  display: block;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
+}
+
+.light-hotspot .hotspot-trigger:hover .hotspot-cross-icon,
+.light-hotspot.active .hotspot-trigger .hotspot-cross-icon {
+  transform: rotate(45deg);
 }
 
 [data-theme="dark"] .light-hotspot .hotspot-trigger {
@@ -1704,7 +1714,52 @@ header#mainNav {
   opacity: 1;
 }
 
-/* Scroll Progress Line */
+/* Scroll Progress Line & Sarta de Perforación de Avance */
 #scrollProgressLine {
-  background: var(--brand);
+  background: linear-gradient(180deg, #004d36 0%, #006849 50%, #008a62 100%);
+}
+
+.scroll-drill-bit-spinner {
+  display: inline-block;
+  transform-origin: center center;
+  perspective: 500px;
+  animation: scrollDrillSpin 1.4s linear infinite;
+  filter: drop-shadow(0 2px 6px rgba(0, 104, 73, 0.35));
+  transition: transform 0.2s ease;
+}
+
+@keyframes scrollDrillSpin {
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+.scroll-drill-tip-glow {
+  position: absolute;
+  bottom: -2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  filter: blur(1.5px);
+  animation: scrollDrillPulse 0.8s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes scrollDrillPulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 1;
+    box-shadow: 0 0 8px #10b981;
+  }
 }

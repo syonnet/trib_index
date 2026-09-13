@@ -682,15 +682,35 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================
-  // SCROLL PROGRESS LINE
+  // SCROLL PROGRESS LINE & SARTA DE PERFORACIÓN GIRATORIA
   // ==========================================
   const scrollProgressLine = document.getElementById("scrollProgressLine");
+  const scrollDrillBitHead = document.getElementById("scrollDrillBitHead");
+  const scrollDepthPct = document.getElementById("scrollDepthPct");
+
   if (scrollProgressLine) {
+    let scrollStopTimer = null;
     ScrollTrigger.create({
       start: "top top",
       end: "bottom bottom",
       onUpdate: (self) => {
-        scrollProgressLine.style.height = `${(self.progress * 100).toFixed(1)}%`;
+        const pct = (self.progress * 100).toFixed(1);
+        scrollProgressLine.style.height = `${pct}%`;
+        if (scrollDrillBitHead) {
+          scrollDrillBitHead.style.top = `${pct}%`;
+          // Aceleración visual de rotación al perforar activamente
+          const spinner = scrollDrillBitHead.querySelector(".scroll-drill-bit-spinner");
+          if (spinner) {
+            spinner.style.animationDuration = "0.45s";
+            clearTimeout(scrollStopTimer);
+            scrollStopTimer = setTimeout(() => {
+              spinner.style.animationDuration = "1.4s";
+            }, 250);
+          }
+        }
+        if (scrollDepthPct) {
+          scrollDepthPct.textContent = `${Math.round(self.progress * 100)}%`;
+        }
       },
     });
   }

@@ -54,11 +54,66 @@
     <!-- Micro-textura Noise -->
     <div class="noise"></div>
 
-    <!-- Scroll-Tracing Bar (Desktop) -->
-    <div class="hidden xl:block fixed left-6 top-1/3 h-1/3 w-[2px] z-30 pointer-events-none">
-        <div class="w-full h-full bg-white/10 rounded-full relative">
-            <div id="scrollProgressLine" class="w-full bg-brand rounded-full absolute top-0 left-0 transition-all duration-150" style="height: 0%"></div>
+    <!-- Sarta de Perforación de Avance (Scroll Drill Indicator) -->
+    <div id="scrollDrillContainer" class="hidden xl:flex fixed left-5 top-1/2 -translate-y-1/2 h-[340px] w-12 z-30 pointer-events-none flex-col items-center">
+        <!-- Mesa Rotaria / Corona Superior (Rig Rotary Table) -->
+        <div class="w-5 h-2.5 rounded-sm bg-slate-300 dark:bg-slate-700 border border-slate-400 dark:border-slate-600 shadow-xs flex items-center justify-center mb-1">
+            <div class="w-2 h-1 bg-brand rounded-xs"></div>
         </div>
+        
+        <!-- Guía de Pozo Vertical y Tubería de Perforación -->
+        <div class="relative w-full flex-1 flex justify-center">
+            <!-- Guía de pozo / Wellbore rail -->
+            <div class="w-[4px] h-full bg-slate-200/90 dark:bg-white/10 rounded-full"></div>
+            
+            <!-- Tubería de Perforación en Descenso (Drill Pipe) -->
+            <div id="scrollProgressLine" class="w-[4px] bg-gradient-to-b from-brand-dark via-brand to-brand-light rounded-full absolute top-0 left-1/2 -translate-x-1/2 transition-all duration-75 shadow-xs" style="height: 0%"></div>
+            
+            <!-- Cabezal y Broca de Perforación Giratoria (Drill Bit Head) -->
+            <div id="scrollDrillBitHead" class="absolute left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-auto transition-all duration-75 group cursor-pointer" style="top: 0%;">
+                <!-- Broca de Perforación con Giro Rotacional 360° -->
+                <div class="scroll-drill-bit-spinner" title="Broca de Perforación TribOil en Operación">
+                    <svg class="w-7 h-9 drop-shadow-md" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Cuello / Pin Connection roscado -->
+                        <rect x="11" y="0" width="6" height="6" rx="1" fill="#004d36" stroke="#006849" stroke-width="1"/>
+                        <line x1="11" y1="2" x2="17" y2="2" stroke="#34d399" stroke-width="0.75"/>
+                        <line x1="11" y1="4" x2="17" y2="4" stroke="#34d399" stroke-width="0.75"/>
+                        <!-- Cuerpo Cónico de la Broca (Bit Matrix Body) -->
+                        <path d="M6 6H22L26 14L22 24L14 34L6 24L2 14L6 6Z" fill="url(#scrollDrillGrad)" stroke="#004d36" stroke-width="1.2"/>
+                        <!-- Aletas Espirales y Cortadores PDC -->
+                        <path d="M8 10L14 30L20 10" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M4 14L14 32L24 14" stroke="#34d399" stroke-width="1.2" stroke-linecap="round"/>
+                        <!-- Insertos de Carburo de Tungsteno / Diamante -->
+                        <circle cx="5" cy="16" r="1.4" fill="#ffffff"/>
+                        <circle cx="9" cy="22" r="1.4" fill="#ffffff"/>
+                        <circle cx="12" cy="28" r="1.4" fill="#ffffff"/>
+                        <circle cx="23" cy="16" r="1.4" fill="#ffffff"/>
+                        <circle cx="19" cy="22" r="1.4" fill="#ffffff"/>
+                        <circle cx="16" cy="28" r="1.4" fill="#ffffff"/>
+                        <!-- Punta de Corte Central (Bullnose Diamond Tip) -->
+                        <circle cx="14" cy="33" r="2" fill="#10b981"/>
+                        <defs>
+                            <linearGradient id="scrollDrillGrad" x1="2" y1="6" x2="26" y2="34" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#006849"/>
+                                <stop offset="0.45" stop-color="#008a62"/>
+                                <stop offset="0.8" stop-color="#004d36"/>
+                                <stop offset="1" stop-color="#022c22"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <!-- Micro-destello de Fricción de Corte en la Punta -->
+                <div class="scroll-drill-tip-glow"></div>
+                <!-- Badge Flotante de Profundidad Operativa -->
+                <div class="absolute left-8 top-1/2 -translate-y-1/2 px-2 py-1 rounded bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-lg font-mono text-[10px] font-bold text-brand dark:text-brand-light whitespace-nowrap opacity-0 group-hover:opacity-100 xl:group-hover:opacity-100 transition-opacity duration-200">
+                    <span id="scrollDepthPct">0%</span>
+                    <span class="text-[8px] text-slate-400 font-normal ml-0.5">AVANCE</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Base de Fondo de Pozo / Objetivo TD (Total Depth) -->
+        <div class="w-4 h-1 rounded-full bg-slate-300 dark:bg-slate-700 mt-1"></div>
     </div>
 
     <!-- Preloader Rápido (<500ms) -->
@@ -262,8 +317,12 @@
             <div class="interactive-hotspot light-hotspot" style="top: 26%; left: 62%;" data-hotspot="1">
                 <button class="hotspot-trigger" aria-label="Inspeccionar mástil de perforación" title="Ver detalle del mástil">
                     <span class="hotspot-ping"></span>
-                    <span class="hotspot-core"></span>
-                    <span class="hotspot-crosshair">+</span>
+                    <span class="hotspot-core">
+                        <svg class="hotspot-cross-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                            <line x1="6" y1="2" x2="6" y2="10"></line>
+                            <line x1="2" y1="6" x2="10" y2="6"></line>
+                        </svg>
+                    </span>
                 </button>
                 <div class="hotspot-card">
                     <div class="hotspot-card-badge">01 · EQUIPO PRINCIPAL</div>
@@ -276,8 +335,12 @@
             <div class="interactive-hotspot light-hotspot" style="top: 48%; left: 74%;" data-hotspot="2">
                 <button class="hotspot-trigger" aria-label="Inspeccionar sistema de potencia" title="Ver detalle de potencia">
                     <span class="hotspot-ping"></span>
-                    <span class="hotspot-core"></span>
-                    <span class="hotspot-crosshair">+</span>
+                    <span class="hotspot-core">
+                        <svg class="hotspot-cross-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                            <line x1="6" y1="2" x2="6" y2="10"></line>
+                            <line x1="2" y1="6" x2="10" y2="6"></line>
+                        </svg>
+                    </span>
                 </button>
                 <div class="hotspot-card">
                     <div class="hotspot-card-badge">02 · SISTEMA MECÁNICO</div>
@@ -290,8 +353,12 @@
             <div class="interactive-hotspot light-hotspot" style="top: 66%; left: 48%;" data-hotspot="3">
                 <button class="hotspot-trigger" aria-label="Inspeccionar telemetría y seguridad" title="Ver detalle de telemetría">
                     <span class="hotspot-ping"></span>
-                    <span class="hotspot-core"></span>
-                    <span class="hotspot-crosshair">+</span>
+                    <span class="hotspot-core">
+                        <svg class="hotspot-cross-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                            <line x1="6" y1="2" x2="6" y2="10"></line>
+                            <line x1="2" y1="6" x2="10" y2="6"></line>
+                        </svg>
+                    </span>
                 </button>
                 <div class="hotspot-card">
                     <div class="hotspot-card-badge">03 · RIGOR HSE & SCADA</div>
