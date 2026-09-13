@@ -223,9 +223,13 @@ document.addEventListener("DOMContentLoaded", () => {
       hotspotCounter.textContent = `0${currentSlide + 1} / 0${heroSlides.length}`;
     }
 
-    // Actualizar Calibre Vertical de Sarta de Perforación (Opción B)
+    // Actualizar Calibre Vertical de Sarta de Perforación (Opción B) y Badge Móvil
     if (gaugeDepthNum && activeSlide.dataset.depthNum) {
       gaugeDepthNum.textContent = activeSlide.dataset.depthNum;
+    }
+    const mobileDepthBadge = document.getElementById("mobileDepthBadge");
+    if (mobileDepthBadge && activeSlide.dataset.depthNum) {
+      mobileDepthBadge.textContent = `${activeSlide.dataset.depthNum} FT`;
     }
     if (gaugeRopBadge && activeSlide.dataset.rop) {
       gaugeRopBadge.textContent = activeSlide.dataset.rop;
@@ -682,15 +686,34 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================
-  // SCROLL PROGRESS LINE (OPCIÓN 1)
+  // SCROLL PROGRESS LINE & SARTA DE PERFORACIÓN GIRATORIA
   // ==========================================
   const scrollProgressLine = document.getElementById("scrollProgressLine");
+  const scrollDrillBitHead = document.getElementById("scrollDrillBitHead");
+  const scrollDepthPct = document.getElementById("scrollDepthPct");
+
   if (scrollProgressLine) {
+    let scrollStopTimer = null;
     ScrollTrigger.create({
       start: "top top",
       end: "bottom bottom",
       onUpdate: (self) => {
-        scrollProgressLine.style.height = `${(self.progress * 100).toFixed(1)}%`;
+        const pct = (self.progress * 100).toFixed(1);
+        scrollProgressLine.style.height = `${pct}%`;
+        if (scrollDrillBitHead) {
+          scrollDrillBitHead.style.top = `${pct}%`;
+          const spinner = scrollDrillBitHead.querySelector(".scroll-drill-bit-spinner");
+          if (spinner) {
+            spinner.style.animationDuration = "0.45s";
+            clearTimeout(scrollStopTimer);
+            scrollStopTimer = setTimeout(() => {
+              spinner.style.animationDuration = "1.4s";
+            }, 250);
+          }
+        }
+        if (scrollDepthPct) {
+          scrollDepthPct.textContent = `${Math.round(self.progress * 100)}%`;
+        }
       },
     });
   }

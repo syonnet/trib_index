@@ -57,11 +57,81 @@
     <!-- Canvas Global de Fluidos y Petróleo (Flow Field Stream - Opción B) -->
     <canvas id="oil-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-55 dark:opacity-70"></canvas>
 
-    <!-- Scroll-Tracing Bar (Desktop - Opción 1) -->
-    <div class="hidden xl:block fixed left-6 top-1/3 h-1/3 w-[2px] z-30 pointer-events-none">
-        <div class="w-full h-full bg-slate-300/60 dark:bg-white/10 rounded-full relative">
-            <div id="scrollProgressLine" class="w-full bg-brand rounded-full absolute top-0 left-0 transition-all duration-150" style="height: 0%"></div>
+    <!-- Sarta de Perforación de Avance (Scroll Drill Indicator con Broca Dorada Minimalista) -->
+    <div id="scrollDrillContainer" class="hidden xl:flex fixed left-5 top-1/2 -translate-y-1/2 h-[340px] w-12 z-30 pointer-events-none flex-col items-center">
+        <!-- Mesa Rotaria / Corona Superior (Rig Rotary Table) -->
+        <div class="w-5 h-2.5 rounded-sm bg-slate-300 dark:bg-slate-700 border border-slate-400 dark:border-slate-600 shadow-xs flex items-center justify-center mb-1">
+            <div class="w-2 h-1 bg-brand rounded-xs"></div>
         </div>
+        
+        <!-- Guía de Pozo Vertical y Tubería de Perforación -->
+        <div class="relative w-full flex-1 flex justify-center">
+            <!-- Guía de pozo / Wellbore rail -->
+            <div class="w-[4px] h-full bg-slate-200/90 dark:bg-white/10 rounded-full"></div>
+            
+            <!-- Tubería de Perforación en Descenso (Drill Pipe) -->
+            <div id="scrollProgressLine" class="w-[4px] bg-gradient-to-b from-brand-dark via-brand to-brand-light rounded-full absolute top-0 left-1/2 -translate-x-1/2 transition-all duration-75 shadow-xs" style="height: 0%"></div>
+            
+            <!-- Cabezal y Broca de Perforación Giratoria (Drill Bit Head - Dorada Minimalista) -->
+            <div id="scrollDrillBitHead" class="absolute left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-auto transition-all duration-75 group cursor-pointer" style="top: 0%;">
+                <!-- Broca Dorada Minimalista con Giro 360° -->
+                <div class="scroll-drill-bit-spinner" title="Broca TribOil de Precisión en Operación">
+                    <svg class="w-7 h-9 drop-shadow-md" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Cuello Superior Roscado Minimalista -->
+                        <rect x="11" y="0" width="6" height="4" rx="1" fill="#8C6527" stroke="#5E4314" stroke-width="0.8"/>
+                        <line x1="11" y1="2" x2="17" y2="2" stroke="#E6CA85" stroke-width="0.6"/>
+
+                        <!-- Cuerpo Esculpido Oro / Titanio de la Broca -->
+                        <path d="M7 4H21L25 12L21 24L14 34L7 24L3 12L7 4Z" fill="url(#goldMinimalBody)" stroke="#5E4314" stroke-width="1"/>
+
+                        <!-- Bisel Central Facetado -->
+                        <path d="M11 4H17L18 24L14 32L10 24L11 4Z" fill="url(#goldMinimalFacet)" opacity="0.9"/>
+
+                        <!-- Canales de Corte Helicoidales Estilizados -->
+                        <path d="M5 12L12 28L14 34L16 28L23 12" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round" opacity="0.9"/>
+                        <path d="M8 8L13 22L14 30L15 22L20 8" stroke="#E6CA85" stroke-width="0.8" stroke-linecap="round"/>
+
+                        <!-- Micro-Insertos de Diamante / Carburo de Precisión -->
+                        <circle cx="5" cy="14" r="0.9" fill="#FFFFFF"/>
+                        <circle cx="8" cy="20" r="0.9" fill="#FFFFFF"/>
+                        <circle cx="11" cy="26" r="0.9" fill="#FFFFFF"/>
+                        
+                        <circle cx="23" cy="14" r="0.9" fill="#FFFFFF"/>
+                        <circle cx="20" cy="20" r="0.9" fill="#FFFFFF"/>
+                        <circle cx="17" cy="26" r="0.9" fill="#FFFFFF"/>
+
+                        <!-- Tobera / Punta Central con Micro-Inserto Esmeralda TribOil -->
+                        <circle cx="14" cy="33" r="1.5" fill="#006849" stroke="#34D399" stroke-width="0.75"/>
+
+                        <defs>
+                            <!-- Gradiente Oro Titanio Minimalista -->
+                            <linearGradient id="goldMinimalBody" x1="3" y1="4" x2="25" y2="34" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#E8C682"/>
+                                <stop offset="0.3" stop-color="#D4AF37"/>
+                                <stop offset="0.7" stop-color="#9E7324"/>
+                                <stop offset="1" stop-color="#4A340D"/>
+                            </linearGradient>
+                            <!-- Faceta de Reflejo Luminoso -->
+                            <linearGradient id="goldMinimalFacet" x1="10" y1="4" x2="18" y2="32" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#FFF2CE"/>
+                                <stop offset="0.4" stop-color="#E8C682"/>
+                                <stop offset="1" stop-color="#805C1B"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <!-- Micro-destello de Fricción de Corte en la Punta -->
+                <div class="scroll-drill-tip-glow"></div>
+                <!-- Badge Flotante de Profundidad Operativa -->
+                <div class="absolute left-8 top-1/2 -translate-y-1/2 px-2 py-1 rounded bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-lg font-mono text-[10px] font-bold text-brand dark:text-brand-light whitespace-nowrap opacity-0 group-hover:opacity-100 xl:group-hover:opacity-100 transition-opacity duration-200">
+                    <span id="scrollDepthPct">0%</span>
+                    <span class="text-[8px] text-slate-400 font-normal ml-0.5">AVANCE</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Base de Fondo de Pozo / Objetivo TD (Total Depth) -->
+        <div class="w-4 h-1 rounded-full bg-slate-300 dark:bg-slate-700 mt-1"></div>
     </div>
 
     <!-- Preloader Rápido (<500ms) -->
@@ -318,43 +388,47 @@
 
         <!-- Capa de Contenido Luminous: Jerarquía Apple en Modo Claro -->
         <div class="hero-hybrid-content">
-            <div class="max-w-[1500px] mx-auto px-6 md:px-10 w-full flex-1 flex flex-col justify-between pt-32 lg:pt-36 pb-6 sm:pb-8">
+            <div class="max-w-[1500px] mx-auto px-4 sm:px-6 md:px-10 w-full flex-1 flex flex-col justify-between pt-20 sm:pt-28 lg:pt-36 pb-4 sm:pb-6">
                 
                 <!-- Fila Central: Contenido Principal (Izquierda) + Calibre Vertical de Sarta & Broca PDC (Derecha) -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center my-auto py-4">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center my-auto py-2 sm:py-4">
                     <!-- Columna de Texto Flotante en Modo Claro (Slate 900) -->
                     <div class="lg:col-span-9 max-w-3xl">
                         <!-- Badge Cápsula de Titanio y Vidrio Blanco -->
-                        <div class="hero-badge inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/95 dark:bg-white/[0.08] backdrop-blur-md border border-slate-200 dark:border-white/10 text-brand dark:text-brand-light text-xs font-mono tracking-wider uppercase mb-5 shadow-sm">
-                            <span class="w-2 h-2 rounded-full bg-brand dark:bg-brand-light animate-pulse"></span>
-                            Fundada en 1996 · Casi 30 Años de Rigor Upstream en Ecuador
+                        <div class="hero-badge inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 dark:bg-white/[0.08] backdrop-blur-md border border-slate-200 dark:border-white/10 text-brand dark:text-brand-light text-xs font-mono tracking-wider uppercase mb-4 sm:mb-5 shadow-sm max-w-full">
+                            <span class="w-2 h-2 rounded-full bg-brand dark:bg-brand-light animate-pulse flex-shrink-0"></span>
+                            <span class="truncate">Fundada en 1996 · Rigor Upstream</span>
+                            <span class="inline-flex lg:hidden items-center gap-1 ml-1 px-2 py-0.5 rounded-full bg-brand/10 dark:bg-brand/20 text-brand dark:text-brand-light font-bold text-[10px] flex-shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand animate-ping"></span>
+                                <span id="mobileDepthBadge">12,450 FT</span>
+                            </span>
                         </div>
 
                         <!-- Titular Monumental Apple en Modo Claro -->
-                        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.04] mb-6 text-slate-900 dark:text-white" id="heroHeadline">
+                        <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] sm:leading-[1.04] mb-4 sm:mb-6 text-slate-900 dark:text-white" id="heroHeadline">
                             Ingeniería Upstream. <br class="hidden sm:inline" />
                             <span class="text-slate-500 dark:text-white/45">Potencia y Rigor en Pozo.</span>
                         </h1>
 
                         <!-- Bajada de Copy Pro -->
-                        <p class="text-slate-700 dark:text-white/80 text-base sm:text-lg lg:text-xl font-normal leading-relaxed max-w-2xl mb-8" id="heroDescription">
+                        <p class="text-slate-700 dark:text-white/80 text-sm sm:text-base lg:text-lg font-normal leading-relaxed max-w-2xl mb-6 sm:mb-8 line-clamp-3 sm:line-clamp-none" id="heroDescription">
                             Gerenciamiento integral de campos petroleros, taladros de perforación profunda y servicios de reacondicionamiento (workover) con el estándar más alto de seguridad y productividad en la Amazonía ecuatoriana.
                         </p>
 
                         <!-- Botones y Guía de Interacción -->
-                        <div class="flex flex-col gap-4">
-                            <div class="hero-cta-row flex flex-wrap items-center gap-4">
-                                <a href="#soluciones" class="btn-primary">
+                        <div class="flex flex-col gap-3 sm:gap-4">
+                            <div class="hero-cta-row flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                                <a href="#soluciones" class="btn-primary w-full sm:w-auto text-center justify-center">
                                     <span>Nuestras Soluciones</span>
                                     <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
                                 </a>
-                                <a href="#contacto" class="btn-outline">
+                                <a href="#contacto" class="btn-outline w-full sm:w-auto text-center justify-center">
                                     <span>Solicitar Ficha Técnica</span>
                                 </a>
                             </div>
                             <div class="inline-flex items-center gap-2 text-xs font-mono text-slate-600 dark:text-brand-light tracking-wide">
-                                <span class="w-2 h-2 rounded-full bg-brand dark:bg-brand-light animate-pulse"></span>
-                                <span>Pasa el cursor o toca los puntos <b class="text-brand dark:text-brand-light font-bold bg-white dark:bg-white/10 px-1.5 py-0.5 rounded shadow-sm border border-slate-200 dark:border-white/10">(+)</b> en el taladro</span>
+                                <span class="w-2 h-2 rounded-full bg-brand dark:bg-brand-light animate-pulse flex-shrink-0"></span>
+                                <span class="text-[11px] sm:text-xs">Toca los puntos <b class="text-brand dark:text-brand-light font-bold bg-white dark:bg-white/10 px-1 py-0.5 rounded shadow-xs border border-slate-200 dark:border-white/10">(+)</b> en el taladro para ver componentes</span>
                             </div>
                         </div>
                     </div>
